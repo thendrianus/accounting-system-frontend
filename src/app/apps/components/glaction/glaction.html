@@ -1,0 +1,42 @@
+<div class="loading" *ngIf="!gen.app_component_id"></div>
+<ts-notification [notifSuccess]='notif.success' [notifAlert]='notif.alert' [notifError]='notif.error'
+  [notifInfo]='notif.info' [notifWarn]='notif.warn'> </ts-notification>
+
+<form class="form-horizontal" [formGroup]="formGeneralledger">
+  <div class="form-group row">
+    <label for="account_id" class="col-sm-4 text-right form-form-control-label">{{gen.at_account}}</label>
+    <div class="col-sm-6">
+      <ng-select bindValue="value" [items]="glactionAccount" formControlName="account_id"
+        (change)="accountChange($event)"> </ng-select>
+    </div>
+  </div>
+  <div class="form-group row {{(formGeneralledger.controls.debit.status == 'INVALID')?'has-warning':''}}"
+    *ngIf="debitCredit  != 1">
+    <label for="debit" class="col-sm-4 text-right form-form-control-label">{{gen.at_debit}}</label>
+    <div class="col-sm-6">
+      <input currencyMask type="tel" [options]="moneyOption" class="form-control" id="debit"
+        placeholder="{{gen.ph_debit}}" formControlName="debit">
+    </div>
+  </div>
+  <div class="form-group row {{(formGeneralledger.controls.credit.status == 'INVALID')?'has-warning':''}}"
+    *ngIf="debitCredit != 0">
+    <label for="credit" class="col-sm-4 text-right form-form-control-label">{{gen.at_credit}}</label>
+    <div class="col-sm-6">
+      <input currencyMask type="tel" [options]="moneyOption" class="form-control" id="credit"
+        placeholder="{{gen.ph_credit}}" formControlName="credit">
+    </div>
+  </div>
+  <div class="form-group row" *ngIf="glTransactionGlLinkId != ''">
+    <div class="offset-sm-4 col-sm-6">
+      <button type="submit" class="btn btn-primary" [disabled]="!formGeneralledger.valid" (click)="submitFormGeneralledger()"
+        *ngIf="formGeneralledger.value.generalledger_id == ''">{{gen.btn_add}}</button>
+      <button type="submit" class="btn btn-warning" [disabled]="!formGeneralledger.valid" (click)="submitFormGeneralledger()"
+        *ngIf="formGeneralledger.value.generalledger_id != ''">{{gen.btn_edit}}</button>
+      <!-- <button class="btn btn-success" *ngIf="formGeneralledger.value.generalledger_id != ''"
+        (click)="cancelGeneralledger()">{{gen.btn_cancel}}</button> -->
+      <button class="btn btn-danger" *ngIf="formGeneralledger.value.generalledger_id != ''"
+        (click)="deleteGeneralledger()">{{gen.btn_delete}}</button>
+        <button class="btn btn-secondary" (click)="clearAll()">Clear</button>
+    </div>
+  </div>
+</form>

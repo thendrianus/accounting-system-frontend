@@ -1,0 +1,116 @@
+<!--<ts-notification [notifSuccess]='notif.success' [notifAlert]='notif.alert' [notifError]='notif.error' [notifInfo]='notif.info' [notifWarn]='notif.warn'> </ts-notification>-->
+
+<div class="animated fadeIn display-inherit">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header font-larger">
+          <a href="javascript:void(0)" class="ts-a-title" (click)="refreshComponent()"><i class=" fa fa-refresh"> </i>
+            *(Generalledger / Buku Besar</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<button class="btn btn-info" (click)="backClicked()" *ngIf="!generalLedger1.show">Back To General Ledger</button>
+<!--<button class="btn btn-warning" (click)="reset()">reset</button>-->
+<div class="animated fadeIn display-inherit" *ngIf="generalLedger1.show">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-block">
+          <div class="vertical-scroll" style="max-height: 100%">
+            <div class="row">
+              <div class="col-sm-6">
+                <div class="form-group row">
+                  <label class="col-sm-4 text-right form-form-control-label">Asset</label>
+                  <div class="col-sm-6">
+                    <div class="input-group">
+                      <input type="text" class="w100 form-control" value="{{accountBallance.type1 | number:'.2-2'}}" disabled>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-sm-4 text-right form-form-control-label">Hutang</label>
+                  <div class="col-sm-6">
+                    <div class="input-group">
+                      <input type="text" class="w100 form-control" value="{{accountBallance.type2 | number:'.2-2'}}" disabled>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-sm-4 text-right form-form-control-label">Modal</label>
+                  <div class="col-sm-6">
+                    <div class="input-group">
+                      <input type="text" class="w100 form-control" value="{{accountBallance.type3 | number:'.2-2'}}" disabled>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-sm-4 text-right form-form-control-label">Ballance</label>
+                  <div class="col-sm-6">
+                    <div class="input-group">
+                      <input type="text" class="w100 form-control" value="{{(accountBallance.type1) - (accountBallance.type2 + accountBallance.type3 + (((accountBallance.type4 + accountBallance.type7) * -1)-(accountBallance.type6 + accountBallance.type5 + accountBallance.type8)) )  | number:'.2-2'}}" disabled>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                  <div class="form-group row">
+                    <label class="col-sm-4 text-right form-form-control-label">Pendapatan</label>
+                    <div class="col-sm-6">
+                      <div class="input-group">
+                        <input type="text" class="w100 form-control" value="{{(accountBallance.type4 + accountBallance.type7) * -1 | number:'.2-2'}}" disabled>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-4 text-right form-form-control-label">Biaya</label>
+                    <div class="col-sm-6">
+                      <div class="input-group">
+                        <input type="text" class="w100 form-control" value="{{accountBallance.type6 + accountBallance.type5 + accountBallance.type8 | number:'.2-2'}}" disabled>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-4 text-right form-form-control-label">Laba Rugi</label>
+                    <div class="col-sm-6">
+                      <div class="input-group">
+                        <input type="text" class="w100 form-control" value="{{((accountBallance.type4 + accountBallance.type7) * -1)-(accountBallance.type6 + accountBallance.type5 + accountBallance.type8) | number:'.2-2'}}" disabled>
+                      </div>
+                    </div>
+                  </div>
+              </div>
+            </div>
+            <ng2-smart-table (rowSelect)="httpService.modal_scroll_top($event)" [settings]="settings" [source]="source" (delete)="selectGeneralledger($event)">
+            </ng2-smart-table>
+            <!-- <div>
+                Ballance = "{{(accountBallance.type1) - (accountBallance.type2 + accountBallance.type3 + (((accountBallance.type4 + accountBallance.type7) * -1)-(accountBallance.type6 + accountBallance.type5 + accountBallance.type8)) )  | number:'.2-2'}}" (Make sure the ballance value is zero)
+            </div> 
+            <div>
+                Asset = "{{accountBallance.type1 | number:'.2-2'}}"
+            </div>
+            <div>
+                Hutang = "{{accountBallance.type2 | number:'.2-2'}}"
+            </div>
+            <div>
+                Modal = "{{accountBallance.type3 | number:'.2-2'}}"
+            </div>
+            <div>
+                Pendapatan = "{{(accountBallance.type4 + accountBallance.type7) * -1 | number:'.2-2'}}"
+            </div>
+            <div>
+                Biaya = "{{accountBallance.type6 + accountBallance.type5 + accountBallance.type8 | number:'.2-2'}}"
+            </div>
+            <div>
+                Laba Rugi = "{{((accountBallance.type4 + accountBallance.type7) * -1)-(accountBallance.type6 + accountBallance.type5 + accountBallance.type8) | number:'.2-2'}}"
+            </div> -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<router-outlet></router-outlet>

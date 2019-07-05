@@ -1,0 +1,847 @@
+<div class="loading" *ngIf="!gen.app_component_id"></div>
+<ts-notification [notifSuccess]='notif.success' [notifAlert]='notif.alert' [notifError]='notif.error'
+  [notifInfo]='notif.info' [notifWarn]='notif.warn'> </ts-notification>
+
+<div class="animated fadeIn display-inherit small-input" *ngIf="formPos.value.pos_session_id != ''">
+
+  <div class="row height100">
+    <div class="col-md-12" style="padding: 0px;">
+      <div class="card" style="height: 100%; margin-bottom: 0px !important; border: 0px;">
+        <div class="card-block" style="padding-bottom: 0px;height: 100%;">
+          <div class="row" style="height: 100%;">
+            <div class="col-sm-7 col-xs-0 col-lg-9 height100" id="hidewhenmobile">
+              <div class="row">
+
+                <!-- <div class="form-group col-sm-" style="margin-bottom: 0rem;">
+                  <form class="form-horizontal" [formGroup]="formPos" (ngsubmit)="posSubmit(false)">
+                    <select class="form-control" id="exampleSelect1" formControlName="sale_status_id">
+                      <option *ngFor="let item of saleStatusData" value="{{item.sale_status_id}}">{{item.name}}</option>
+                    </select>
+                  </form>
+                </div> -->
+                <div class="form-group col-sm-2" style="margin-bottom: 0rem; padding: 0px;">
+                  <form class="form-horizontal" [formGroup]="formPos" (ngsubmit)="posSubmit(false)" style="width: 100%;">
+                    <ng-select bindValue="businesspartner_id" [items]="businesspartnerData"
+                      [ngClass]="{disabledDiv: disableInput.businesspartner_id}" formControlName="businesspartner_id">
+                    </ng-select>
+                  </form>
+                </div>
+                
+                <div class="form-group col-sm-4" style="margin-bottom: 5px !important;">
+                  <form class="form-horizontal" [formGroup]="formPos" (ngsubmit)="posSubmit(false)">
+                    <input type="text" class="form-control ts-clear-bg ts-text-center" id="list_filter" placeholder="List Filter" value="" style="width: 100%" formControlName="list_filter" (ngModelChange)="listFilterChange()">
+                  </form>
+                </div>
+
+                <div class="form-group col-sm-6" style="margin-bottom: 5px !important;">
+                  <button type="submit" class="btn btn-primary btn-sm2" [disabled]="!formPos.valid"
+                    *ngIf="formPos.value.pos_id == ''" (click)="posSubmit(false)">{{gen.btn_add}}</button>
+                  <button type="submit" class="btn btn-warning btn-sm2" [disabled]="!formPos.valid"
+                    *ngIf="formPos.value.pos_id != ''" (click)="posSubmit(false)">{{gen.btn_update}}</button>
+                  <button type="submit" class="btn btn-danger btn-sm2" *ngIf="formPos.value.pos_id != ''"
+                    [disabled]="!formPos.valid" (click)="posDelete()">{{gen.btn_delete}}</button>
+                  <button type="submit" class="btn btn-success btn-sm2"
+                    (click)="modal4Show()">{{gen.btn_search}}</button>
+                  <button type="submit" class="btn btn-secondary btn-sm2"
+                    (click)="clearAll()">{{gen.btn_clear}}</button>
+                  <button type="submit" (click)="printConsoleForm()" *ngIf="printConsole">Print Console</button>
+                  <!-- <button type="submit" class="btn btn-info btn-sm2" (click)="formFieldDisabledEnabled(1)">{{gen.btn_edit_transaction}}</button> -->
+                  <button type="submit" class="btn btn-info btn-sm2"
+                    (click)="formDetailValue()">{{gen.btn_form_detail}}</button>
+                </div>
+                
+              </div>
+              <div class="row">
+                <div class="col-sm-12" style="overflow: auto; background-color: #cccccc30;" *ngIf="!isFormDetailValue"
+                  [ngStyle]="{'overflow-y': scroll, height: listProductHeight}">
+                  <div class="row" *ngFor="let item of rowsPosDetail">
+                    <div class="col-sm-6 col-lg-3" *ngFor="let items of item.detail">
+                      <div class="card card-inverse card-primary" style="cursor: pointer;">
+                        <div class="card-block pb-0" (click)="modal2Out(items, true)">
+                          <h4 class="mb-0">{{items.selling_price| number:'.2-2'}}</h4>
+                          <p>{{items.name}}</p>
+                        </div> 
+                        <div class="chart-wrapper px-3" style="height:70px;">
+                          <button type="button" class="btn btn-sm btn-primary" (click)="modal2Out(items, false)" *ngIf="formPos.value.orisale_status_id != 5">
+                            <i class="icon-settings"></i> {{gen.btn_add_item}}
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-12" style="overflow: auto;" *ngIf="isFormDetailValue">
+                  <form class="form-horizontal" [formGroup]="formPos" (ngsubmit)="posSubmit(false)">
+
+                    <div class="form-group row {{(formPos.controls.pos_code.status == 'INVALID')?'has-warning':''}}">
+                      <label for="pos_code" class="col-4 col-sm-4 form-form-control-label">{{gen.at_code}}</label>
+                      <div class="col-8 col-sm-8">
+                        <input type="text" class="form-control form-control-sm" id="pos_code"
+                          placeholder="{{gen.ph_code}}" [readonly]="disableInput.pos_code" formControlName="pos_code">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label for="sale_category_id"
+                        class="col-4 col-sm-4 form-form-control-label">{{gen.at_category}}</label>
+                      <div class="col-8 col-sm-8">
+                        <select class="form-control form-control-sm" id="sale_category_id"
+                          [ngClass]="{disabledDiv: disableInput.sale_category_id}" formControlName="sale_category_id">
+                          <option *ngFor="let item of sale_categoryData" value="{{item.sale_category_id}}">{{item.name}}
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label for="businesspartner_id"
+                        class="col-4 col-sm-4 form-form-control-label">{{gen.at_customer}}</label>
+                      <div class="col-sm-8">
+                        <ng-select bindValue="businesspartner_id" [items]="businesspartnerData"
+                          [ngClass]="{disabledDiv: disableInput.businesspartner_id}"
+                          formControlName="businesspartner_id" (change)="selectedCustomer($event)">
+                        </ng-select>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label for="datetime" class="col-4 col-sm-4 form-form-control-label">{{gen.at_date}}</label>
+                      <div class="col-8 col-sm-8">
+                        <input type="date" class="w100 form-control" [readonly]="disableInput.transaction_date"
+                          formControlName="transaction_date">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label for="reference_code"
+                        class="col-4 col-sm-4 form-form-control-label">{{gen.at_reference}}</label>
+                      <div class="col-8 col-sm-8">
+                        <input type="text" class="form-control form-control-sm" id="pos_code"
+                          placeholder="{{gen.ph_reference}}" [readonly]="disableInput.reference_code"
+                          formControlName="reference_code">
+                      </div>
+                    </div>
+
+                    <div class="form-group row">
+                      <label for="warehouse_id" class="col-4 col-sm-4 form-form-control-label">{{gen.at_branch}}</label>
+                      <div class="col-8 col-sm-8">
+                        <select class="form-control form-control-sm" id="warehouse_id"
+                          [ngClass]="{disabledDiv: disableInput.warehouse_id}" formControlName="branch_id"
+                          (change)="warehouseChange()">
+                          <option *ngFor="let item of branchData" value="{{item.branch_id}}">{{item.name}}</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div class="form-group row">
+                      <label for="warehouse_id"
+                        class="col-4 col-sm-4 form-form-control-label">{{gen.at_warehouse}}</label>
+                      <div class="col-8 col-sm-8">
+                        <select class="form-control form-control-sm" id="warehouse_id"
+                          [ngClass]="{disabledDiv: disableInput.warehouse_id}" formControlName="warehouse_id"
+                          (change)="warehouseChange()">
+                          <option *ngFor="let item of warehouseData" value="{{item.warehouse_id}}">{{item.warehouse}}
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div class="form-group row">
+                      <label for="tax_id" class="col-4 col-sm-4 form-form-control-label">{{gen.at_tax}}</label>
+                      <div class="col-8 col-sm-8">
+                        <select class="form-control form-control-sm" id="tax_id"
+                          [ngClass]="{disabledDiv: disableInput.tax_id}" formControlName="tax_id"
+                          (change)="taxChange()">
+                          <option *ngFor="let item of taxData" value="{{item.tax_id}}">{{item.name}} /
+                            {{item.percentage}}%</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label for="transaction_payment_id"
+                        class="col-4 col-sm-4 form-form-control-label">{{gen.at_payment}}</label>
+                      <div class="col-8 col-sm-8">
+                        <select class="form-control form-control-sm" id="transaction_payment_id"
+                          [ngClass]="{disabledDiv: disableInput.transaction_payment_id}"
+                          formControlName="transaction_payment_id">
+                          <option *ngFor="let item of transaction_paymentData" value="{{item.transaction_payment_id}}">
+                            {{item.name}}</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label for="currency_id"
+                        class="col-4 col-sm-4 form-form-control-label">{{gen.at_currency}}</label>
+                      <div class="col-8 col-sm-8">
+                        <currency id="currency_id" [classInput]="'form-control-sm'" [disableInput]="disableInput.currency_id"
+                          (setCurrencyData)="setCurrencyData($event)"></currency>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label for="currency_id" class="col-4 col-sm-4 form-form-control-label">{{gen.at_rate}}</label>
+                      <div class="col-8 col-sm-8">
+                        <input type="number" class="form-control form-control-sm" id="name"
+                          placeholder="{{gen.ph_rate}}" [readonly]="disableInput.rate" formControlName="rate">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label for="term" class="col-4 col-sm-4 form-form-control-label">{{gen.at_term}}</label>
+                      <div class="col-8 col-sm-8">
+                        <div class="input-group">
+                          <input type="text" class="form-control form-control-sm" [disabled]="true" id="term"
+                            placeholder="{{gen.ph_term}}"
+                            value="{{formPos.value.discount_date}} - {{formPos.value.due_date}} - {{formPos.value.early_discount}} - {{formPos.value.late_charge}}">
+                          <span class="input-group-btn">
+                            <button type="button" class="btn btn-primary btn-sm"
+                              (click)="modal5Show()">{{gen.btn_term}}</button>
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label for="salesman_id"
+                        class="col-4 col-sm-4 form-form-control-label">{{gen.at_salesman}}</label>
+                      <div class="col-8 col-sm-8">
+                        <select class="form-control form-control-sm" id="salesman_id"
+                          [ngClass]="{disabledDiv: disableInput.salesman_id}" formControlName="salesman_id">
+                          <option *ngFor="let item of salesmanData" value="{{item.employee_id}}">{{item.employee_code}}
+                            / {{item.firstname}} {{item.lastname}}</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-group row {{(formPos.controls.description.status == 'INVALID')?'has-warning':''}}">
+                      <label for="description"
+                        class="col-4 col-sm-4 form-form-control-label">{{gen.at_description}}</label>
+                      <div class="col-8 col-sm-8">
+                        <textarea type="text" class="form-control form-control-sm" id="description"
+                          placeholder="{{gen.ph_description}}" [readonly]="disableInput.description"
+                          formControlName="description"></textarea>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label for="isdelivery"
+                        class="col-4 col-sm-4 form-form-control-label">{{gen.at_delivery}}?</label>
+                      <div class="col-8 col-sm-8">
+                        <div class="input-group">
+                          <select class="form-control form-control-sm" id="isdelivery"
+                            [ngClass]="{disabledDiv: disableInput.isdelivery}" formControlName="isdelivery"
+                            (change)="ngModalChange()">
+                            <option value="1">Yes</option>
+                            <option value="0">No</option>
+                          </select>
+                          <span class="input-group-btn">
+                            <button type="button" class="btn btn-primary btn-sm"
+                              [disabled]="formPos.value.isdelivery != '1'"
+                              (click)="modal3Show()">{{gen.btn_delivery}}</button>
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 col-sm-5 col-lg-3 ">
+              <div class="row" style="height: 74%">
+                <div class="col-sm-12" style="    height: 100%;
+                width: 100%;
+                overflow: hidden;">
+                  <div class="input-group">
+                    <button ngClass="btn btn-primary btn-sm" (click)="modal2Show('-')"
+                      *ngIf="formButton[0].show">{{gen.btn_new_item}}</button>
+                    <form class="form-horizontal" [formGroup]="formPos" (ngsubmit)="posSubmit(false)" style="width: 100%;">
+                        <input type="text" class="form-control ts-clear-bg ts-text-center" id="product_barcode"
+                        placeholder="Product Barcode" value="" style="width: 100%" (change)="barcodeChange($event)">
+                    </form>
+                  </div>
+                  <div style="    width: 100%;
+                  height: 93%;
+                  overflow-y: scroll;
+                  padding-right: 17px;
+                  box-sizing: content-box;">
+                    <table class="table table-responsive table-hover table-sm" style="max-width: 105%; width: 105%">
+                      <tbody>
+                        <tr *ngFor="let item of posesDetail; let i = index; "
+                          [ngClass]="(formPos.value.orisale_status_id == 5)?'table-success':''"
+                          [ngStyle]="{'display': (item.is_active === 1)?'content':'none' }">
+                          <td>
+                            <div class="title">{{item.name}}</div>
+                            <small>{{item.price}} x {{item.ordered}} {{item.uom_label}}</small>
+                          </td>
+                          <td style="text-align: center; width: 100px">
+                            <div class="title">
+                              <strong>{{(item.ordered * item.price)-item.discount_amount | number:'.2-2'}}</strong>
+                            </div>
+                            <small *ngIf="formPos.value.orisale_status_id != 5">
+                              <button class="btn btn-warning btn-sm" (click)="modalShow(i)"
+                                *ngIf="formPos.value.orisale_status_id != 5">{{gen.btn_edit_detail}}</button>
+                              <button class="btn btn-danger btn-sm" (click)="posesDetailDelete(item)"
+                                *ngIf="formPos.value.orisale_status_id != 5">{{gen.btn_delete_detail}}</button>
+                            </small>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+              <div class="row" style="position: absolute; bottom: 0px; height: 26%;">
+                <div class="col-sm-12">
+                  <hr class="mt-0">
+                  <div class="form-group col-sm-12">
+                    <form class="form-horizontal" [formGroup]="formPos" (ngSubmit)="posSubmit(false)">
+                      <div
+                        class="form-group row {{(formPos.controls.landed_cost.status == 'INVALID')?'has-warning':''}}">
+                        <label for="landed_cost"
+                          class="col-4 col-sm-4 form-form-control-label">{{gen.at_landed_cost}}</label>
+                        <div class="col-8 col-sm-8">
+                          <input type="number" class="form-control form-control-sm" id="discount_amount"
+                            placeholder="{{gen.ph_landed_cost}}" [readonly]="disableInput.landed_cost"
+                            formControlName="landed_cost" (change)="count()">
+                        </div>
+                      </div>
+                      <div
+                        class="form-group row {{(formPos.controls.discount_persent.valid && formPos.controls.discount_amount.status == 'INVALID')?'has-warning':''}}">
+                        <label for="discount_amount"
+                          class="col-4 col-sm-4  form-form-control-label">{{gen.at_discount}}</label>
+                        <div class="col-3 col-sm-3" style="padding-right: 0px;">
+                          <input type="number" class="form-control form-control-sm" id="discount_persent"
+                            [readonly]="disableInput.discount_persent" formControlName="discount_persent"
+                            (blur)="posDiscountCountAmount($event)">
+                        </div>
+                        <div class="col-5 col-sm-5">
+                          <input type="number" class="form-control form-control-sm" id="discount_amount"
+                            [readonly]="disableInput.discount_amount" formControlName="discount_amount"
+                            (blur)="posDiscountCountPersent($event)">
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label for="tax" class="col-4 col-sm-4 form-form-control-label">{{gen.at_tax2}}</label>
+                        <div class="col-8 col-sm-8">
+                          <input type="number" class="form-control form-control-sm" id="tax"
+                            placeholder="{{gen.ph_tax}}" [readonly]="disableInput.tax" formControlName="tax">
+                        </div>
+                      </div>
+                      <div
+                        class="form-group row {{( formPos.controls.downpayment_persent.valid &&formPos.controls.downpayment.status == 'INVALID')?'has-warning':''}}"
+                        *ngIf="formPos.value.transaction_payment_id == 2 ">
+                        <label for="downpayment"
+                          class="col-4 col-sm-4 form-form-control-label">{{gen.at_downpayment}}</label>
+
+                        <div class="col-3 col-sm-3" style="padding-right: 0px;">
+                          <input type="text" class="form-control form-control-sm" id="downpayment_persent"
+                            [readonly]="disableInput.downpayment_persent" formControlName="downpayment_persent"
+                            (blur)="posDownpaymentCountAmount($event)">
+                        </div>
+
+                        <div class="col-5 col-sm-5">
+                          <input type="number" class="form-control form-control-sm" id="downpayment"
+                            placeholder="{{gen.ph_downpayment}}" [readonly]="disableInput.downpayment"
+                            formControlName="downpayment" (blur)="posDownpaymentCountPersent($event)">
+                        </div>
+
+
+                      </div>
+                      <div class="form-group row {{(formPos.controls.receivable.status == 'INVALID')?'has-warning':''}}"
+                        *ngIf="formPos.value.transaction_payment_id == 2 ">
+                        <label for="receivable"
+                          class="col-4 col-sm-4 form-form-control-label">{{gen.at_receivable}}</label>
+                        <div class="col-8 col-sm-8">
+                          <input type="number" class="form-control form-control-sm" id="receivable"
+                            [readonly]="disableInput.receivable" formControlName="receivable">
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                  <hr class="mt-0">
+                  <div class="col-sm-12" style="margin: 0px">
+                    <div class="callout callout-danger">
+                      <small class="text-muted">TOTAL</small>
+                      <br>
+                      <strong class="h4">{{formPos.value.grand_total | number:'.2-2'}}</strong>
+                      <div class="chart-wrapper" style="width:100px;height:30px;">
+                      </div>
+                    </div>
+                    <button type="button" class="btn btn-danger" (click)="posSubmit(true)" aria-label="CASH" style="position: absolute; right: 15px; bottom: 0; height: 100%; width: 100px; font-size: larger"> CASH
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="animated fadeIn display-inherit small-input" *ngIf="formPos.value.pos_session_id == ''">
+  <div class="row">
+    <button type="submit" class="btn btn-primary" (click)="posSessionModalShow()">{{gen.btn_new_session}}</button>
+    
+    <table class="table table-responsive table-hover table-outline mb-0">
+      <thead class="thead-default">
+        <tr class="text-center">
+          <th><i class="fa fa-sort-numeric-asc"></i></th>
+          <th>{{gen.th_action}}</th>
+          <th>{{gen.th_salesman}}</th>
+          <th>{{gen.th_pos_stand}}</th>
+          <th>{{gen.th_session_begin}}</th>
+          <th>{{gen.th_session_end}}</th>
+          <th>{{gen.th_session_start}}</th>
+          <th>{{gen.th_session_finish}}</th>
+          <th>{{gen.th_description}}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of pos_sessionData; let i = index">
+          <td class="text-center">{{i+1}}</td>
+          <td>
+            <button class="btn btn-sm btn-warning" (click)="posSessionSelect(item)"
+              *ngIf="item.pos_session_status_id == 2">{{gen.td_select}}</button>
+            <button class="btn btn-sm btn-warning" (click)="editPos_session(item)"
+              *ngIf="item.pos_session_status_id == 1 || item.pos_session_status_id == 2">{{gen.td_edit}}</button>
+            <button class="btn btn-sm btn-primary" (click)="posSessionStart(item)"
+              *ngIf="item.pos_session_status_id == 1">{{gen.td_start}}</button>
+            <button class="btn btn-sm btn-danger" (click)="posSessionFinish(item)"
+              *ngIf="item.pos_session_status_id == 2">{{gen.td_finish}}</button>
+          </td>
+          <td>{{item.firstname}} {{item.lastname}}</td>
+          <td class="text-center">{{item.pos_stand}}</td>
+          <td>{{item.session_begin_format}}</td>
+          <td>{{item.session_end_format}}</td>
+          <td>
+            <div *ngIf="item.pos_session_status_id != 1">
+              {{item.session_start_format}}
+            </div>
+          </td>
+          <td>
+            <div *ngIf="item.pos_session_status_id == 3">
+              {{item.session_finish_format}}
+            </div>
+          </td>
+          <td>{{item.description}}</td>
+        </tr>
+      </tbody>
+    </table>
+    
+  </div>
+</div>
+
+<div bsModal #childModal="bs-modal" class="modal  fade" [config]="{'backdrop':'static', 'keyboard': false}"
+  tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+
+        <h5 class="modal-title">{{gen._titleM1}}</h5>
+        <button class="btn btn-outline-danger" (click)="childModal.hide()" aria-label="Close"
+          type="button">{{gen.btn_closeM1}}</button>
+      </div>
+      <div class="modal-body">
+        <form class="form-horizontal" [formGroup]="formPosDetail" (ngSubmit)="modalOut()">
+
+
+          <div class="form-group row">
+            <label for="inventory_code" class="col-sm-2 form-form-control-label">{{gen.at_inventory_codeM1}}</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" id="inventory_code" placeholder="{{gen.ph_inventory_codeM1}}"
+                [readonly]="disableInput.inventory_code" formControlName="inventory_code">
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="name" class="col-sm-2 form-form-control-label">{{gen.at_nameM1}}</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" id="name" placeholder="{{gen.ph_nameM1}}"
+                [readonly]="disableInput.name" formControlName="name">
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="warehouse_id" class="col-sm-2 form-form-control-label">{{gen.at_warehouseM1}}</label>
+            <div class="col-sm-10">
+              <select class="form-control" id="warehouse_id" formControlName="warehouse_id"
+                (change)="warehouseChange()">
+                <option *ngFor="let item of warehouseData" value="{{item.warehouse_id}}">{{item.warehouse}}</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group row {{(formPosDetail.controls.ordered.status == 'INVALID')?'has-warning':''}}">
+            <label for="ordered" class="col-sm-2 form-form-control-label">{{gen.at_quantityM1}}</label>
+            <div class="col-sm-10">
+              <input type="number" class="form-control" id="ordered" placeholder="{{gen.ph_orderedM1}}"
+                formControlName="ordered">
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="uom_order" class="col-sm-2 form-form-control-label">{{gen.at_uomM1}}</label>
+            <div class="col-sm-10">
+              <select class="form-control form-control-sm" id="uom_order" formControlName="uom_order"
+                (change)="posDetailUomOrderChange()">
+                <option value=1>{{formPosDetail.value.uom1}}</option>
+                <option value=2 *ngIf="formPosDetail.value.uom2equal != 1">{{formPosDetail.value.uom2}}</option>
+                <option value=3 *ngIf="formPosDetail.value.uom3equal != 1">{{formPosDetail.value.uom3}}</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group row {{(formPosDetail.controls.price.status == 'INVALID')?'has-warning':''}}">
+            <label for="price" class="col-sm-2 form-form-control-label">{{gen.at_priceM1}}</label>
+            <div class="col-sm-10">
+              <input type="number" class="form-control" id="price" placeholder="{{gen.ph_priceM1}}"
+                formControlName="price">
+            </div>
+          </div>
+
+          <div
+            class="form-group row {{(formPosDetail.controls.discount_persent.status == 'INVALID')?'has-warning':''}}">
+            <label for="discount_persent" class="col-sm-2 form-form-control-label">{{gen.at_discountM1}}</label>
+            <div class="col-sm-10">
+              <input type="number" class="form-control" id="discount_persent" placeholder="{{gen.ph_discountM1}}"
+                formControlName="discount_persent">
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="tax_id" class="col-sm-2 form-form-control-label">{{gen.at_taxM1}}</label>
+            <div class="col-sm-10">
+              <select class="form-control" id="tax_id" formControlName="tax_id">
+                <option *ngFor="let item of taxData" value="{{item.tax_id}}">{{item.name}} / {{item.percentage}}%
+                </option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group row {{(formPosDetail.controls.description.status == 'INVALID')?'has-warning':''}}">
+            <label for="description" class="col-sm-2 form-form-control-label">{{gen.at_descriptionM1}}</label>
+            <div class="col-sm-10">
+              <textarea type="text" class="form-control" id="description" placeholder="{{gen.ph_descriptionM1}}"
+                formControlName="description"></textarea>
+            </div>
+          </div>
+
+          <div class="form-group row" style="text-align:left">
+            <div class="offset-sm-2 col-sm-10">
+              <button type="submit" class="btn btn-primary" [disabled]="!formPosDetail.valid"
+                *ngIf="ifModal2show == -1">{{gen.btn_addM1}}</button>
+              <button type="submit" class="btn btn-warning" [disabled]="!formPosDetail.valid"
+                *ngIf="ifModal2show != -1">{{gen.btn_editM1}}</button> 
+            </div>
+          </div>
+        </form>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<div bsModal #childModal2="bs-modal" class="modal  fade" [config]="{'backdrop':'static', 'keyboard': false}"
+  tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{{gen._titleM2}}</h5>
+        <button class="btn btn-outline-danger" (click)="childModal2.hide()" aria-label="Close"
+          type="button">{{gen.btn_closeM2}}</button>
+      </div>
+      <div class="modal-body-full" style="max-width: 95% !important;">
+        <div class="vertical-scroll" style="max-height: 100%">
+          <ng2-smart-table (rowSelect)="httpService.modal_scroll_top($event)" [settings]="settings" [source]="source" (edit)="modal2Out($event.data, false)"
+            (edit)="childModal2Refresh()"></ng2-smart-table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div bsModal #childModal3="bs-modal" class="modal fade" [config]="{'backdrop':'static', 'keyboard': false}"
+  tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+
+        <h5 class="modal-title">{{gen._titleM3}}</h5>
+        <button class="btn btn-outline-danger" (click)="childModal3.hide()" aria-label="Close"
+          type="button">{{gen.btn_closeM3}}</button>
+      </div>
+      <div class="modal-body">
+        <form class="form-horizontal" [formGroup]="formDelivery" (ngSubmit)="formDeliverySubmit()">
+
+          <div class="col-sm-6">
+            <div class="form-group row">
+              <label for="datetime" class="col-sm-2 form-form-control-label">{{gen.at_dateM3}}</label>
+              <div class="col-sm-4">
+                <div class="input-group">
+                  <input type="date" class="w100 form-control" [readonly]="disableInput.delivery_schedule"
+                    formControlName="delivery_schedule">
+                </div>
+              </div>
+              <div class="col-sm-2">
+                <div class="input-group">
+                  <!-- (changed)="setDatetime2($event)"></timepicker> -->
+                </div>
+              </div>
+            </div>
+            <div
+              class="form-group row {{(formDelivery.controls.delivery_address.status == 'INVALID')?'has-warning':''}}">
+              <label for="delivery_address"
+                class="col-sm-2 form-form-control-label">{{gen.at_deliveryAddressM3}}</label>
+              <div class="col-sm-10">
+                <textarea type="text" class="form-control" id="discount_amount"
+                  placeholder="{{gen.ph_deliveryAddressM3}}" [readonly]="disableInput.delivery_address"
+                  formControlName="delivery_address"></textarea>
+              </div>
+            </div>
+            <div class="form-group row {{(formDelivery.controls.delivery_note.status == 'INVALID')?'has-warning':''}}">
+              <label for="delivery_note" class="col-sm-2 form-form-control-label">{{gen.at_deliveryNoteM3}}</label>
+              <div class="col-sm-10">
+                <textarea type="text" class="form-control" id="discount_amount" placeholder="{{gen.ph_deliveryNoteM3}}"
+                  [readonly]="disableInput.delivery_note" formControlName="delivery_note"></textarea>
+              </div>
+            </div>
+
+            <div class="form-group row" style="text-align:left">
+              <div class="offset-sm-2 col-sm-10">
+                <button type="submit" class="btn btn-warning"
+                  [disabled]="!formDelivery.valid">{{gen.btn_set_dataM3}}</button>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <table class="table table-responsive table-striped table-sm">
+              <thead>
+                <tr class="text-center">
+                  <th class="table-id">*(No</th>
+                  <th>*(Name</th>
+                  <th>*(Addres</th>
+                  <th>*(Aksi</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of businessPartneraddress; let i = index;">
+                  <td class="table-id">{{i+1}}</td>
+                  <td>{{item.name}}</td>
+                  <td>{{item.address}}</td>
+                  <td>
+                    <button ngClass="status-button btn btn-sm btn-warning"
+                      (click)="businesspartnerAddressSelect(item.address); $event.preventDefault()">*(Select</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+        </form>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<div bsModal #childModal4="bs-modal" class="modal  fade" [config]="{'backdrop':'static', 'keyboard': false}"
+  tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{{gen._titleM4}}</h5>
+        <button class="btn btn-outline-danger" (click)="childModal4.hide()" aria-label="Close"
+          type="button">{{gen.btn_closeM4}}</button>
+      </div>
+      <div class="modal-body-full" style="max-width: 95% !important;">
+        <div class="vertical-scroll" style="max-height: 100%">
+          <ng2-smart-table (rowSelect)="httpService.modal_scroll_top($event)" [settings]="settings2" [source]="source2" (edit)="modal4Out($event)" (add)="getPosList()">
+          </ng2-smart-table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div bsModal #childModal5="bs-modal" [config]="{'backdrop':'static', 'keyboard': false}" class="modal  fade"
+  tabindex="-1" [config]="{'backdrop':'static', 'keyboard': false}" role="dialog" aria-labelledby="mySmallModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+
+        <h5 class="modal-title">{{gen._titleM5}}</h5>
+        <button class="btn btn-outline-danger" (click)="childModal5.hide()" aria-label="Close"
+          type="button">{{gen.btn_closeM5}}</button>
+      </div>
+      <div class="modal-body">
+        <form class="form-horizontal" [formGroup]="formTerm" (ngSubmit)="formTermSubmit()">
+
+
+          <div class="form-group row {{(formTerm.controls.discount_date.status == 'INVALID')?'has-warning':''}}">
+            <label for="discount_date"
+              class="col-sm-4 text-right form-form-control-label">{{gen.at_discountDateM5}}</label>
+            <div class="col-sm-10">
+              <input type="number" class="form-control" id="discount_date" placeholder="{{gen.ph_discountDateM5}}"
+                [readonly]="disableInput.discount_date" formControlName="discount_date">
+            </div>
+          </div>
+
+          <div class="form-group row {{(formTerm.controls.due_date.status == 'INVALID')?'has-warning':''}}">
+            <label for="due_date" class="col-sm-4 text-right form-form-control-label">{{gen.at_dueDateM5}}</label>
+            <div class="col-sm-10">
+              <input type="number" class="form-control" id="due_date" placeholder="{{gen.ph_dueDateM5}}"
+                [readonly]="disableInput.due_date" formControlName="due_date">
+            </div>
+          </div>
+
+          <div class="form-group row {{(formTerm.controls.early_discount.status == 'INVALID')?'has-warning':''}}">
+            <label for="early_discount"
+              class="col-sm-4 text-right form-form-control-label">{{gen.at_earlyDiscountM5}}</label>
+            <div class="col-sm-10">
+              <input type="number" class="form-control" id="early_discount" placeholder="{{gen.ph_earlyDiscountM5}}"
+                [readonly]="disableInput.early_discount" formControlName="early_discount">
+            </div>
+          </div>
+
+          <div class="form-group row {{(formTerm.controls.late_charge.status == 'INVALID')?'has-warning':''}}">
+            <label for="late_charge" class="col-sm-4 text-right form-form-control-label">{{gen.at_lateChargeM5}}</label>
+            <div class="col-sm-10">
+              <input type="number" class="form-control" id="late_charge" placeholder="{{gen.ph_lateChargeM5}}"
+                [readonly]="disableInput.late_charge" formControlName="late_charge">
+            </div>
+          </div>
+
+          <div class="form-group row" style="text-align:left">
+            <div class="offset-sm-2 col-sm-10">
+              <button type="submit" class="btn btn-warning" [disabled]="!formTerm.valid">{{gen.btn_set_dataM5}}</button>
+            </div>
+          </div>
+
+
+        </form>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<div bsModal #posSessionModal="bs-modal" [config]="{'backdrop':'static', 'keyboard': false}" class="modal  fade"
+  tabindex="-1" [config]="{'backdrop':'static', 'keyboard': false}" role="dialog" aria-labelledby="mySmallModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{{gen._titleM6}}</h5>
+        <button class="btn btn-outline-danger" (click)="posSessionModal.hide()" aria-label="Close"
+          type="button">{{gen.btn_closeM6}}</button>
+      </div>
+      <div class="modal-body">
+        <form class="form-horizontal" [formGroup]="formPos_session">
+          <div class="row">
+            <div class="col-sm-6">
+              <div
+                class="form-group row {{(formPos_session.controls.pos_session_id.status == 'INVALID')?'has-warning':''}}">
+                <label for="pos_session_id" class="col-sm-4 form-form-control-label">{{gen.at_pos_sessionM9}}</label>
+                <div class="col-sm-8">
+                  <input type="text" class="form-control" id="pos_session_id" placeholder="{{gen.ph_pos_sessionM9}}"
+                    [readonly]="disableInput.pos_session_id" formControlName="pos_session_id">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="branch_id" class="col-sm-4 form-form-control-label">{{gen.at_branchM9}}</label>
+                <div class="col-sm-8">
+                  <select class="form-control form-control" id="branch_id"
+                    [ngClass]="{disabledDiv: disableInput.branch_id}" formControlName="branch_id">
+                    <option *ngFor="let item of branchData" value="{{item.branch_id}}">{{item.name}}</option>
+                  </select>
+                </div>
+              </div>
+              <div
+                class="form-group row {{(formPos_session.controls.pos_stand_id.status == 'INVALID')?'has-warning':''}}">
+                <label for="pos_stand_id" class="col-sm-4 form-form-control-label">{{gen.at_pos_standM9}}</label>
+                <div class="col-sm-8">
+                  <select class="form-control form-control" id="pos_stand_id" formControlName="pos_stand_id">
+                    <option *ngFor="let item of posStandData" value="{{item.pos_stand_id}}">{{item.pos_stand}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="salesman_id" class="col-sm-4 form-form-control-label">{{gen.at_salesmanM9}}</label>
+                <div class="col-sm-8">
+                  <select class="form-control form-control" id="salesman_id" formControlName="salesman_id">
+                    <option *ngFor="let item of salesmanData" value="{{item.employee_id}}">{{item.employee_code}} /
+                      {{item.firstname}} {{item.lastname}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="currency_id" class="col-sm-4 form-form-control-label">{{gen.at_currencyM9}}</label>
+                <div class="col-sm-8">
+                  <currency id="currency_id" [classInput]="'form-control'" [disableInput]="disableInput.currency_id"
+                    (setCurrencyData)="setCurrencyPOSSessionData($event)"></currency>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="rate" class="col-sm-4 form-form-control-label">{{gen.at_rateM9}}</label>
+                <div class="col-sm-8">
+                  <input type="text" class="form-control" id="rate" placeholder="{{gen.ph_rateM9}}"
+                    formControlName="rate">
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="form-group row">
+                <label for="warehouse_id" class="col-sm-4 form-form-control-label">{{gen.at_warehouseM9}}</label>
+                <div class="col-sm-8">
+                  <select class="form-control" id="warehouse_id" formControlName="warehouse_id">
+                    <option *ngFor="let item of warehouseData" value="{{item.warehouse_id}}">{{item.warehouse}}</option>
+                  </select>
+                </div>
+              </div>
+              <div
+                class="form-group row {{(formPos_session.controls.session_begin.status == 'INVALID')?'has-warning':''}}">
+                <label for="session_begin" class="col-sm-4 form-form-control-label">{{gen.at_session_beginM9}}</label>
+                <div class="col-sm-8">
+                  <input type="datetime" class="form-control" id="positions" placeholder="{{gen.ph_session_beginM9}}"
+                    formControlName="session_begin">
+                </div>
+              </div>
+              <div
+                class="form-group row {{(formPos_session.controls.session_end.status == 'INVALID')?'has-warning':''}}">
+                <label for="session_end" class="col-sm-4 form-form-control-label">{{gen.at_session_endM9}}</label>
+                <div class="col-sm-8">
+                  <input type="datetime" class="form-control" id="session_end" placeholder="{{gen.ph_session_endM9}}"
+                    formControlName="session_end">
+                </div>
+              </div>
+              <div
+                class="form-group row {{(formPos_session.controls.description.status == 'INVALID')?'has-warning':''}}">
+                <label for="description" class="col-sm-4 form-form-control-label">{{gen.at_descriptionM9}}</label>
+                <div class="col-sm-8">
+                  <textarea type="text" class="form-control" id="description" placeholder="{{gen.ph_descriptionM9}}"
+                    formControlName="description"></textarea>
+                </div>
+              </div>
+              <div class="form-group row" style="text-align:left">
+                <div class="offset-sm-4 col-sm-10">
+                  <button type="submit" class="btn btn-primary" [disabled]="!formPos_session.valid"
+                    *ngIf="formPos_session.value.pos_session_id == ''"
+                    (click)="pos_sessionSubmit(false, false)">{{gen.btn_addM6}}</button>
+                  <button type="submit" class="btn btn-warning" [disabled]="!formPos_session.valid"
+                    *ngIf="formPos_session.value.pos_session_id != ''"
+                    (click)="pos_sessionSubmit(false, false)">{{gen.btn_editM6}}</button>
+                  <button type="submit" class="btn btn-danger" *ngIf="formPos_session.value.pos_session_id != ''"
+                    [disabled]="!formPos_session.valid" (click)="pos_sessionDelete()">{{gen.btn_deleteM6}}</button>
+                  <button type="submit" class="btn btn-secondary"
+                    (click)="pos_sessionClearAll()">{{gen.btn_clearM6}}</button>
+                </div>
+              </div>
+              
+            </div>
+          </div>
+        </form>
+
+      </div>
+      <ts-bydatetime  
+        [report_id]="2" 
+        [data]="formPos_session.value"
+      ></ts-bydatetime>
+    </div>
+  </div>
+</div>

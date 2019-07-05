@@ -1,0 +1,146 @@
+<div class="loading" *ngIf="!gen.app_component_id"></div>
+<ts-notification [notifSuccess]='notif.success' [notifAlert]='notif.alert' [notifError]='notif.error'
+  [notifInfo]='notif.info' [notifWarn]='notif.warn'> </ts-notification>
+<div class="animated fadeIn display-inherit">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header font-larger">
+          <a href="javascript:void(0)" class="ts-a-title" (click)="refreshComponent()"><i class=" fa fa-refresh"> </i>
+            {{gen._title}}</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="animated fadeIn display-inherit">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card" *ngFor="let item of navigationdata; let j = index;">
+        <div class="card-header">
+          {{item.name}}
+        </div>
+        <div class="card-block">
+          <div class="vertical-scroll" style="max-height: 100%">
+
+            <button ngClass="btn btn-sm btn-primary"
+              (click)="modalShow1(item.navigation_category_id)">{{gen.btn_add_navbar}}</button>
+            <table class="table table-striped table-sm table-responsive"
+              *ngFor="let item0 of item.navigation; let i = index;">
+              <thead>
+                <tr class="text-center">
+                  <th style="width: 200px;">
+                    <button ngClass="btn btn-sm btn-primary"
+                      (click)="modalShow(item0,item0,'add',0)">{{gen.td_add_child}}</button>
+                    <button ngClass="btn btn-sm btn-warning"
+                      (click)="modalShow(item0,item0,'edit',1)">{{gen.td_edit_child}}</button>
+                  </th>
+                  <th style="width: 200px;">{{i+1}}</th>
+                  <th style="width: 200px;">{{item0.name}}</th>
+                  <th>{{item0.url}}</th>
+                </tr>
+              </thead>
+              <tbody *ngFor="let item1 of item0.navigation; let i1 = index;">
+                <tr class="darker">
+                  <td>
+                    <button ngClass="btn btn-sm btn-primary"
+                      (click)="modalShow(item0,item1,'add',0)">{{gen.td_add_child}}</button>
+                    <button ngClass="btn btn-sm btn-warning"
+                      (click)="modalShow(item0,item1,'edit',0)">{{gen.td_edit_child}}</button>
+                  </td>
+                  <td>{{i+1}}.{{ i1+1}}</td>
+                  <td>{{ item1.name}}</td>
+                  <td>{{ item1.url}}</td>
+                </tr>
+                <tr *ngFor="let item2 of item1.navigation; let i2 = index;" class="brighter">
+                  <td><button ngClass="btn btn-sm btn-warning"
+                      (click)="modalShow(item0,item2,'edit',0)">{{gen.td_edit_child}}</button></td>
+                  <td>{{i+1}}.{{ i1+1}}.{{i2+1}}</td>
+                  <td>{{ item2.name}}</td>
+                  <td>{{ item2.url}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL TRANSACTION DETIAL -->
+<div bsModal #childModal="bs-modal" class="modal  fade" [config]="{'backdrop':'static', 'keyboard': false}"
+  tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+
+        <h5 class="modal-title">{{gen._titleM1}}</h5>
+        <button class="btn btn-outline-danger" (click)="childModal.hide()" aria-label="Close"
+          type="button">{{gen.btn_closeM1}}</button>
+      </div>
+      <div class="modal-body">
+        <form class="form-horizontal" [formGroup]="formData" (ngSubmit)="submitModal()">
+
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="form-group row {{(formData.controls.name.status == 'INVALID')?'has-warning':''}}">
+                <label for="name" class="col-sm-4 text-right form-form-control-label">{{gen.at_navigation}}</label>
+                <div class="col-sm-6">
+                  <input type="text" class="form-control" id="navigation" placeholder="{{gen.ph_navigation}}"
+                    formControlName="name">
+                </div>
+              </div>
+              <div class="form-group row {{(formData.controls.url.status == 'INVALID')?'has-warning':''}}">
+                <label for="url" class="col-sm-4 text-right form-form-control-label">{{gen.at_url}}</label>
+                <div class="col-sm-6">
+                  <input type="text" class="form-control" id="url" placeholder="{{gen.ph_url}}" formControlName="url">
+                </div>
+              </div>
+              <div class="form-group row {{(formData.controls.positions.status == 'INVALID')?'has-warning':''}}">
+                <label for="positions" class="col-sm-4 text-right form-form-control-label">{{gen.at_position}}</label>
+                <div class="col-sm-6">
+                  <input type="number" class="form-control" id="positions" placeholder="{{gen.ph_position}}"
+                    formControlName="positions">
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="form-group row" *ngIf="ModalshowLanguage">
+                <label for="language_id" class="col-sm-4 text-right form-form-control-label">{{gen.at_language}}</label>
+                <div class="col-sm-6">
+                  <ts-language (setLanguage)='setLanguage($event)'></ts-language>
+                </div>
+              </div>
+              <div class="form-group row {{(formData.controls.description.status == 'INVALID')?'has-warning':''}}">
+                <label for="description"
+                  class="col-sm-4 text-right form-form-control-label">{{gen.at_description}}</label>
+                <div class="col-sm-6">
+                  <textarea class="form-control" id="description" placeholder="{{gen.ph_description}}"
+                    formControlName="description"></textarea>
+                </div>
+              </div>
+              <div class="form-group row" style="text-align:left">
+                <div class="offset-sm-2 col-sm-6">
+                  <button type="submit" class="btn btn-primary" [disabled]="!formData.valid"
+                    *ngIf="formData.value.navigation_id == ''">{{gen.btn_add}}</button>
+                  <button type="submit" class="btn btn-primary" [disabled]="!formData.valid"
+                    *ngIf="formData.value.navigation_id != ''">*(Edit</button>
+                  <button class="btn btn-danger" *ngIf="ModalshowEditBtn"
+                    (click)="deleteSubmitModal()">{{gen.btn_delete}}</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+        <div class="col-lg-12">
+          <ts-bydatetime 
+            [report_id]="43" 
+            [data]="formData.value"
+          ></ts-bydatetime>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,277 @@
+<div class="loading" *ngIf="!gen.app_component_id"></div>
+<ts-notification [notifSuccess]='notif.success' [notifAlert]='notif.alert' [notifError]='notif.error'
+  [notifInfo]='notif.info' [notifWarn]='notif.warn'> </ts-notification>
+
+<div class="animated fadeIn display-inherit">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header font-larger">
+          <a href="javascript:void(0)" class="ts-a-title" (click)="refreshComponent()"><i class=" fa fa-refresh"> </i>
+            {{gen._title}}</a>
+          <div class="card-trans-code ts-hide-mobile" *ngIf="showList">
+            <form class="form-horizontal" [formGroup]="formCompany">
+              <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-barcode"></i></span>
+                <input type="text" class="form-control ts-clear-bg ts-text-center" id="company_code"
+                  placeholder="{{gen.ph_code}}" [readonly]="disableInput.company_code" formControlName="company_code"
+                  [disabled]="true">
+                <span class="input-group-addon" *ngIf="formCompany.value.company_id != ''">
+                  <label class="switch switch-sm switch-text switch-info float-right mb-0">
+                    <input type="checkbox"
+                      (click)="isUseChange('company', formCompany.value.is_use, formCompany.value.company_id, 'company_id')"
+                      class="switch-input" formControlName="is_use">
+                    <span class="switch-label" data-on="On" data-off="Off"></span>
+                    <span class="switch-handle"></span>
+                  </label>
+                </span>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="card-block" style="padding: 0.5rem 1.25rem;">
+          <div class="row">
+            <div class="form-group col-sm-3 ts-show-mobile" style="margin-bottom: 0rem;">
+              <form class="form-horizontal" [formGroup]="formCompany">
+                <div class="input-group">
+                  <span class="input-group-addon"><i class="fa fa-barcode"></i></span>
+                  <input type="text" class="form-control ts-clear-bg ts-text-center" id="company_code"
+                    placeholder="{{gen.ph_code}}" [readonly]="disableInput.company_code" formControlName="company_code"
+                    [disabled]="true">
+                  <span class="input-group-addon" *ngIf="formCompany.value.company_id != ''">
+                    <label class="switch switch-sm switch-text switch-info float-right mb-0">
+                      <input type="checkbox"
+                        (click)="isUseChange('company', formCompany.value.is_use, formCompany.value.company_id, 'company_id')"
+                        class="switch-input" formControlName="is_use">
+                      <span class="switch-label" data-on="On" data-off="Off"></span>
+                      <span class="switch-handle"></span>
+                    </label>
+                  </span>
+                </div>
+              </form>
+            </div>
+            <div class="form-group col-sm-12" style="margin-bottom: 0rem;">
+              <button type="submit" class="btn btn-primary btn-sm2" [disabled]="!formCompany.valid"
+                *ngIf="formCompany.value.company_id == ''" (click)="companySubmit()"><i class="fa fa-plus"></i>
+                {{gen.btn_add}}</button>
+              <button type="submit" class="btn btn-warning btn-sm2" [disabled]="!formCompany.valid"
+                *ngIf="formCompany.value.company_id != ''" (click)="companySubmit()"><i class="fa fa-edit "></i>
+                {{gen.btn_update}}</button>
+              <button type="submit" class="btn btn-danger btn-sm2" [disabled]="!formCompany.valid"
+                *ngIf="formCompany.value.company_id != '' && showList" (click)="companyDelete()"><i
+                  class="fa fa-trash"></i> {{gen.btn_delete}}</button>
+              <button type="submit" class="btn btn-secondary btn-sm2" (click)="clearAll()" *ngIf="showList"><i
+                  class="fa fa-eraser"></i> {{gen.btn_clear}}</button>
+              <button type="submit" (click)="printConsoleForm()" *ngIf="printConsole">Print Console</button>
+              <button type="submit" class="btn btn-secondary btn-sm2" (click)="printConsoleForm()"><i
+                  class="fa fa-eraser"></i> printConsoleForm </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="animated fadeIn display-inherit small-input">
+  <div class="row">
+
+    <div [ngClass]="(showList)?'col-sm-4':'col-sm-12'">
+      <div class="card">
+        <div class="card-block">
+          <div class="row">
+            <div class="form-group col-lg-12">
+              <form class="form-horizontal" [formGroup]="formCompany">
+
+                <div class="row">
+                  <div [ngClass]="(showList)?'col-sm-12':'col-sm-6'">
+                    <div class="form-group row">
+                      <label for="company_code"
+                        class="col-sm-4 text-right form-form-control-label">{{gen.at_code}}</label>
+                      <div [ngClass]="(showList)?'col-sm-8':'col-sm-6'">
+                        <input type="text" class="form-control" id="company_code" placeholder="{{gen.ph_code}}"
+                          [readonly]="disableInput.company_code" formControlName="company_code">
+                      </div>
+                    </div>
+                    <div class="form-group row {{(formCompany.controls.company.status == 'INVALID')?'has-warning':''}}">
+                      <label for="company"
+                        class="col-sm-4 text-right form-form-control-label">{{gen.at_company}}</label>
+                      <div [ngClass]="(showList)?'col-sm-8':'col-sm-6'">
+                        <input type="text" class="form-control" id="company" placeholder="{{gen.ph_company}}"
+                          formControlName="company">
+                      </div>
+                    </div>
+                    <div
+                      class="form-group row {{(formCompany.controls.tax_number.status == 'INVALID')?'has-warning':''}}">
+                      <label for="tax_number"
+                        class="col-sm-4 text-right form-form-control-label">{{gen.at_tax_number}}</label>
+                      <div [ngClass]="(showList)?'col-sm-8':'col-sm-6'">
+                        <input type="text" class="form-control" id="tax_number" placeholder="{{gen.ph_tax_number}}"
+                          formControlName="tax_number">
+                      </div>
+                    </div>
+                  </div>
+                  <div [ngClass]="(showList)?'col-sm-12':'col-sm-6'">
+                    <div
+                      class="form-group row {{(formCompany.controls.register_number.status == 'INVALID')?'has-warning':''}}">
+                      <label for="register_number"
+                        class="col-sm-4 text-right form-form-control-label">{{gen.at_register_number}}</label>
+                      <div [ngClass]="(showList)?'col-sm-8':'col-sm-6'">
+                        <input type="text" class="form-control" id="register_number"
+                          placeholder="{{gen.ph_register_number}}" formControlName="register_number">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label for="picture"
+                        class="col-sm-4 text-right form-form-control-label">{{gen.at_picture}}</label>
+                      <div [ngClass]="(showList)?'col-sm-8':'col-sm-6'">
+                        <!-- <ts-picture-uploader class="width100" [picture]="formCompany.value.oldimage" [defaultPicture]="defaultPicture" [uploaderOptions]="uploaderOptions" (onUploadCompleted)="onUploadCompleted($event, 1)"></ts-picture-uploader>  -->
+                      </div>
+                    </div>
+                    <div
+                      class="form-group row {{(formCompany.controls.ledgerfirst_month.status == 'INVALID')?'has-warning':''}}">
+                      <label for="ledgerfirst_month" class="col-sm-4 text-right form-form-control-label">*(First
+                        Month</label>
+                      <div [ngClass]="(showList)?'col-sm-8':'col-sm-6'">
+                        <select class="form-control" id="ledgerfirst_month"
+                          [ngClass]="{disabledDiv: disableInput.ledgerfirst_month}" formControlName="ledgerfirst_month"
+                          (change)="ledgerMonthChange()">
+                          <option value=1>January</option>
+                          <option value=2>Febuary</option>
+                          <option value=3>March</option>
+                          <option value=4>April</option>
+                          <option value=5>May</option>
+                          <option value=6>June</option>
+                          <option value=7>July</option>
+                          <option value=8>August</option>
+                          <option value=9>September</option>
+                          <option value=10>October</option>
+                          <option value=11>November</option>
+                          <option value=12>December</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div
+                      class="form-group row {{(formCompany.controls.ledgeryear.status == 'INVALID')?'has-warning':''}}">
+                      <label for="ledgeryear" class="col-sm-4 text-right form-form-control-label">*(Ledger Year</label>
+                      <div [ngClass]="(showList)?'col-sm-8':'col-sm-6'">
+                        <input type="number" class="form-control" id="ledgeryear" placeholder="*(Ledger Year"
+                          [readonly]="disableInput.ledgeryear" formControlName="ledgeryear"
+                          (blur)="checkLedgerYear($event)">
+                      </div>
+                    </div>
+                    <div
+                      class="form-group row {{(formCompany.controls.ledgerlast_month.status == 'INVALID')?'has-warning':''}}">
+                      <label for="ledgerlast_month" class="col-sm-4 text-right form-form-control-label">*(Last
+                        Month</label>
+                      <div [ngClass]="(showList)?'col-sm-8':'col-sm-6'">
+                        <div class="input-group">
+                          <select class="form-control" id="ledgerlast_month"
+                            [ngClass]="{disabledDiv: disableInput.ledgerlast_month}" formControlName="ledgerlast_month"
+                            (change)="ledgerMonthChange()">
+                            <option value=1>January</option>
+                            <option value=2>Febuary</option>
+                            <option value=3>March</option>
+                            <option value=4>April</option>
+                            <option value=5>May</option>
+                            <option value=6>June</option>
+                            <option value=7>July</option>
+                            <option value=8>August</option>
+                            <option value=9>September</option>
+                            <option value=10>October</option>
+                            <option value=11>November</option>
+                            <option value=12>December</option>
+                          </select>
+                          <span class="input-group-addon" *ngIf="showLedgeryear1">
+                            {{formCompany.value.ledgeryear + 1}}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      class="form-group row {{(formCompany.controls.isledgeraudit.status == 'INVALID')?'has-warning':''}}">
+                      <label for="isledgeraudit" class="col-sm-4 text-right form-form-control-label">*(Ledger
+                        Audit</label>
+                      <div [ngClass]="(showList)?'col-sm-8':'col-sm-6'">
+                        <label class="switch switch-sm switch-text switch-info mb-0">
+                          <input type="checkbox" class="switch-input" [readonly]="disableInput.isledgeraudit"
+                            formControlName="isledgeraudit">
+                          <span class="switch-label" data-on="Yes" data-off="No"></span>
+                          <span class="switch-handle"></span>
+                        </label>
+                      </div>
+                    </div>
+                    <div
+                      class="form-group row {{(formCompany.controls.description.status == 'INVALID')?'has-warning':''}}">
+                      <label for="description"
+                        class="col-sm-4 text-right form-form-control-label">{{gen.at_description}}</label>
+                      <div [ngClass]="(showList)?'col-sm-8':'col-sm-6'">
+                        <textarea type="text" class="form-control" id="description" placeholder="{{gen.ph_description}}"
+                          formControlName="description"></textarea>
+                      </div>
+                    </div>
+                    <div
+                      class="form-group row {{(formCompany.controls.employee_account.status == 'INVALID')?'has-warning':''}}">
+                      <label for="employee_account"
+                        class="col-sm-4 text-right form-form-control-label">*(Login</label>
+                      <div [ngClass]="(showList)?'col-sm-8':'col-sm-6'">
+                        <textarea type="text" class="form-control" id="employee_account" placeholder="*(Login"
+                          formControlName="employee_account" readOnly="true"></textarea>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-8" *ngIf="showList">
+      <div class="card">
+        <div class="card-block">
+          <div class="row">
+
+            <div class="table-responsive"></div>
+            <table class="table table-responsive table-hover table-outline mb-0">
+              <thead class="thead-default">
+                <tr class="text-center">
+                  <th><i class="fa fa-sort-numeric-asc"></i></th>
+                  <th>{{gen.th_action}}</th>
+                  <th>{{gen.th_company}}</th>
+                  <th>{{gen.th_register}}</th>
+                  <th>{{gen.th_description}}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of companyData; let i = index">
+                  <td class="text-center">{{i+1}}</td>
+                  <td><button class="btn btn-warning btn-sm" (click)="editCompany(item)">{{gen.td_edit}}</button></td>
+                  <td [ngClass]="(item.is_use=='0')?'ts-red':''">{{item.company}}</td>
+                  <td class="text-center">{{item.register_number}}</td>
+                  <td>{{item.description}}</td>
+                </tr>
+              </tbody>
+            </table>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<div class="animated fadeIn display-inherit">
+  <div class="row">
+    <div class="col-lg-12">
+      <ts-bydatetime 
+        [report_id]="8" 
+        [data]="formCompany.value"
+      ></ts-bydatetime>
+    </div>
+  </div>
+</div>

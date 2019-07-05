@@ -1,0 +1,191 @@
+<router-outlet></router-outlet>
+<div class="loading" *ngIf="!gen.app_component_id"></div>
+<ts-notification [notifSuccess]='notif.success' [notifAlert]='notif.alert' [notifError]='notif.error'
+  [notifInfo]='notif.info' [notifWarn]='notif.warn'> </ts-notification>
+
+<div class="animated fadeIn display-inherit">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header font-larger">
+          <a href="javascript:void(0)" class="ts-a-title" (click)="refreshComponent()"><i class=" fa fa-refresh"> </i>
+            {{gen._title}}</a>
+          <div class="card-trans-code ts-hide-mobile">
+            <form class="form-horizontal" [formGroup]="formData">
+              <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-barcode"></i></span>
+                <input type="text" class="form-control ts-clear-bg ts-text-center" id="article_code"
+                  placeholder="{{gen.at_code}}" formControlName="article_code" [disabled]="true">
+                <span class="input-group-addon" *ngIf="formData.value.article_id != ''">
+                  <label class="switch switch-sm switch-text switch-info float-right mb-0">
+                    <input type="checkbox"
+                      (click)="isUseChange('article', formData.value.is_use, formData.value.article_id, 'article_id')"
+                      class="switch-input" formControlName="is_use">
+                    <span class="switch-label" data-on="On" data-off="Off"></span>
+                    <span class="switch-handle"></span>
+                  </label>
+                </span>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="card-block" style="padding: 0.5rem 1.25rem;">
+          <div class="row">
+            <div class="form-group col-sm-3 ts-show-mobile" style="margin-bottom: 0rem;">
+              <form class="form-horizontal" [formGroup]="formData">
+                <div class="input-group">
+                  <span class="input-group-addon"><i class="fa fa-barcode"></i></span>
+                  <input type="text" class="form-control ts-clear-bg ts-text-center" id="article_code"
+                    placeholder="{{gen.at_code}}" formControlName="article_code" [disabled]="true">
+                  <span class="input-group-addon" *ngIf="formData.value.article_id != ''">
+                    <label class="switch switch-sm switch-text switch-info float-right mb-0">
+                      <input type="checkbox"
+                        (click)="isUseChange('article', formData.value.is_use, formData.value.article_id, 'article_id')"
+                        class="switch-input" formControlName="is_use">
+                      <span class="switch-label" data-on="On" data-off="Off"></span>
+                      <span class="switch-handle"></span>
+                    </label>
+                  </span>
+                </div>
+              </form>
+            </div>
+            <div class="form-group col-sm-3" style="margin-bottom: 0rem;">
+              <select class="form-control col-sm-12" id="exampleSelect1" [(ngModel)]="data.article_category_id"
+                (ngModelChange)="articleCategoryChange()">
+                <option *ngFor="let item of articleCategory" value="{{item.article_category_id}}">{{item.name}}</option>
+              </select>
+            </div>
+            <div class="form-group col-sm-9" style="margin-bottom: 0rem;">
+              <button type="submit" class="btn btn-success btn-sm2" (click)="modalShow()">{{gen.btn_search}}</button>
+              <button type="submit" class="btn btn-secondary btn-sm2" (click)="clearAll()">{{gen.btn_clear}}</button>
+              <button type="submit" (click)="printConsoleForm()" *ngIf="printConsole">Print Console</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="animated fadeIn display-inherit">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-block">
+          <div class="vertical-scroll" style="max-height: 100%">
+
+            <form class="form-horizontal" [formGroup]="formData" (ngSubmit)="submitArticle()">
+
+              <div class="row">
+                <div class="col-sm-12">
+                  <div class="form-group row {{(formData.controls.title.status == 'INVALID')?'has-warning':''}}">
+                    <label for="title" class="col-sm-4 text-right form-form-control-label">{{gen.at_title}}</label>
+                    <div class="col-sm-6">
+                      <input type="text" class="form-control" id="title" placeholder="{{gen.ph_title}}"
+                        formControlName="title">
+                    </div>
+                  </div>
+                  <div class="form-group row {{(formData.controls.subtitle.status == 'INVALID')?'has-warning':''}}">
+                    <label for="subtitle"
+                      class="col-sm-4 text-right form-form-control-label">{{gen.at_subtitle}}</label>
+                    <div class="col-sm-6">
+                      <input type="text" class="form-control" id="subtitle" placeholder="{{gen.ph_subtitle}}"
+                        formControlName="subtitle">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="datetime" class="col-sm-4 text-right form-form-control-label">{{gen.at_dates}}</label>
+                    <div class="col-sm-4">
+                      <div class="input-group">
+                        <input type="date" class="w100 form-control" formControlName="datetime">
+                      </div>
+                    </div>
+                    <div class="col-sm-4 text-right">
+                      <div class="input-group">
+                          <input type="time" class="w100 form-control" formControlName="times">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="article_category_id"
+                      class="col-sm-4 text-right form-form-control-label">{{gen.at_category}}</label>
+                    <div class="col-sm-6">
+                      <select class="form-control" id="article_category_id" formControlName="article_category_id">
+                        <option *ngFor="let item of articleCategory" value="{{item.article_category_id}}">{{item.name}}
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="app_image" class="col-sm-4 text-right form-form-control-label">{{gen.at_image}}</label>
+                    <div class="col-sm-6">
+                      <!-- <ts-picture-uploader class="width100" [picture]="formData.value.newimage" [defaultPicture]="defaultPicture" [uploaderOptions]="uploaderOptions" (onUploadCompleted)="onUploadCompleted($event, 1)"></ts-picture-uploader> -->
+                    </div>
+                  </div>
+                  <div class="form-group row {{(formData.controls.description.status == 'INVALID')?'has-warning':''}}">
+                    <label for="description"
+                      class="col-sm-4 text-right form-form-control-label">{{gen.at_description}}</label>
+                    <div class="col-sm-6">
+                      <textarea class="form-control" id="description" placeholder="{{gen.ph_description}}"
+                        formControlName="description"></textarea>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-12">
+                  <div class="form-group row {{(formData.controls.article.status == 'INVALID')?'has-warning':''}}">
+                    <label for="article" class="col-sm-2 text-right form-form-control-label">{{gen.at_article}}</label>
+                    <div class="col-sm-10">
+                      <textarea class="form-control" id="article"
+                      formControlName="article"></textarea>
+                      <!-- <ckeditor [config]="config" formControlName="article"></ckeditor> -->
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <div class="offset-sm-2 col-sm-10">
+                      <button type="submit" class="btn btn-primary" [disabled]="!formData.valid"
+                        *ngIf="formData.value.article_id == ''">{{gen.btn_add}}</button>
+                      <button type="submit" class="btn btn-warning" [disabled]="!formData.valid"
+                        *ngIf="formData.value.article_id != ''">{{gen.btn_edit}}</button>
+                      <button class="btn btn-danger" (click)="deleteSubmitForm()"
+                        *ngIf="formData.value.article_id != ''">{{gen.btn_delete}}</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="animated fadeIn display-inherit">
+  <div class="row">
+    <div class="col-lg-12">
+      <ts-bydatetime 
+        [report_id]="3" 
+        [data]="formData.value"
+      ></ts-bydatetime>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL TRANSACTION DETAIL -->
+<div bsModal #childModal="bs-modal" class="modal  fade" [config]="{'backdrop':'static', 'keyboard': false}"
+  tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{{gen._modaltitle}}</h5>
+        <button class="btn btn-outline-danger" (click)="childModal.hide()" aria-label="Close"
+          type="button">{{gen.btn_close}}</button>
+      </div>
+      <div class="modal-body">
+        <default-modal [in]="modalIn" (out)="modalOut($event)"></default-modal>
+      </div>
+    </div>
+  </div>
+</div>

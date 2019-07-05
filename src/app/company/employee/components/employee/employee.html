@@ -1,0 +1,310 @@
+<div class="loading" *ngIf="!gen.app_component_id"></div>
+<ts-notification [notifSuccess]='notif.success' [notifAlert]='notif.alert' [notifError]='notif.error'
+  [notifInfo]='notif.info' [notifWarn]='notif.warn'> </ts-notification>
+
+<div class="animated fadeIn display-inherit">
+
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header font-larger">
+          <a href="javascript:void(0)" class="ts-a-title" (click)="refreshComponent()"><i class=" fa fa-refresh"> </i>
+            {{gen._title}}</a>
+          <div class="card-trans-code ts-hide-mobile">
+            <form class="form-horizontal" [formGroup]="formEmployee">
+              <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-barcode"></i></span>
+                <input type="text" class="form-control ts-clear-bg ts-text-center" id="employee_code"
+                  placeholder="{{gen._code}}" [readonly]="disableInput.employee_code" formControlName="employee_code"
+                  [disabled]="true">
+                <span class="input-group-addon" *ngIf="formEmployee.value.employee_id != ''">
+                  <label class="switch switch-sm switch-text switch-info float-right mb-0">
+                    <input type="checkbox"
+                      (click)="isUseChange('employee', formEmployee.value.is_use, formEmployee.value.employee_id, 'employee_id')"
+                      class="switch-input" formControlName="is_use">
+                    <span class="switch-label" data-on="On" data-off="Off"></span>
+                    <span class="switch-handle"></span>
+                  </label>
+                </span>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="card-block" style="padding: 0.5rem 1.25rem;">
+          <div class="row">
+            <div class="form-group col-sm-3 ts-show-mobile" style="margin-bottom: 0rem;">
+              <form class="form-horizontal" [formGroup]="formEmployee">
+                <div class="input-group">
+                  <span class="input-group-addon"><i class="fa fa-barcode"></i></span>
+                  <input type="text" class="form-control ts-clear-bg ts-text-center" id="employee_code"
+                    placeholder="{{gen._code}}" [readonly]="disableInput.employee_code" formControlName="employee_code"
+                    [disabled]="true">
+                  <span class="input-group-addon" *ngIf="formEmployee.value.employee_id != ''">
+                    <label class="switch switch-sm switch-text switch-info float-right mb-0">
+                      <input type="checkbox"
+                        (click)="isUseChange('employee', formEmployee.value.is_use, formEmployee.value.employee_id, 'employee_id')"
+                        class="switch-input" formControlName="is_use">
+                      <span class="switch-label" data-on="On" data-off="Off"></span>
+                      <span class="switch-handle"></span>
+                    </label>
+                  </span>
+                </div>
+              </form>
+            </div>
+            <div class="form-group col-sm-12" style="margin-bottom: 0rem;">
+              <button type="submit" class="btn btn-primary btn-sm2" [disabled]="!formEmployee.valid"
+                (click)="formSubmit()" *ngIf="formEmployee.value.employee_id == ''"><i class="fa fa-plus"></i>
+                {{gen.btn_add}}</button>
+              <button type="submit" class="btn btn-warning btn-sm2" [disabled]="!formEmployee.valid"
+                (click)="updateEmployee()" *ngIf="formEmployee.value.employee_id != ''"><i class="fa fa-edit "></i>
+                {{gen.btn_edit}}</button>
+              <button type="submit" class="btn btn-danger btn-sm2" (click)="deleteEmployee()"
+                *ngIf="formEmployee.value.employee_id != ''"><i class="fa fa-trash"></i> {{gen.btn_delete}}</button>
+              <button type="submit" class="btn btn-secondary btn-sm2" (click)="clearAll()"><i class="fa fa-eraser"></i>
+                {{gen.btn_clear}}</button>
+              <button type="submit" (click)="printConsoleForm()" *ngIf="printConsole">Print Console</button>
+              <button type="submit" class="btn btn-success btn-sm2" (click)="modalShow()"><i class="fa fa-search"></i>
+                {{gen.btn_search}}</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- <button class="btn btn-info btn-sm2" (click)="test()">Test Modal</button> -->
+
+<div class="animated fadeIn display-inherit">
+  <div class="card">
+    <div class="card-block">
+      <div class="vertical-scroll" style="max-height: 100%">
+        <div class="row">
+          <div class="col-lg-6">
+            <form class="form-horizontal" [formGroup]="formEmployee" (ngSubmit)="formSubmit()">
+
+              <div class="form-group row">
+                <label for="employee_code"
+                  class="col-sm-4 text-right form-form-control-label">{{gen.at_employee_code}}</label>
+                <div class="col-sm-6">
+                  <input type="text" class="form-control" id="employee_code" placeholder="{{gen.ph_employee_code}}"
+                    [readonly]="disableInput.employee_code" formControlName="employee_code">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="employee_category_id"
+                  class="col-sm-4 text-right form-form-control-label">{{gen.at_category}}</label>
+                <div class="col-sm-6">
+                  <select class="form-control" formControlName="employee_category_id" id="employee_category_id">
+                    <option value="1">Permanent</option>
+                    <option value="2">Contract</option>
+                    <option value="3">Freelancer</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="title" class="col-sm-4 text-right form-form-control-label">{{gen.at_title}}</label>
+                <div class="col-sm-6">
+                  <select class="form-control" id="title" formControlName="title">
+                    <option value="Mr">Mr</option>
+                    <option value="Mrs">Mrs</option>
+                    <option value="Ms">Ms</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group row {{(formEmployee.controls.firstname.status == 'INVALID')?'has-warning':''}}">
+                <label for="firstname" class="col-sm-4 text-right form-form-control-label ">{{gen.at_firstname}}</label>
+                <div class="col-sm-6">
+                  <input type="text" class="form-control" id="firstname" placeholder="{{gen.ph_firstname}}"
+                    formControlName="firstname">
+                </div>
+              </div>
+              <div class="form-group row {{(formEmployee.controls.lastname.status == 'INVALID')?'has-warning':''}}">
+                <label for="lastname" class="col-sm-4 text-right form-form-control-label">{{gen.at_lastname}}</label>
+                <div class="col-sm-6">
+                  <input type="text" class="form-control" id="lastname" placeholder="{{gen.ph_lastname}}"
+                    formControlName="lastname">
+                </div>
+              </div>
+              <div class="form-group row {{(formEmployee.controls.address.status == 'INVALID')?'has-warning':''}}">
+                <label for="address" class="col-sm-4 text-right form-form-control-label">{{gen.at_address}}</label>
+                <div class="col-sm-6">
+                  <textarea type="text" class="form-control" id="address" placeholder="{{gen.ph_address}}"
+                    formControlName="address"></textarea>
+                </div>
+              </div>
+              <div class="form-group row {{(formEmployee.controls.phone_number.status == 'INVALID')?'has-warning':''}}">
+                <label for="phone_number"
+                  class="col-sm-4 text-right form-form-control-label">{{gen.at_phone_number}}</label>
+                <div class="col-sm-6">
+                  <input type="tel" class="form-control" id="phone_number" placeholder="{{gen.ph_phone_number}}"
+                    formControlName="phone_number">
+                </div>
+              </div>
+              <div class="form-group row {{(formEmployee.controls.birth_place.status == 'INVALID')?'has-warning':''}}">
+                <label for="birth_place"
+                  class="col-sm-4 text-right form-form-control-label">{{gen.at_birth_place}}</label>
+                <div class="col-sm-6">
+                  <input type="text" class="form-control" id="birth_place" placeholder="{{gen.ph_birth_place}}"
+                    formControlName="birth_place">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="birth_date"
+                  class="col-sm-4 text-right form-form-control-label">{{gen.at_birth_date}}</label>
+                <div class="col-sm-6">
+                  <div class="input-group">
+                    <input type="date" class="w100 form-control" formControlName="birth_date">
+                  </div>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="picture" class="col-sm-4 text-right form-form-control-label">{{gen.at_picture}}</label>
+                <div class="col-sm-6">
+                  <!-- <ts-picture-uploader class="width100" [picture]="formEmployee.value.oldpicture" [defaultPicture]="defaultPicture" [uploaderOptions]="uploaderOptions" (onUploadCompleted)="onUploadCompleted($event, 1)"></ts-picture-uploader> -->
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="col-lg-6">
+            <form class="form-horizontal" [formGroup]="formEmployee" (ngSubmit)="formSubmit()">
+              <div class="form-group row {{(formEmployee.controls.email.status == 'INVALID')?'has-warning':''}}">
+                <label for="email" class="col-sm-4 text-right form-form-control-label">{{gen.at_email}}</label>
+                <div class="col-sm-6">
+                  <input type="text" class="form-control" id="email" placeholder="{{gen.ph_email}}"
+                    formControlName="email">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="employee_job_id"
+                  class="col-sm-4 text-right form-form-control-label">{{gen.at_job_name}}</label>
+                <div class="col-sm-6">
+                  <select class="form-control" id="employee_job_id" formControlName="employee_job_id">
+                    <option *ngFor="let item of employeejob" value="{{item.employee_job_id}}">{{item.name}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="employee_status_id"
+                  class="col-sm-4 text-right form-form-control-label">{{gen.at_status}}</label>
+                <div class="col-sm-6">
+                  <select class="form-control" id="employee_status_id" formControlName="employee_status_id">
+                    <option value="1">Employee</option>
+                    <option value="2">Resign</option>
+                    <option value="3">Skorsing</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group row {{(formEmployee.controls.description.status == 'INVALID')?'has-warning':''}}">
+                <label for="description"
+                  class="col-sm-4 text-right form-form-control-label">{{gen.at_description}}</label>
+                <div class="col-sm-6">
+                  <textarea type="text" class="form-control" id="description" placeholder="{{gen.ph_description}}"
+                    formControlName="description"></textarea>
+                </div>
+              </div>
+              <div class="form-group row {{(formEmployee.controls.is_sales.status == 'INVALID')?'has-warning':''}}">
+                <label for="is_sales" class="col-sm-4 text-right form-form-control-label">*(Salesman</label>
+                <div class="col-sm-6">
+                  <label class="switch switch-sm switch-text switch-info mb-0">
+                    <input type="checkbox" class="switch-input" formControlName="is_sales">
+                    <span class="switch-label" data-on="Yes" data-off="No"></span>
+                    <span class="switch-handle"></span>
+                  </label>
+                </div>
+              </div>
+              <div class="form-group row {{(formEmployee.controls.sales_desc.status == 'INVALID')?'has-warning':''}}"
+                *ngIf="formEmployee.value.is_sales">
+                <label for="sales_desc" class="col-sm-4 text-right form-form-control-label">*(sales_desc</label>
+                <div class="col-sm-6">
+                  <textarea type="text" class="form-control" id="sales_desc" placeholder="*(sales_desc"
+                    formControlName="sales_desc"></textarea>
+                </div>
+              </div>
+              <div
+                class="form-group row {{(formEmployee.controls.is_purchasesman.status == 'INVALID')?'has-warning':''}}">
+                <label for="is_purchasesman" class="col-sm-4 text-right form-form-control-label">*(Purchasesman</label>
+                <div class="col-sm-6">
+                  <label class="switch switch-sm switch-text switch-info mb-0">
+                    <input type="checkbox" class="switch-input" formControlName="is_purchasesman">
+                    <span class="switch-label" data-on="Yes" data-off="No"></span>
+                    <span class="switch-handle"></span>
+                  </label>
+                </div>
+              </div>
+              <div
+                class="form-group row {{(formEmployee.controls.purchasesman_desc.status == 'INVALID')?'has-warning':''}}"
+                *ngIf="formEmployee.value.is_purchasesman">
+                <label for="purchasesman_desc"
+                  class="col-sm-4 text-right form-form-control-label">*(purchasesman_desc</label>
+                <div class="col-sm-6">
+                  <textarea type="text" class="form-control" id="purchasesman_desc" placeholder="*(purchasesman_desc"
+                    formControlName="purchasesman_desc"></textarea>
+                </div>
+              </div>
+              <div
+                class="form-group row {{(formEmployee.controls.is_debt_collector.status == 'INVALID')?'has-warning':''}}">
+                <label for="is_debt_collector" class="col-sm-4 text-right form-form-control-label">*(Debt
+                  Collector</label>
+                <div class="col-sm-6">
+                  <label class="switch switch-sm switch-text switch-info mb-0">
+                    <input type="checkbox" class="switch-input" formControlName="is_debt_collector">
+                    <span class="switch-label" data-on="Yes" data-off="No"></span>
+                    <span class="switch-handle"></span>
+                  </label>
+                </div>
+              </div>
+              <div
+                class="form-group row {{(formEmployee.controls.debt_collector_desc.status == 'INVALID')?'has-warning':''}}"
+                *ngIf="formEmployee.value.is_debt_collector">
+                <label for="debt_collector_desc"
+                  class="col-sm-4 text-right form-form-control-label">*(debt_collector_desc</label>
+                <div class="col-sm-6">
+                  <textarea type="text" class="form-control" id="debt_collector_desc"
+                    placeholder="*(debt_collector_desc" formControlName="debt_collector_desc"></textarea>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="animated fadeIn display-inherit">
+  <div class="row">
+    <div class="col-lg-12">
+      <ts-bydatetime 
+        [report_id]="22" 
+        [data]="formEmployee.value"
+      ></ts-bydatetime>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL SEARCH -->
+<div bsModal #childModal="bs-modal" class="modal  fade" [config]="{'backdrop':'static', 'keyboard': false}"
+  tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{{gen._titleModal1}}</h5>
+        <button class="btn btn-outline-danger" (click)="childModal.hide()" aria-label="Close"
+          type="button">{{gen.btn_closeModal1}}</button>
+      </div>
+      <div class="modal-body-full">
+        <div class="vertical-scroll" style="max-height: 100%">
+          <ng2-smart-table (rowSelect)="httpService.modal_scroll_top($event)" [settings]="settings" [source]="source" (delete)="ModalSelectEmployee($event)"
+            (add)="refresh_search()"></ng2-smart-table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- <ts-modal [open]="openModal">
+    Isi Modal 2
+</ts-modal> -->

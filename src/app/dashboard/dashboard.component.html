@@ -1,0 +1,440 @@
+<div class="animated fadeIn display-inherit" *ngIf="dashboardCard">
+
+  <div class="row" *ngFor="let itemrow of tsNavbar">
+
+    <div class="col-6 col-lg-3" *ngFor="let item of itemrow.rows">
+      <div class="card pointer" routerLink="{{item.app_nav_detail_url}}">
+        <div class="card-body p-3 clearfix">
+          <i class="{{item.icon_class}} {{item.color_class}} p-3 font-2xl mr-3 float-left" style="color: white;"></i>
+          <div class="h5 text-{{item.color_class}} mb-0 mt-2">{{item.app_nav_detail_title}}</div>
+          <div class="text-muted font-weight-bold font-xs">{{item.app_nav_detail_subtitle}}</div>
+        </div>
+        <div class="card-footer px-3 py-2">
+          <a class="font-weight-bold font-xs btn-block text-muted">
+            {{gen._viewmore}}
+            <i class="fa fa-angle-right float-right font-lg"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+
+  <div class="card">
+    <div class="card-header">
+      <i class="fa fa-cc"></i><b>Starting Instruction</b>
+    </div>
+    <div class="card-body p-3">
+      <div class="h5 mb-0 p-3">Untuk penggunaan awal ada beberapa data penting yang penting untuk diisi terlebih dahulu.
+        Pastikan anda telah melakukan poin - poin di bawah ini!!</div>
+      <div class="row">
+        <div class="col-md-12 mb-12">
+          <!-- Nav tabs -->
+          <tabset>
+            <tab>
+              <ng-template tabHeading><i class="icon-calculator"></i> Company Data </ng-template>
+              <a routerLink="/ts/company/action/list"><b>1. Company List</b> </a> <br>
+              Mengisi daftar perusahaan apa saja yang akan menggunakan sistem.<br>
+              <a routerLink="/ts/company/action/data"><b>2. Company Data</b> </a> <br>
+              Merubah data profil dari perusahaan (Rekening Perkiraan)<br>
+              <a routerLink="/ts/company/branch"><b>3. Cabang</b> </a> <br>
+              Membuat atau mengubah cabang - cabang perusahaan<br>
+              <a routerLink="/ts/company/warehouse"><b>4. Gudang</b> </a> <br>
+              Membuat atau mengubah gudang - gudang perusahaan<br>
+              <a routerLink="/ts/company/department"><b>5. Department</b> </a> <br>
+              Membuat atau mengubah departemen departemen yang ada di perusahaan<br>
+            </tab>
+            <tab>
+              <ng-template tabHeading><i class="icon-calculator"></i> Account </ng-template>
+              <a routerLink="/ts/account/period"><b>1. Periode Akutansi</b> </a> <br>
+              Mengubah periode periode akutansi dalam tahun berjalan<br>
+              <a routerLink="/ts/account/account"><b>2. Data Akun</b> </a> <br>
+              Membuat atau mengubah akun<br>
+              <a routerLink="/ts/account/accountlink"><b>3. Linked Akun</b> </a> <br>
+              Menentukan akun penghubung.<br>
+            </tab>
+            <tab>
+              <ng-template tabHeading><i class="icon-basket-loaded"></i> Currency & Tax </ng-template>
+              <a routerLink="/ts/currencyandtax/currency"><b>1. Mata Uang</b> </a> <br>
+              Membuat atau merubah mata uang yang akan digunakan perusahaan<br>
+              <a routerLink="/ts/currencyandtax/tax"><b>2. Pajak dan Akun pentingnya</b> </a> <br>
+              Membuat data pajak dengan akun rujukan ketika melakukan pembelian dan penjualan.<br>
+            </tab>
+            <tab>
+              <ng-template tabHeading><i class="icon-pie-chart"></i> Contact </ng-template>
+              <a routerLink="/ts/employee/employeejob"><b>1. Job Karyawan</b> </a> <br>
+              Membuat / Mengimpor data Karyawan yang dimiliki<br>
+              <a routerLink="/ts/employee/employee"><b>2. Karyawan</b> </a> <br>
+              Membuat / Mengimpor data Karyawan yang dimiliki<br>
+              <a routerLink="/ts/employeeaccount"><b>3. Akun Karyawan</b> </a> <br>
+              Membuat / Mengimpor data Karyawan yang dimiliki<br>
+              <a routerLink="/ts/businesspartner/businesspartnergroup"><b>4. Partner Group</b> </a> <br>
+              Membuat / Mengimpor data Supplier yang dimiliki<br>
+              <a routerLink="/ts/businesspartner/businesspartner"><b>5. Supplier / Customer</b> </a> <br>
+              Membuat / Mengimpor data Supplier yang dimiliki<br>
+            </tab>
+            <tab>
+              <ng-template tabHeading><i class="icon-pie-chart"></i> Product </ng-template>
+              <a routerLink="/ts/inventory/itemgroup"><b>1. Membuat Kelompok Product dan akun pentingnya</b> </a> <br>
+              Membuat kelompok produk dengan sifat dan akun rujukan ketika produk tersebut disimpan, dibeli, dan
+              dijual.<br>
+              <a routerLink="/ts/inventory/brand"><b>2. Membuat Merek</b> </a> <br>
+              Membuat merek.<br>
+              <a routerLink="/ts/company/uom"><b>3. Satuan</b> </a> <br>
+              Membuat Satuan<br>
+              <a routerLink="/ts/inventory/inventorydata"><b>4. Membuat Data Product</b> </a> <br>
+              Membuat / Mengimpor data produk yang dimiliki<br>
+            </tab>
+            <tab>
+              <ng-template tabHeading><i class="icon-pie-chart"></i> Beginning Ballance </ng-template>
+              <a routerLink="/ts/bb/bbaccount"><b>1. Mengisi Saldo Awal Akun</b> </a> <br>
+              Mengisi saldo awal akun sesuai dengan saldo periode sebelumnya.<br>
+              <a routerLink="/ts/bb/bbcash"><b>2. Mengisi Saldo Kas</b> </a> <br>
+              Menginput / mengimpor saldo awal kas sesuai saldo periode sebelumnya.<br>
+              <a routerLink="/ts/bb/bbreceivable"><b>3. Mengisi Saldo Awal Piutang</b> </a> <br>
+              Menginput / mengimpor saldo awal piutang sesuai saldo periode sebelumnya.<br>
+              <a routerLink="/ts/bb/bbpayable"><b>4. Mengisi Saldo Awal Hutang</b> </a> <br>
+              Menginput / mengimpor saldo awal hutang sesuai saldo periode sebelumnya.<br>
+              <a routerLink="/ts/stock/beginningbalanceinventory"><b>5. Mengisi Saldo Awal Persediaan</b> </a> <br>
+              Menginput / mengimpor saldo awal persediaan sesuai saldo periode sebelumnya.<br>
+            </tab>
+            <tab>
+              <ng-template tabHeading><i class="icon-pie-chart"></i> Production</ng-template>
+              <a routerLink="/ts/manufacturedata/conversioncost"><b>1. Biaya Konversi</b> </a> <br>
+              Menginput / mengimpor saldo awal piutang sesuai saldo periode sebelumnya.<br>
+              <a routerLink="/ts/manufacturedata/standardcost"><b>2. Standard Cost</b> </a> <br>
+              Menginput / mengimpor saldo awal hutang sesuai saldo periode sebelumnya.<br>
+              <a routerLink="/ts/manufacturedata/standardinventory"><b>3. Standard Material</b> </a> <br>
+              Menginput / mengimpor saldo awal persediaan sesuai saldo periode sebelumnya.<br>
+            </tab>
+            <tab>
+              <ng-template tabHeading><i class="icon-pie-chart"></i> Asset Tetap</ng-template>
+              <a routerLink="/ts/fixasset/fixassetgroup"><b>1. Group Asset Tetap</b> </a> <br>
+              Menginput / mengimpor saldo awal piutang sesuai saldo periode sebelumnya.<br </tab> </tabset> </div>
+                </div> </div> </div> <div class="card">
+              <div class="card-header">
+                <i class="fa fa-cc"></i><b>Transaction Instruction</b>
+              </div>
+              <div class="card-body p-3">
+                <div class="h5 mb-0 p-3">Berikut adalah fitur - fitur Transaksi TS - System</div>
+                <div class="row">
+                  <div class="col-md-12 mb-12">
+                    <!-- Nav tabs -->
+                    <tabset>
+                      <tab>
+                        <ng-template tabHeading><i class="icon-calculator"></i> Purchase </ng-template>
+                        <a routerLink="/ts/purchase/purchaserequest"><b>1. Permintaan Pembelian</b> </a> <br>
+                        Membuat / Mengimpor data akun (Rekening Perkiraan)<br>
+                        <a routerLink="/ts/purchase/purchasequotation"><b>2. Quotation Pembelian</b> </a> <br>
+                        Membuat / Mengimpor data akun (Rekening Perkiraan)<br>
+                        <a routerLink="/ts/purchasing/purchaseorder"><b>3. Order Pembelian (PO)</b> </a> <br>
+                        Membuat / Mengimpor data akun (Rekening Perkiraan)<br>
+                        <a routerLink="/ts/purchasing/purchase"><b>4. Pembelian</b> </a> <br>
+                        Membuat / Mengimpor data akun (Rekening Perkiraan)<br>
+                        <a routerLink="/ts/purchase/purchasereceive"><b>5. Peneriamaan Pembelian</b> </a> <br>
+                        Membuat / Mengimpor data akun (Rekening Perkiraan)<br>
+                        <a routerLink="/ts/purchasing/purchasereturn"><b>6. Retur Pembelian</b> </a> <br>
+                        Membuat / Mengimpor data akun (Rekening Perkiraan)<br>
+                      </tab>
+                      <tab>
+                        <ng-template tabHeading><i class="icon-calculator"></i> Sale </ng-template>
+                        <a routerLink="/ts/sale/salequotation"><b>1. Quotation Penjualan</b> </a> <br>
+                        Membuat / Mengimpor data akun (Rekening Perkiraan)<br>
+                        <a routerLink="/ts/selling/saleorder"><b>2. Order Penjualan (SO)</b> </a> <br>
+                        Membuat / Mengimpor data akun (Rekening Perkiraan)<br>
+                        <a routerLink="/ts/selling/sale"><b>3. Penjualan</b> </a> <br>
+                        Membuat / Mengimpor data akun (Rekening Perkiraan)<br>
+                        <a routerLink="/ts/pos/retailselling/pos"><b>4. POS</b> </a> <br>
+                        Membuat / Mengimpor data akun (Rekening Perkiraan)<br>
+                        <a routerLink="/ts/sale/saledo"><b>5. Order Pengiriman/ Permintaan Pengiriman</b> </a> <br>
+                        Membuat / Mengimpor data akun (Rekening Perkiraan)<br>
+                        <a routerLink="/ts/sale/saledelivery"><b>6. Pengiriman Penjualan</b> </a> <br>
+                        Membuat / Mengimpor data akun (Rekening Perkiraan)<br>
+                        <a routerLink="/ts/selling/salereturn"><b>7. Retur Penjualan</b> </a> <br>
+                        Membuat / Mengimpor data akun (Rekening Perkiraan)<br>
+                      </tab>
+                      <tab>
+                        <ng-template tabHeading><i class="icon-calculator"></i> Website </ng-template>
+                        <a routerLink="/ts/website/navigation"><b>1. Navigation</b> </a> <br>
+                        Membuat / Mengimpor data akun (Rekening Perkiraan)<br>
+                        <a routerLink="/ts/website/template"><b>2. Template</b> </a> <br>
+                        Membuat / Mengimpor data akun (Rekening Perkiraan)<br>
+                        <a routerLink="/ts/website/pagination"><b>3. Halaman</b> </a> <br>
+                        Membuat / Mengimpor data akun (Rekening Perkiraan)<br>
+                        <a routerLink="/ts/website/widget"><b>4. Widget</b> </a> <br>
+                        Membuat / Mengimpor data akun (Rekening Perkiraan)<br>
+                        <a routerLink="/ts/website/articles"><b>5. Artikel</b> </a> <br>
+                        Membuat / Mengimpor data akun (Rekening Perkiraan)<br>
+                      </tab>
+                      <tab>
+                        <ng-template tabHeading><i class="icon-calculator"></i> Stock </ng-template>
+                        <a routerLink="/ts/stock/auditinventorystock"><b>1. Perubahan Stock</b> </a> <br>
+                        Membuat / Mengimpor data akun (Rekening Perkiraan)<br>
+                        <a routerLink="/ts/stock/inventoryin"><b>2. Barang Masuk</b> </a> <br>
+                        Membuat / Mengimpor data akun (Rekening Perkiraan)<br>
+                        <a routerLink="/ts/stock/inventoryout"><b>3. Barang Keluar</b> </a> <br>
+                        Membuat / Mengimpor data akun (Rekening Perkiraan)<br>
+                        <a routerLink="/ts/stock/stockadjustment"><b>4. Penyesuaian Stok</b> </a> <br>
+                        Membuat / Mengimpor data akun (Rekening Perkiraan)<br>
+                        <a routerLink="/ts/stock/inventorytransfer"><b>5. Pertukaran Stock Gudang</b> </a> <br>
+                        Membuat / Mengimpor data akun (Rekening Perkiraan)<br>
+                      </tab>
+                      <tab>
+                        <ng-template tabHeading><i class="icon-calculator"></i> Kas & Bank </ng-template>
+                        <a routerLink="/ts/accounting/cashin"><b>1. Kas Masuk</b> </a> <br>
+                        Membuat / Mengimpor data akun (Rekening Perkiraan)<br>
+                        <a routerLink="/ts/accounting/cashout"><b>2. Kas Keluar</b> </a> <br>
+                        Membuat / Mengimpor data akun (Rekening Perkiraan)<br>
+                        <a routerLink="/ts/accounting/cashtransfer"><b>3. Perpindahan Kas</b> </a> <br>
+                        Membuat / Mengimpor data akun (Rekening Perkiraan)<br>
+                        <a routerLink="/ts/reconciliation/reconciliationbank"><b>4. Rekonsiliasi Bank</b> </a> <br>
+                        Membuat / Mengimpor data akun (Rekening Perkiraan)<br>
+                        <a routerLink="/ts/reconciliation/reconciliationadj"><b>5. Penyesuaian Rekonsiliasi</b> </a>
+                        <br>
+                        Membuat / Mengimpor data akun (Rekening Perkiraan)<br>
+                        <a routerLink="/ts/giro/giroin"><b>6. Giro Masuk</b> </a> <br>
+                        Membuat / Mengimpor data akun (Rekening Perkiraan)<br>
+                        <a routerLink="/ts/giro/giroout"><b>7. Giro Keluar</b> </a> <br>
+                        Membuat / Mengimpor data akun (Rekening Perkiraan)<br>
+                      </tab>
+                      <tab>
+                        <ng-template tabHeading><i class="icon-calculator"></i> Ledger </ng-template>
+                        <a routerLink="/ts/journal/generaljournal"><b>1. Jurnal Umum</b> </a> <br>
+                        Membuat / Mengimpor data akun (Rekening Perkiraan)<br>
+                        <a routerLink="/ts/journal/generalledger"><b>2. Buku Besar</b> </a> <br>
+                        Membuat / Mengimpor data akun (Rekening Perkiraan)<br>
+                      </tab>
+                      <tab>
+                        <ng-template tabHeading><i class="icon-calculator"></i> Production </ng-template>
+                        <a routerLink="/ts/manufacture/bom"><b>1. Bill Of Material</b> </a> <br>
+                        Membuat / Mengimpor data akun (Rekening Perkiraan)<br>
+                        <a routerLink="/ts/manufacture/workorder"><b>2. Work Order</b> </a> <br>
+                        Membuat / Mengimpor data akun (Rekening Perkiraan)<br>
+                        <a routerLink="/ts/manufacture/materialrelease"><b>3. Material Release</b> </a> <br>
+                        Membuat / Mengimpor data akun (Rekening Perkiraan)<br>
+                        <a routerLink="/ts/manufacture/productresult"><b>4. Product Result</b> </a> <br>
+                        Membuat / Mengimpor data akun (Rekening Perkiraan)<br>
+                      </tab>
+                      <tab>
+                        <ng-template tabHeading><i class="icon-pie-chart"></i> Others</ng-template>
+                        <a routerLink="/ts/retailselling/posstand"><b>1. Stand POS</b> </a> <br>
+                        Menginput / mengimpor saldo awal piutang sesuai saldo periode sebelumnya.<br>
+                        <a routerLink="/ts/company/project"><b>2. Projek</b> </a> <br>
+                        Menginput / mengimpor saldo awal piutang sesuai saldo periode sebelumnya.<br>
+                        <a routerLink="/ts/fixasset/fixasset"><b>3. Asset Tetap</b> </a> <br>
+                        Menginput / mengimpor saldo awal hutang sesuai saldo periode sebelumnya.<br>
+                      </tab>
+                    </tabset>
+                  </div>
+                </div>
+
+              </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <i class="fa fa-cc"></i><b>Report Instruction</b>
+          </div>
+          <div class="card-body p-3">
+            <div class="h5 mb-0 p-3">Berikut Report - Report yang tersedia di TS - System</div>
+            <div class="row">
+              <div class="col-md-12 mb-12">
+                <!-- Nav tabs -->
+                <tabset>
+                  <tab>
+                    <ng-template tabHeading><i class="icon-calculator"></i> Financial </ng-template>
+                    <div *ngFor="let item of financialReportDatas; let i = index;">
+                      <a style="cursor: pointer;" (click)="childModalShow(item)"><b>{{i+1}}.
+                          {{item.app_nav_detail_title}}</b> </a> <br>
+                      {{item.app_nav_detail_subtitle}}<br>
+                    </div>
+                  </tab>
+                  <tab>
+                    <ng-template tabHeading><i class="icon-calculator"></i> Ledger </ng-template>
+                    <div *ngFor="let item of ledgerReportDatas; let i = index;">
+                      <a href="cursor: pointer;" (click)="childModalShow(item)"><b>{{i+1}}.
+                          {{item.app_nav_detail_title}}</b> </a> <br>
+                      {{item.app_nav_detail_subtitle}}<br>
+                    </div>
+                  </tab>
+                  <tab>
+                    <ng-template tabHeading><i class="icon-calculator"></i> Cash & Bank </ng-template>
+                    <div *ngFor="let item of cashbankReportDatas; let i = index;">
+                      <a href="cursor: pointer;" (click)="childModalShow(item)"><b>{{i+1}}.
+                          {{item.app_nav_detail_title}}</b> </a> <br>
+                      {{item.app_nav_detail_subtitle}}<br>
+                    </div>
+                  </tab>
+                  <tab>
+                    <ng-template tabHeading><i class="icon-calculator"></i> Sale </ng-template>
+                    <div *ngFor="let item of saleReportDatas; let i = index;">
+                      <a href="cursor: pointer;" (click)="childModalShow(item)"><b>{{i+1}}.
+                          {{item.app_nav_detail_title}}</b> </a> <br>
+                      {{item.app_nav_detail_subtitle}}<br>
+                    </div>
+                  </tab>
+                  <tab>
+                    <ng-template tabHeading><i class="icon-calculator"></i> Receivable </ng-template>
+                    <div *ngFor="let item of receivableReportDatas; let i = index;">
+                      <a href="cursor: pointer;" (click)="childModalShow(item)"><b>{{i+1}}.
+                          {{item.app_nav_detail_title}}</b> </a> <br>
+                      {{item.app_nav_detail_subtitle}}<br>
+                    </div>
+                  </tab>
+                  <tab>
+                    <ng-template tabHeading><i class="icon-calculator"></i> Purchase </ng-template>
+                    <div *ngFor="let item of purchaseReportDatas; let i = index;">
+                      <a href="cursor: pointer;" (click)="childModalShow(item)"><b>{{i+1}}.
+                          {{item.app_nav_detail_title}}</b> </a> <br>
+                      {{item.app_nav_detail_subtitle}}<br>
+                    </div>
+                  </tab>
+                  <tab>
+                    <ng-template tabHeading><i class="icon-calculator"></i> Payable </ng-template>
+                    <div *ngFor="let item of payableReportDatas; let i = index;">
+                      <a href="cursor: pointer;" (click)="childModalShow(item)"><b>{{i+1}}.
+                          {{item.app_nav_detail_title}}</b> </a> <br>
+                      {{item.app_nav_detail_subtitle}}<br>
+                    </div>
+                  </tab>
+                  <tab>
+                    <ng-template tabHeading><i class="icon-calculator"></i> Product </ng-template>
+                    <div *ngFor="let item of productReportDatas; let i = index;">
+                      <a href="cursor: pointer;" (click)="childModalShow(item)"><b>{{i+1}}.
+                          {{item.app_nav_detail_title}}</b> </a> <br>
+                      {{item.app_nav_detail_subtitle}}<br>
+                    </div>
+                  </tab>
+                  <tab>
+                    <ng-template tabHeading><i class="icon-calculator"></i> Production </ng-template>
+                    <div *ngFor="let item of productionReportDatas; let i = index;">
+                      <a href="cursor: pointer;" (click)="childModalShow(item)"><b>{{i+1}}.
+                          {{item.app_nav_detail_title}}</b> </a> <br>
+                      {{item.app_nav_detail_subtitle}}<br>
+                    </div>
+                  </tab>
+                  <tab>
+                    <ng-template tabHeading><i class="icon-calculator"></i> Others </ng-template>
+                    <div *ngFor="let item of othersReportDatas; let i = index;">
+                      <a href="cursor: pointer;" (click)="childModalShow(item)"><b>{{i+1}}.
+                          {{item.app_nav_detail_title}}</b> </a> <br>
+                      {{item.app_nav_detail_subtitle}}<br>
+                    </div>
+                  </tab>
+                </tabset>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+      <div class="animated fadeIn display-inherit" *ngIf="!dashboardCard && reportDetailCard">
+
+        <div class="row" *ngFor="let itemrow of cardData">
+          <div class="col-sm-6 col-md-3" *ngFor="let item of itemrow.rows">
+            <div class="card card-inverse {{item.color_class}} pointer" routerLink="{{item.app_nav_detail_url}}">
+              <div class="card-block">
+                <div class="h1 text-muted text-right mb-4">
+                  <i class="{{item.icon_class}}"></i>
+                </div>
+                <div class="h4 mb-0">{{item.app_nav_detail_title}}</div>
+                <small class="text-muted font-weight-bold">{{item.app_nav_detail_subtitle}}</small>
+                <div class="progress progress-white progress-xs mt-3">
+                  <div class="progress-bar" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0"
+                    aria-valuemax="100"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="animated fadeIn display-inherit" *ngIf="!reportDetailCard">
+
+        <div class="row" *ngFor="let itemrow of cardData">
+          <div class="col-sm-6 col-md-6" *ngFor="let item of itemrow.rows">
+
+            <div class="card" (click)="childModalShow(item)">
+              <div class="card-body p-0 clearfix" style="cursor: pointer;">
+                <i class="{{item.icon_class}} {{item.color_class}} p-4 font-2xl mr-3 float-left"></i>
+                <div class="h5 mb-0 pt-3">{{item.app_nav_detail_title}}</div>
+                <div class="text-muted font-weight-bold font-xs">{{item.app_nav_detail_subtitle}}</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+      <!-- MODAL REPORT OPTION -->
+      <div bsModal #childModal="bs-modal" class="modal  fade" [config]="{'backdrop':'static', 'keyboard': false}"
+        tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Report Options</h5>
+              <button class="btn btn-outline-danger" (click)="childModal.hide()" aria-label="Close"
+                type="button">Close</button>
+            </div>
+            <div class="modal-body-full">
+              <div class="vertical-scroll" style="max-height: 100%">
+                <div class="vertical-scroll" style="max-height: 100%">
+                  <form class="form-horizontal" [formGroup]="formReport" (ngSubmit)="generateReport()">
+
+                    <div class="row">
+                      <div class="col-sm-6">
+                        <div class="form-group row">
+                          <label for="printer" class="col-sm-4 text-right form-form-control-label">Printer</label>
+                          <div class="col-sm-6">
+                            <form [formGroup]="formPrinter" style="width: 100%">
+                              <ng-select [items]="printerList" (change)="printerChange($event)" style="width: 100%"
+                                formControlName="selectedPrinter">
+                              </ng-select>
+                            </form>
+                          </div>
+                        </div>
+                        <div
+                          class="form-group row {{(formReport.controls.report_template_id.status == 'INVALID')?'has-warning':''}}">
+                          <label for="report_template_id" class="col-sm-4 text-right form-form-control-label">Report
+                            Template</label>
+                          <div class="col-sm-6">
+                            <ng-select bindValue="report_template_id" [items]="reportTemplate" class="ts-form-control"
+                              formControlName="report_template_id" (change)="reportTemplateChange($event)"> </ng-select>
+                          </div>
+                        </div>
+                        <div class="form-group row" *ngIf="reportSettingShow.datefrom">
+                          <label for="datetime" class="col-sm-4 text-right form-form-control-label">Date From</label>
+                          <div class="col-sm-6">
+                            <div class="input-group">
+                              <input type="date" class="w100 form-control" formControlName="datefrom">
+                            </div>
+                          </div>
+                        </div>
+                        <div class="form-group row" *ngIf="reportSettingShow.dateto">
+                          <label for="datetime" class="col-sm-4 text-right form-form-control-label">Date To</label>
+                          <div class="col-sm-6">
+                            <div class="input-group">
+                              <input type="date" class="w100 form-control" formControlName="dateto">
+                            </div>
+                          </div>
+                        </div>
+                        <div class="form-group row" style="text-align:left">
+                          <div class="offset-sm-4 col-sm-8">
+                            <button type="submit" class="btn btn-primary" [disabled]="!formReport.valid">Create
+                              Report</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>

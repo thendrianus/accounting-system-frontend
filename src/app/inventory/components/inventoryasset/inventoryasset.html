@@ -1,0 +1,608 @@
+<div class="loading" *ngIf="!gen.app_component_id"></div>
+<ts-notification [notifSuccess]='notif.success' [notifAlert]='notif.alert' [notifError]='notif.error'
+  [notifInfo]='notif.info' [notifWarn]='notif.warn'> </ts-notification>
+
+<div class="animated fadeIn display-inherit">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header font-larger">
+          <a href="javascript:void(0)" class="ts-a-title" (click)="refreshComponent()"><i class=" fa fa-refresh"> </i>
+            {{gen._title}}</a>
+          <div class="card-trans-code ts-hide-mobile">
+            <form class="form-horizontal" [formGroup]="formInventory">
+              <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-barcode"></i></span>
+                <input type="text" class="form-control ts-clear-bg ts-text-center" id="inventory_code"
+                  placeholder="{{gen._code}}" [readonly]="disableInput.inventory_code" formControlName="inventory_code"
+                  [disabled]="true">
+                <span class="input-group-addon" *ngIf="formInventory.value.inventory_id != ''">
+                  <label class="switch switch-sm switch-text switch-info float-right mb-0">
+                    <input type="checkbox"
+                      (click)="isUseChange('inventory', formInventory.value.is_use, formInventory.value.inventory_id, 'inventory_id')"
+                      class="switch-input" formControlName="is_use">
+                    <span class="switch-label" data-on="On" data-off="Off"></span>
+                    <span class="switch-handle"></span>
+                  </label>
+                </span>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="card-block" style="padding: 0.5rem 1.25rem;">
+          <div class="row">
+            <div class="form-group col-sm-3 ts-show-mobile" style="margin-bottom: 0rem;">
+              <form class="form-horizontal" [formGroup]="formInventory">
+                <div class="input-group">
+                  <span class="input-group-addon"><i class="fa fa-barcode"></i></span>
+                  <input type="text" class="form-control ts-clear-bg ts-text-center" id="inventory_code"
+                    placeholder="{{gen._code}}" [readonly]="disableInput.inventory_code"
+                    formControlName="inventory_code" [disabled]="true">
+                  <span class="input-group-addon" *ngIf="formInventory.value.inventory_id != ''">
+                    <label class="switch switch-sm switch-text switch-info float-right mb-0">
+                      <input type="checkbox"
+                        (click)="isUseChange('inventory', formInventory.value.is_use, formInventory.value.inventory_id, 'inventory_id')"
+                        class="switch-input" formControlName="is_use">
+                      <span class="switch-label" data-on="On" data-off="Off"></span>
+                      <span class="switch-handle"></span>
+                    </label>
+                  </span>
+                </div>
+              </form>
+            </div>
+            <div class="form-group col-sm-12" style="margin-bottom: 0rem;">
+              <button type="submit" class="btn btn-primary btn-sm2" [disabled]="!formInventory.valid"
+                (click)="inventoryAdd()" *ngIf="formInventory.value.inventory_id == ''"><i class="fa fa-plus"></i>
+                {{gen.btn_add}}</button>
+              <button type="submit" class="btn btn-warning btn-sm2" [disabled]="!formInventory.valid"
+                (click)="inventoryUpdate()" *ngIf="formInventory.value.inventory_id != ''"><i class="fa fa-edit "></i>
+                {{gen.btn_update}}</button>
+              <button type="submit" class="btn btn-danger btn-sm2" (click)="inventoryDelete()"
+                *ngIf="formInventory.value.inventory_id != ''"><i class="fa fa-trash"></i> {{gen.btn_delete}}</button>
+              <button type="submit" class="btn btn-secondary btn-sm2" (click)="clearAll()"><i class="fa fa-eraser"></i>
+                {{gen.btn_clear}}</button>
+              <button type="submit" (click)="printConsoleForm()" *ngIf="printConsole">Print Console</button>
+              <button type="submit" class="btn btn-success btn-sm2" (click)="modalShow()"><i class="fa fa-search"></i>
+                {{gen.btn_search}}</button>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="animated fadeIn display-inherit">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-block">
+          <div class="vertical-scroll" style="max-height: 100%">
+
+            <div class="row">
+              <div class="col-sm-6">
+                <form class="form-horizontal" [formGroup]="formInventory" (ngsubmit)="inventoryUpdate()">
+
+                  <div class="form-group row">
+                    <label for="inventory_code"
+                      class="col-sm-4 text-right form-form-control-label">{{gen.at_code}}</label>
+                    <div class="col-sm-6">
+                      <!-- <label class="checkbox-inline custom-checkbox nowrap" *ngIf="!formInventory.value.if_auto_inventory_code">
+                                        <input type="checkbox" formControlName="auto_inventory_code" (change)="autoInventoryCodeChange(true)"><span>Auto Generate Code </span>
+                                    </label> -->
+                      <input type="text" class="form-control" id="inventory_code" placeholder="{{gen.ph_code}}"
+                        [readonly]="disableInput.inventory_code" formControlName="inventory_code">
+                    </div>
+                  </div>
+                  <div class="form-group row {{(formInventory.controls.name.status == 'INVALID')?'has-warning':''}}">
+                    <label for="name" class="col-sm-4 text-right form-form-control-label">{{gen.at_name}}</label>
+                    <div class="col-sm-6 ">
+                      <input type="text" class="form-control" id="name" placeholder="{{gen.ph_name}}"
+                        formControlName="name">
+                    </div>
+                  </div>
+                  <div class="form-group row {{(formInventory.controls.label.status == 'INVALID')?'has-warning':''}}">
+                    <label for="label"
+                      class="col-sm-4 text-right form-form-control-label">{{gen.at_search_label}}</label>
+                    <div class="col-sm-6 ">
+                      <input type="text" class="form-control" id="label" placeholder="{{gen.ph_search_label}}"
+                        formControlName="label">
+                    </div>
+                  </div>
+                  <div class="form-group row " *ngIf="inventoryCategory.inventory_category_id == '1'">
+                    <label for="currency_id"
+                      class="col-sm-4 text-right form-form-control-label">{{gen.at_currency}}</label>
+                    <div class="col-sm-6 ">
+                      <currency (setCurrency)="setCurrency($event)"></currency>
+                    </div>
+                  </div>
+                  <div
+                    class="form-group row {{(formInventory.controls.buying_price.status == 'INVALID')?'has-warning':''}}">
+                    <label for="buying_price"
+                      class="col-sm-4 text-right form-form-control-label">Buying Price</label>
+                    <div class="col-sm-6 ">
+                      <input currencyMask type="tel" [options]="moneyOption" class="form-control" id="buying_price"
+                        placeholder="{{gen.ph_selling_price}}" formControlName="buying_price">
+                    </div>
+                  </div>
+                  <div
+                    class="form-group row {{(formInventory.controls.selling_price.status == 'INVALID')?'has-warning':''}}">
+                    <label for="selling_price"
+                      class="col-sm-4 text-right form-form-control-label">{{gen.at_selling_price}}</label>
+                    <div class="col-sm-6 ">
+                      <input currencyMask type="tel" [options]="moneyOption" class="form-control" id="selling_price"
+                        placeholder="{{gen.ph_selling_price}}" formControlName="selling_price">
+                    </div>
+                  </div>
+                  <div
+                    class="form-group row {{(formInventory.controls.selling_dsc_amount.status == 'INVALID')?'has-warning':''}}"
+                    *ngIf="inventoryCategory.inventory_category_id == '1' ">
+                    <label for="selling_dsc_amount"
+                      class="col-sm-4 text-right form-form-control-label">{{gen.at_selling_dsc_amount}}</label>
+                    <div class="col-sm-2" style="padding-right: 0px;">
+                      <input type="number" type="tel" class="form-control" id="selling_dsc_amount_dc"
+                        formControlName="selling_dsc_persent" (blur)="purchaseDiscountCountAmount($event)">
+                    </div>
+                    <div class="col-sm-4">
+                      <input currencyMask type="tel" [options]="moneyOption" class="form-control"
+                        id="selling_dsc_amount" placeholder="{{gen.ph_selling_dsc_amount}}"
+                        formControlName="selling_dsc_amount" (blur)="purchaseDiscountCountPersent($event)">
+                    </div>
+                  </div>
+                  <div class="form-group row ">
+                    <label for="brand_id" class="col-sm-4 text-right form-form-control-label">{{gen.at_brand}}</label>
+                    <div class="col-sm-6 ">
+                      <ng-select bindValue="value" [items]="brand" class="ts-form-control" formControlName="brand_id">
+                      </ng-select>
+                    </div>
+                  </div>
+                  <div class="form-group row ">
+                    <label for="inventory_group_id"
+                      class="col-sm-4 text-right form-form-control-label">{{gen.at_inventory_group}}</label>
+                    <div class="col-sm-6 ">
+                      <ng-select bindValue="value" [items]="inventoryGroup" class="ts-form-control"
+                        formControlName="inventory_group_id" (change)="inventoryGroupChange($event)"> </ng-select>
+                    </div>
+                  </div>
+                  <div class="form-group row ">
+                    <label for="inventory_detail_category_id"
+                      class="col-sm-4 text-right form-form-control-label">{{gen.at_category}}</label>
+                    <div class="col-sm-6 ">
+                      <inventorydetailcategory (setCurrency)="setInventorydetailcategory($event)">
+                      </inventorydetailcategory>
+                    </div>
+                  </div>
+                  <div class="form-group row {{(formInventory.controls.uom1.status == 'INVALID')?'has-warning':''}}">
+                    <label for="uom1" class="col-sm-4 text-right form-form-control-label">{{gen.at_uom1}}</label>
+                    <div class="col-sm-6 ">
+                      <ng-select bindValue="value" [items]="uom" class="ts-form-control" formControlName="uom1">
+                      </ng-select>
+                    </div>
+                  </div>
+                  <div
+                    class="form-group row {{(formInventory.controls.hpp_type.status == 'INVALID')?'has-warning':''}}">
+                    <label for="hpp_type" class="col-sm-4 text-right form-form-control-label">*(HPP Type</label>
+                    <div class="col-sm-6 ">
+                      <select class="form-control" id="hpp_type" [ngClass]="{disabledDiv: disableInput.hpp_type}"
+                        formControlName="hpp_type">
+                        <option value="1">*(Average</option>
+                        <option value="2">*(FIFO</option>
+                        <option value="3">*(LIFO</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div
+                    class="form-group row {{(formInventory.controls.description.status == 'INVALID')?'has-warning':''}}">
+                    <label for="description"
+                      class="col-sm-4 text-right form-form-control-label">{{gen.at_description}}</label>
+                    <div class="col-sm-6 ">
+                      <textarea type="text" class="form-control" id="description" placeholder="{{gen.ph_description}}"
+                        formControlName="description"></textarea>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="name" class="col-sm-4 text-right form-form-control-label">{{gen.at_image}}</label>
+                    <div class="col-sm-6 ">
+                      <!-- <ts-picture-uploader class="width100" [picture]="formInventory.value.oldimage" [defaultPicture]="defaultPicture" [uploaderOptions]="uploaderOptions" (onUploadCompleted)="onUploadCompleted($event, 1)"></ts-picture-uploader>  -->
+                    </div>
+                  </div>
+                </form>
+              </div>
+              <div class="col-sm-6">
+                <tabset>
+                  <tab heading="1. Price">
+                    <form class="form-horizontal" [formGroup]="formInventoryPrice" (ngsubmit)="inventoryPriceSubmit()">
+
+                      <div
+                        class="form-group row {{(formInventoryPrice.controls.price_name.status == 'INVALID')?'has-warning':''}}">
+                        <label for="price_name"
+                          class="col-sm-4 text-right form-form-control-label">{{gen.at_price_name}}</label>
+                        <div class="col-sm-6 ">
+                          <input type="text" class="form-control" id="price_name" placeholder="{{gen.ph_price_name}}"
+                            formControlName="price_name">
+                        </div>
+                      </div>
+                      <!-- <div class="form-group row">
+                        <label class="col-md-4 form-control-label"></label>
+                        <div class="col-md-6">
+                          <label class="radio-inline" for="inline-radio1">
+                            <input type="radio" id="inline-radio1" name="price_name" value="Retail"
+                              formControlName="price_name">*(Retail
+                          </label>
+                          <label class="radio-inline" for="inline-radio2">
+                            <input type="radio" id="inline-radio2" name="price_name" value="Grosir"
+                              formControlName="price_name">*(Grosir
+                          </label>
+                        </div>
+                      </div> -->
+                      <div
+                        class="form-group row {{(formInventoryPrice.controls.uom.status == 'INVALID')?'has-warning':''}}">
+                        <label for="uom" class="col-sm-4 text-right form-form-control-label">{{gen.at_uom}}</label>
+                        <div class="col-sm-6 ">
+                          <select class="form-control" id="uom" formControlName="uom" (change)="priceQuantityChange()">
+                            <option value="1">{{gen._uom1}}</option>
+                            <option value="2" *ngIf="formInventory.value.uom2 != '-'">{{gen._uom2}}</option>
+                            <option value="3" *ngIf="formInventory.value.uom3 != '-'">{{gen._uom3}}</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div
+                        class="form-group row {{(formInventoryPrice.controls.quantity.status == 'INVALID')?'has-warning':''}}">
+                        <label for="quantity"
+                          class="col-sm-4 text-right form-form-control-label">{{gen.at_quantity}}</label>
+                        <div class="col-sm-6 ">
+                          <input type="number" class="form-control" id="quantity" placeholder="{{gen.ph_quantity}}"
+                            formControlName="quantity" (change)="priceQuantityChange()" (blur)="priceQuantityChange()">
+                        </div>
+                      </div>
+                      <div
+                        class="form-group row {{(formInventoryPrice.controls.price.status == 'INVALID')?'has-warning':''}}">
+                        <label for="price" class="col-sm-4 text-right form-form-control-label">{{gen.at_price}}</label>
+                        <div class="col-sm-6 ">
+                          <input currencyMask type="tel" [options]="moneyOption" class="form-control" id="price"
+                            placeholder="{{gen.ph_price}}" formControlName="price">
+                        </div>
+                      </div>
+                      <div
+                        class="form-group row {{(formInventoryPrice.controls.discount_amount.status == 'INVALID')?'has-warning':''}}"
+                        *ngIf="inventoryCategory.inventory_category_id == '1' ">
+                        <label for="discount_amount"
+                          class="col-sm-4 text-right form-form-control-label">{{gen.at_dicount_amount}}</label>
+                        <div class="col-sm-2" style="padding-right: 0px;">
+                          <input type="number" type="tel" class="form-control" id="discount_persent"
+                            formControlName="discount_persent" (blur)="purchasePriceDiscountCountAmount($event)">
+                        </div>
+                        <div class="col-sm-4">
+                          <input currencyMask type="tel" [options]="moneyOption" class="form-control"
+                            id="discount_amount" placeholder="{{gen.ph_discount_amount}}"
+                            formControlName="discount_amount" (blur)="purchasePriceDiscountCountPersent($event)">
+                        </div>
+                      </div>
+                      <div
+                        class="form-group row {{(formInventoryPrice.controls.description.status == 'INVALID')?'has-warning':''}}">
+                        <label for="description"
+                          class="col-sm-4 text-right form-form-control-label">{{gen.at_description}}</label>
+                        <div class="col-sm-6 ">
+                          <textarea type="text" class="form-control" id="description"
+                            placeholder="{{gen.ph_description}}" formControlName="description"></textarea>
+                        </div>
+                      </div>
+                      <div class="form-group row" style="text-align:left">
+                        <div class="offset-sm-4 col-sm-6">
+                          <button class="btn btn-primary"
+                            [disabled]="!(formInventoryPrice.valid && formInventory.value.inventory_id != '')"
+                            *ngIf="formInventoryPrice.value.inventory_price_id == ''"
+                            (click)="inventoryPriceSubmit()">{{gen.btn_addPrice}}</button>
+                          <button class="btn btn-warning"
+                            [disabled]="!(formInventoryPrice.valid && formInventory.value.inventory_id != '')"
+                            *ngIf="formInventoryPrice.value.inventory_price_id != ''"
+                            (click)="inventoryPriceSubmit()">{{gen.btn_editPrice}}</button>
+                          <button class="btn btn-danger" *ngIf="formInventoryPrice.value.inventory_price_id != ''"
+                            [disabled]="!(formInventoryPrice.valid && formInventory.value.inventory_id != '')"
+                            (click)="inventoryPriceDelete()">{{gen.btn_deletePrice}}</button>
+                          <button class="btn btn-secondary"
+                            (click)="clearAllInventoryPrice()">{{gen.btn_clearPrice}}</button>
+                        </div>
+                      </div>
+                    </form>
+
+                    <div class="table-responsive">
+                      <table class="table table-hover table-outline mb-0">
+                        <thead class="thead-default">
+                          <tr class="text-center">
+                            <th><i class="fa fa-sort-numeric-asc"></i></th>
+                            <th>{{gen.th_action}}</th>
+                            <th>{{gen.th_Pricename}}</th>
+                            <th>{{gen.th_uom}}</th>
+                            <th>{{gen.th_quantity}}</th>
+                            <th>{{gen.th_price}}</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let item of inventoryPrices; let i = index">
+                            <td class="text-center">{{i+1}}</td>
+                            <td><button class="btn btn-warning btn-sm"
+                                (click)="editInventoryPrice(item)">{{gen.btn_editPrice}}</button></td>
+                            <td class="{{(item.is_use == 1)?'':'colordanger'}}">{{item.price_name}}</td>
+                            <td class="text-center">{{gen._uom}} {{item.uom}}</td>
+                            <td>{{item.quantity}}</td>
+                            <td>{{item.price}}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+
+                  </tab>
+                  <tab heading="2. UOM">
+                    <form class="form-horizontal" [formGroup]="formInventory" (ngSubmit)="inventoryUpdate()">
+                      <div
+                        class="form-group row {{(formInventory.controls.uom1.status == 'INVALID')?'has-warning':''}}">
+                        <label for="uom1" class="col-sm-4 text-right form-form-control-label">{{gen.at_uom1}}</label>
+                        <div class="col-sm-6 ">
+                          <ng-select bindValue="value" [items]="uom" class="ts-form-control" formControlName="uom1">
+                          </ng-select>
+                        </div>
+                      </div>
+                      <div
+                        class="form-group row {{(formInventory.controls.uom2.status == 'INVALID')?'has-warning':''}}">
+                        <label for="uom2" class="col-sm-4 text-right form-form-control-label">{{gen.at_uom2}}</label>
+                        <div class="col-sm-6 ">
+                          <ng-select bindValue="value" [items]="uom" class="ts-form-control" formControlName="uom2">
+                          </ng-select>
+                        </div>
+                      </div>
+                      <div
+                        class="form-group row {{(formInventory.controls.uom2equal.status == 'INVALID')?'has-warning':''}}">
+                        <label for="uom2equal"
+                          class="col-sm-4 text-right form-form-control-label">{{gen.at_uom2equal}}</label>
+                        <div class="col-sm-4 ">
+                          <input type="text" class="form-control" id="uom2equal" placeholder="{{gen.ph_uom2equal}}"
+                            formControlName="uom2equal">
+                        </div>
+                        <label class="col-sm-1 form-form-control-label">{{formInventory.value.uom1}}</label>
+                      </div>
+                      <div
+                        class="form-group row {{(formInventory.controls.uom3.status == 'INVALID')?'has-warning':''}}">
+                        <label for="uom3" class="col-sm-4 text-right form-form-control-label">{{gen.at_uom3}}</label>
+                        <div class="col-sm-6 ">
+                          <ng-select bindValue="value" [items]="uom" class="ts-form-control" formControlName="uom3">
+                          </ng-select>
+                        </div>
+                      </div>
+                      <div
+                        class="form-group row {{(formInventory.controls.uom3equal.status == 'INVALID')?'has-warning':''}}">
+                        <label for="uom3equal"
+                          class="col-sm-4 text-right form-form-control-label">{{gen.at_uom3equal}}</label>
+                        <div class="col-sm-4 ">
+                          <input type="text" class="form-control" id="uom3equal" placeholder="{{gen.ph_uom3equal}}"
+                            formControlName="uom3equal">
+                        </div>
+                        <label class="col-sm-1 form-form-control-label">{{formInventory.value.uom1}}</label>
+                      </div>
+                    </form>
+                  </tab>
+                  <tab heading="3. Supplier">
+                    <form class="form-horizontal" [formGroup]="formInventorySupplier">
+
+                      <div
+                        class="form-group row {{(formInventorySupplier.controls.businesspartner_id.status == 'INVALID')?'has-warning':''}}">
+                        <label for="businesspartner_id1"
+                          class="col-sm-4 text-right form-form-control-label">{{gen.at_businesspartner}}</label>
+                        <div class="col-sm-6 ">
+                          <ng-select bindValue="value" [items]="businesspartner" class="ts-form-control"
+                            id="businesspartner_id1" formControlName="businesspartner_id"> </ng-select>
+                        </div>
+                      </div>
+                      <div
+                        class="form-group row {{(formInventorySupplier.controls.description.status == 'INVALID')?'has-warning':''}}">
+                        <label for="description"
+                          class="col-sm-4 text-right form-form-control-label">{{gen.at_description}}</label>
+                        <div class="col-sm-6 ">
+                          <textarea type="text" class="form-control" id="description"
+                            placeholder="{{gen.ph_description}}" formControlName="description"></textarea>
+                        </div>
+                      </div>
+                      <div class="form-group row" style="text-align:left">
+                        <div class="offset-sm-4 col-sm-6">
+                          <button class="btn btn-primary"
+                            [disabled]="!(formInventorySupplier.valid && formInventory.value.inventory_id != '')"
+                            *ngIf="formInventorySupplier.value.inventory_supplier_id == ''"
+                            (click)="inventorySupplierSubmit()">{{gen.btn_addSupplier}}</button>
+                          <button class="btn btn-warning"
+                            [disabled]="!(formInventorySupplier.valid && formInventory.value.inventory_id != '')"
+                            *ngIf="formInventorySupplier.value.inventory_supplier_id != ''"
+                            (click)="inventorySupplierSubmit()">{{gen.btn_editSupplier}}</button>
+                          <button class="btn btn-danger" *ngIf="formInventorySupplier.value.inventory_supplier_id != ''"
+                            [disabled]="!(formInventorySupplier.valid && formInventory.value.inventory_id != '')"
+                            (click)="inventorySupplierDelete()">{{gen.btn_deleteSupplier}}</button>
+                          <button class="btn btn-secondary"
+                            (click)="clearAllInventorySupplier()">{{gen.btn_clearSupplier}}</button>
+                        </div>
+                      </div>
+                    </form>
+
+                    <div class="table-responsive">
+                      <table class="table table-hover table-outline mb-0">
+                        <thead class="thead-default">
+                          <tr class="text-center">
+                            <th><i class="fa fa-sort-numeric-asc"></i></th>
+                            <th>{{gen.th_action}}</th>
+                            <th>{{gen.th_supplier}}</th>
+                            <th>{{gen.th_description}}</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let item of inventorySuppliers; let i = index">
+                            <td class="text-center">{{i+1}}</td>
+                            <td><button class="btn btn-warning btn-sm"
+                                (click)="editInventorySupplier(item)">{{gen.btn_editSupplier}}</button></td>
+                            <td class="{{(item.is_use == 1)?'':'colordanger'}}">{{item.businesspartner}}</td>
+                            <td>{{item.description}}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </tab>
+                  <tab heading="4. Stock">
+                    <form class="form-horizontal" [formGroup]="formInventory" (ngSubmit)="inventoryUpdate()">
+                      <div
+                        class="form-group row {{(formInventory.controls.min_stock.status == 'INVALID')?'has-warning':''}}"
+                        *ngIf="inventoryCategory.inventory_category_id == '1' ">
+                        <label for="min_stock"
+                          class="col-sm-4 text-right form-form-control-label">{{gen.at_min_stock}}</label>
+                        <div class="col-sm-6 ">
+                          <input type="number" class="form-control" id="min_stock" placeholder="{{gen.ph_min_stock}}"
+                            formControlName="min_stock">
+                        </div>
+                      </div>
+                      <div
+                        class="form-group row {{(formInventory.controls.max_stock.status == 'INVALID')?'has-warning':''}}"
+                        *ngIf="inventoryCategory.inventory_category_id == '1' ">
+                        <label for="max_stock"
+                          class="col-sm-4 text-right form-form-control-label">{{gen.at_max_stock}}</label>
+                        <div class="col-sm-6 ">
+                          <input type="number" class="form-control" id="max_stock" placeholder="{{gen.ph_max_stock}}"
+                            formControlName="max_stock">
+                        </div>
+                      </div>
+                    </form>
+                  </tab>
+                  <tab heading="5. Tax">
+                    <form class="form-horizontal" [formGroup]="formInventory" (ngSubmit)="inventoryUpdate()">
+                      <div
+                        class="form-group row {{(formInventory.controls.purchase_tax_id.status == 'INVALID')?'has-warning':''}}">
+                        <label for="purchase_tax_id"
+                          class="col-sm-4 text-right form-form-control-label">{{gen.at_purchase_tax_id}}</label>
+                        <div class="col-sm-6 ">
+                          <ng-select bindValue="value" [items]="taxData" class="ts-form-control"
+                            formControlName="purchase_tax_id"> </ng-select>
+                        </div>
+                      </div>
+                      <div
+                        class="form-group row {{(formInventory.controls.sell_tax_id.status == 'INVALID')?'has-warning':''}}"
+                        *ngIf="inventoryCategory.inventory_category_id == '1' ">
+                        <label for="sell_tax_id"
+                          class="col-sm-4 text-right form-form-control-label">{{gen.at_sell_tax_id}}</label>
+                        <div class="col-sm-6 ">
+                          <ng-select bindValue="value" [items]="taxData" class="ts-form-control"
+                            formControlName="sell_tax_id"> </ng-select>
+                        </div>
+                      </div>
+                    </form>
+                  </tab>
+                  <tab heading="6. Account">
+                    <form class="form-horizontal" [formGroup]="formInventory" (ngSubmit)="inventoryUpdate()">
+                      <div
+                        class="form-group row {{(formInventory.controls.purchase_account_id.status == 'INVALID')?'has-warning':''}}">
+                        <label for="purchase_account_id"
+                          class="col-sm-4 text-right form-form-control-label">{{gen.at_purchase_account}}</label>
+                        <div class="col-sm-6 ">
+                          <ng-select bindValue="value" [items]="accountData" class="ts-form-control"
+                            formControlName="purchase_account_id"> </ng-select>
+                        </div>
+                      </div>
+                      <div
+                        class="form-group row {{(formInventory.controls.sell_account_id.status == 'INVALID')?'has-warning':''}}">
+                        <label for="sell_account_id"
+                          class="col-sm-4 text-right form-form-control-label">{{gen.at_sell_account}}</label>
+                        <div class="col-sm-6 ">
+                          <ng-select bindValue="value" [items]="accountData" class="ts-form-control"
+                            formControlName="sell_account_id"> </ng-select>
+                        </div>
+                      </div>
+                      <div
+                        class="form-group row {{(formInventory.controls.hpp_account_id.status == 'INVALID')?'has-warning':''}}">
+                        <label for="hpp_account_id"
+                          class="col-sm-4 text-right form-form-control-label">{{gen.at_hpp_account}}</label>
+                        <div class="col-sm-6 ">
+                          <ng-select bindValue="value" [items]="accountData" class="ts-form-control"
+                            formControlName="hpp_account_id"> </ng-select>
+                        </div>
+                      </div>
+                      <div
+                        class="form-group row {{(formInventory.controls.issale.status == 'INVALID')?'has-warning':''}}">
+                        <label for="issale"
+                          class="col-sm-4 text-right form-form-control-label">{{gen.at_issale}}</label>
+                        <div class="col-sm-6 ">
+                          <label class="switch switch-default switch-primary-outline">
+                            <input type="checkbox" class="switch-input" formControlName="issale">
+                            <span class="switch-label" data-on="Yes" data-off="No"></span>
+                            <span class="switch-handle"></span>
+                          </label>
+                        </div>
+                      </div>
+                      <div
+                        class="form-group row {{(formInventory.controls.ispurchase.status == 'INVALID')?'has-warning':''}}">
+                        <label for="ispurchase"
+                          class="col-sm-4 text-right form-form-control-label">{{gen.at_ispurchase}}</label>
+                        <div class="col-sm-6 ">
+                          <label class="switch switch-default switch-primary-outline">
+                            <input type="checkbox" class="switch-input" formControlName="ispurchase">
+                            <span class="switch-label" data-on="Yes" data-off="No"></span>
+                            <span class="switch-handle"></span>
+                          </label>
+                        </div>
+                      </div>
+                      <div
+                        class="form-group row {{(formInventory.controls.isfix_asset.status == 'INVALID')?'has-warning':''}}">
+                        <label for="isfix_asset"
+                          class="col-sm-4 text-right form-form-control-label">{{gen.at_isfixasset}}</label>
+                        <div class="col-sm-6 ">
+                          <label class="switch switch-default switch-primary-outline">
+                            <input type="checkbox" class="switch-input" formControlName="isfix_asset">
+                            <span class="switch-label" data-on="Yes" data-off="No"></span>
+                            <span class="switch-handle"></span>
+                          </label>
+                        </div>
+                      </div>
+
+                    </form>
+
+                  </tab>
+                </tabset>
+              </div>
+            </div>
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="animated fadeIn display-inherit">
+  <div class="row">
+    <div class="col-lg-12">
+      <ts-bydatetime 
+        [report_id]="15" 
+        [data]="formInventory.value"
+      ></ts-bydatetime>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL SEARCH -->
+<div bsModal #childModal="bs-modal" class="modal  fade" [config]="{'backdrop':'static', 'keyboard': false}"
+  tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{{gen._titleModal1}}</h5>
+        <button class="btn btn-outline-danger" (click)="childModal.hide()" aria-label="Close"
+          type="button">{{gen.btn_closeModal1}}</button>
+      </div>
+      <div class="modal-body-full">
+        <div class="vertical-scroll" style="max-height: 100%">
+          <ng2-smart-table (rowSelect)="httpService.modal_scroll_top($event)" 
+            [settings]="settings" 
+            [source]="source" 
+            (delete)="ModalSelectInventory($event)"
+          >
+          </ng2-smart-table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,200 @@
+<div class="loading" *ngIf="!gen.app_component_id"></div>
+<ts-notification [notifSuccess]='notif.success' [notifAlert]='notif.alert' [notifError]='notif.error'
+  [notifInfo]='notif.info' [notifWarn]='notif.warn'> </ts-notification>
+
+<div class="animated fadeIn display-inherit">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header font-larger">
+          <a href="javascript:void(0)" class="ts-a-title" (click)="refreshComponent()"><i class=" fa fa-refresh"> </i>
+            {{gen._title}}</a>
+          <div class="card-trans-code ts-hide-mobile">
+            <form class="form-horizontal" [formGroup]="formReconciliation_bank">
+              <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-barcode"></i></span>
+                <input type="text" class="form-control ts-clear-bg ts-text-center" id="reconciliation_bank_code"
+                  placeholder="{{gen._code}}" [readonly]="disableInput.reconciliation_bank_code"
+                  formControlName="reconciliation_bank_code" [disabled]="true">
+                <span class="input-group-addon" *ngIf="formReconciliation_bank.value.reconciliation_bank_id != ''">
+                  <label class="switch switch-sm switch-text switch-info float-right mb-0">
+                    <input type="checkbox"
+                      (click)="isUseChange('reconciliation_bank', formReconciliation_bank.value.is_use, formReconciliation_bank.value.reconciliation_bank_id, 'reconciliation_bank_id')"
+                      class="switch-input" formControlName="is_use">
+                    <span class="switch-label" data-on="On" data-off="Off"></span>
+                    <span class="switch-handle"></span>
+                  </label>
+                </span>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="card-block" style="padding: 0.5rem 1.25rem;">
+          <div class="row">
+            <div class="form-group col-sm-3 ts-show-mobile" style="margin-bottom: 0rem;">
+              <form class="form-horizontal" [formGroup]="formReconciliation_bank">
+                <div class="input-group">
+                  <span class="input-group-addon"><i class="fa fa-barcode"></i></span>
+                  <input type="text" class="form-control ts-clear-bg ts-text-center" id="reconciliation_bank_code"
+                    placeholder="{{gen._code}}" [readonly]="disableInput.reconciliation_bank_code"
+                    formControlName="reconciliation_bank_code" [disabled]="true">
+                  <span class="input-group-addon" *ngIf="formReconciliation_bank.value.reconciliation_bank_id != ''">
+                    <label class="switch switch-sm switch-text switch-info float-right mb-0">
+                      <input type="checkbox"
+                        (click)="isUseChange('reconciliation_bank', formReconciliation_bank.value.is_use, formReconciliation_bank.value.reconciliation_bank_id, 'reconciliation_bank_id')"
+                        class="switch-input" formControlName="is_use">
+                      <span class="switch-label" data-on="On" data-off="Off"></span>
+                      <span class="switch-handle"></span>
+                    </label>
+                  </span>
+                </div>
+              </form>
+            </div>
+            <div class="form-group col-sm-12" style="margin-bottom: 0rem;">
+              <button type="submit" class="btn btn-primary btn-sm2" [disabled]="!formReconciliation_bank.valid"
+                (click)="submitFormReconciliation_bank()"><i class="fa fa-plus"></i> {{gen.btn_add}}</button>
+              <button type="submit" class="btn btn-warning btn-sm2" [disabled]="!formReconciliation_bank.valid"
+                (click)="submitFormReconciliation_bank()"><i class="fa fa-edit "></i> {{gen.btn_update}}</button>
+              <button type="submit" class="btn btn-danger btn-sm2"
+                [disabled]="!formReconciliation_bank.value.reconciliation_bank_id"
+                (click)="deleteReconciliation_bank()"><i class="fa fa-trash"></i> {{gen.btn_delete}}</button>
+              <button type="submit" class="btn btn-success btn-sm2" (click)="modalShow()"><i class="fa fa-search"></i>
+                {{gen.btn_search}}</button>
+              <button type="submit" class="btn btn-secondary btn-sm2" (click)="clearAll()"><i class="fa fa-eraser"></i>
+                {{gen.btn_clear}}</button>
+              <button type="submit" (click)="printConsoleForm()" *ngIf="printConsole">Print Console</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="animated fadeIn display-inherit">
+
+  <div class="row">
+    <div class="col-lg-6">
+      <div class="card">
+        <div class="card-block">
+          <div class="vertical-scroll" style="max-height: 100%">
+            <form class="form-horizontal" [formGroup]="formReconciliation_bank">
+
+              <div class="form-group row">
+                <label for="reconciliation_bank_code"
+                  class="col-sm-4 text-right form-form-control-label">{{gen.at_reconciliation_bank_Code}}</label>
+                <div class="col-sm-6">
+                  <input type="text" class="form-control" id="reconciliation_bank_code"
+                    placeholder="{{gen.ph_reconciliation_bank_no}}" [readonly]="disableInput.reconciliation_bank_code"
+                    formControlName="reconciliation_bank_code">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="datetime" class="col-sm-4 text-right form-form-control-label">{{gen.at_date}}</label>
+                <div class="col-sm-6">
+                  <div class="input-group">
+                    <input type="date" class="w100 form-control" formControlName="transaction_date">
+                  </div>
+                </div>
+              </div>
+              <div class="form-group row" *ngIf="formReconciliation_bank.value.reconciliation_bank_id == ''">
+                <label for="bank_account"
+                  class="col-sm-4 text-right form-form-control-label">{{gen.at_bank_account}}</label>
+                <div class="col-sm-6">
+                  <ng-select bindValue="value" [items]="bankAccount" formControlName="account_id"> </ng-select>
+                </div>
+              </div>
+
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="col-lg-6">
+      <div class="card">
+        <div class="card-block">
+          <div class="vertical-scroll" style="max-height: 100%">
+            <form class="form-horizontal" [formGroup]="formReconciliation_bank">
+
+              <div
+                class="form-group row {{(formReconciliation_bank.controls.reference.status == 'INVALID')?'has-warning':''}}">
+                <label for="reference" class="col-sm-4 text-right form-form-control-label">{{gen.at_check_no}}</label>
+                <div class="col-sm-6">
+                  <input type="text" class="form-control" id="reference" placeholder="{{gen.ph_check_no}}"
+                    formControlName="reference">
+                </div>
+              </div>
+              <div
+                class="form-group row {{(formReconciliation_bank.controls.nominal.status == 'INVALID')?'has-warning':''}}"
+                *ngIf="formReconciliation_bank.value.reconciliation_bank_id == ''">
+                <label for="nominal" class="col-sm-4 text-right form-form-control-label">{{gen.at_nominal}}</label>
+                <div class="col-sm-6">
+                  <input currencyMask type="tel" [options]="moneyOption" class="form-control" id="nominal"
+                    placeholder="{{gen.ph_nominal}}" formControlName="nominal">
+                </div>
+              </div>
+              <div
+                class="form-group row {{(formReconciliation_bank.controls.description.status == 'INVALID')?'has-warning':''}}">
+                <label for="description"
+                  class="col-sm-4 text-right form-form-control-label">{{gen.at_description}}</label>
+                <div class="col-sm-6">
+                  <textarea type="text" class="form-control" id="description" placeholder="{{gen.ph_description}}"
+                    formControlName="description"></textarea>
+                </div>
+              </div>
+
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="row">
+    <div class="col-lg-12">
+      <ts-bydatetime 
+        [report_id]="57" 
+        [data]="formReconciliation_bank.value"
+      ></ts-bydatetime>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-block">
+          <div class="vertical-scroll" style="max-height: 100%">
+            <gllist [glTransactionGlLinkId]="glTransactionGlLinkId" [inputGllist]='inputGllist'
+              [outputClearall]="outputClearall" (editGL)="outputEditGL($event)"> </gllist>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- MODAL SEARCH -->
+<div bsModal #childModal="bs-modal" class="modal  fade" [config]="{'backdrop':'static', 'keyboard': false}"
+  tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{{gen._titleModal1}}</h5>
+        <button class="btn btn-outline-danger" (click)="childModal.hide()" aria-label="Close"
+          type="button">{{gen.btn_closeModal1}}</button>
+      </div>
+      <div class="modal-body-full">
+        <div class="vertical-scroll" style="max-height: 100%">
+          <div class="vertical-scroll" style="max-height: 100%">
+            <ng2-smart-table (rowSelect)="httpService.modal_scroll_top($event)" [settings]="settings" [source]="source" (delete)="ModalSelectReconciliation_bank($event)">
+            </ng2-smart-table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

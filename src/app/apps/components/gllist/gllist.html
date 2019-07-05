@@ -1,0 +1,42 @@
+<div class="loading" *ngIf="!gen.app_component_id"></div>
+<ts-notification [notifSuccess]='notif.success' [notifAlert]='notif.alert' [notifError]='notif.error'
+  [notifInfo]='notif.info' [notifWarn]='notif.warn'> </ts-notification>
+
+<table class="table table-responsive table-striped table-sm">
+  <thead>
+    <tr class="text-center">
+      <th *ngIf="!inputHideAction">Action</th>
+      <th>No</th>
+      <th>*(Date</th>
+      <th>{{gen.th_no_account}}</th>
+      <th>{{gen.th_account}}</th>
+      <th>{{gen.th_debit}}</th>
+      <th>{{gen.th_credit}}</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let item of generalledgers; let i = index;">
+      <td *ngIf="!inputHideAction">
+        <button ngClass="btn btn-warning btn-sm" (click)="editGeneralledger(item)">{{gen.td_edit}}</button>
+      </td>
+      <td>{{i+1}}</td>
+      <td>{{item.update_date_show}}</td>
+      <td>{{item.account_code}}</td>
+      <td>{{item.account}}</td>
+      <td>{{item.currency_id}} {{item.debit | number:'.2-2'}}</td>
+      <td>{{item.currency_id}} {{item.credit | number:'.2-2'}}</td>
+    </tr>
+  </tbody>
+  <h2 *ngIf="generalledgers.length < 1"> {{gen._nodata}} </h2>
+  <thead>
+    <tr class="text-center">
+      <th *ngIf="!inputHideAction"></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th>{{debit | number:'.2-2'}}</th>
+      <th>{{credit | number:'.2-2'}}</th>
+    </tr>
+  </thead>
+</table>

@@ -1,0 +1,66 @@
+<ts-notification [notifSuccess]='notif.success' [notifAlert]='notif.alert' [notifError]='notif.error'
+  [notifInfo]='notif.info' [notifWarn]='notif.warn'> </ts-notification>
+<div class="card">
+  <!-- <div class="card" style="z-index: -1;"> -->
+  <div class="card-block" style="padding: 0.5rem 1.25rem;">
+    <form action="" method="post" class="form-horizontal">
+      <div class="form-group row ts-btm-margin0 ">
+        <div class="col-md-2">
+          <div class="input-group" *ngIf="!showCreateUpdate">
+            <span class="input-group-addon"><i class="icon-login"></i></span>
+            <input type="email" id="email3" name="email3" class="form-control ts-clear-bg ts-text-center"
+              [disabled]="true" value="{{create_by}}">
+          </div>
+        </div>
+        <div class="col-md-2">
+          <div class="input-group" *ngIf="!showCreateUpdate">
+            <span class="input-group-addon"><i class="fa fa-calendar-plus-o"></i></span>
+            <input type="email" id="email3" name="email3" class="form-control ts-clear-bg ts-text-center"
+              [disabled]="true" value="{{data.create_datetime | date:'short'}}">
+          </div>
+        </div>
+        <div class="col-md-2">
+          <div class="input-group" *ngIf="!showCreateUpdate">
+            <span class="input-group-addon"><i class="icon-pencil"></i></span>
+            <input type="email" id="email3" name="email3" class="form-control ts-clear-bg ts-text-center"
+              [disabled]="true" value="{{create_by}}">
+          </div>
+        </div>
+        <div class="col-md-2">
+          <div class="input-group"  *ngIf="!showCreateUpdate">
+            <span class="input-group-addon"><i class="fa fa-calendar-check-o"></i></span>
+            <input type="email" id="email3" name="email3" class="form-control ts-clear-bg ts-text-center"
+              [disabled]="true" value="{{data.update_datetime  | date:'short'}}">
+          </div>
+        </div>
+        <div class="col-md-2">
+          <div class="input-group">
+            <form [formGroup]="formPrinter" style="width: 100%">
+              <ng-select [items]="printerList" (change)="printerChange($event)" style="width: 100%" formControlName="selectedPrinter">
+              </ng-select>
+            </form>
+          </div>
+        </div>
+        <div class="col-md-2">
+          <div class="input-group">
+            <div class="btn-group" dropdown [dropup]="true" style="width: 100%">
+              <button type="button" class="btn btn-danger" style="width: 100%" (click)="generateReport()">
+                {{reportTemplate.length > 0 ? "Print": "No Printer Template"}}
+                {{report_id}}
+                {{selectedReportTemplate}}
+                <!-- {{this.reportTemplate[0].report_template_id}} -->
+              </button>
+              <button type="button" dropdownToggle class="btn btn-danger dropdown-toggle dropdown-toggle-split">
+                <span class="caret"></span>
+                <span class="sr-only">Split button!</span> 
+              </button>
+              <ul *dropdownMenu class="dropdown-menu" role="menu">
+                <li role="menuitem" *ngFor="let item of reportTemplate"><a class="dropdown-item" [ngStyle]="{'font-weight': item.isDefault == 1 ? 'bold' : null }" (click)="generateReport(item.report_template)">{{item.name}}</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

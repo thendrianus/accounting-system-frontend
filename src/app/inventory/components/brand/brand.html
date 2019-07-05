@@ -1,0 +1,153 @@
+<div class="loading" *ngIf="!gen.app_component_id"></div>
+<ts-notification [notifSuccess]='notif.success' [notifAlert]='notif.alert' [notifError]='notif.error'
+  [notifInfo]='notif.info' [notifWarn]='notif.warn'> </ts-notification>
+
+<div class="animated fadeIn display-inherit">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header font-larger">
+          <a href="javascript:void(0)" class="ts-a-title" (click)="refreshComponent()"><i class=" fa fa-refresh"> </i>
+            {{gen._title}}</a>
+          <div class="card-trans-code ts-hide-mobile">
+            <form class="form-horizontal" [formGroup]="formBrand">
+              <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-barcode"></i></span>
+                <input type="text" class="form-control ts-clear-bg ts-text-center" id="brand_code"
+                  placeholder="{{gen._code}}" [readonly]="disableInput.brand_code" formControlName="brand_code"
+                  [disabled]="true">
+                <span class="input-group-addon" *ngIf="formBrand.value.brand_id != ''">
+                  <label class="switch switch-sm switch-text switch-info float-right mb-0">
+                    <input type="checkbox"
+                      (click)="isUseChange('brand', formBrand.value.is_use, formBrand.value.brand_id, 'brand_id')"
+                      class="switch-input" formControlName="is_use">
+                    <span class="switch-label" data-on="On" data-off="Off"></span>
+                    <span class="switch-handle"></span>
+                  </label>
+                </span>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="card-block" style="padding: 0.5rem 1.25rem;">
+          <div class="row">
+            <div class="form-group col-sm-3 ts-show-mobile" style="margin-bottom: 0rem;">
+              <form class="form-horizontal" [formGroup]="formBrand">
+                <div class="input-group">
+                  <span class="input-group-addon"><i class="fa fa-barcode"></i></span>
+                  <input type="text" class="form-control ts-clear-bg ts-text-center" id="brand_code"
+                    placeholder="{{gen._code}}" [readonly]="disableInput.brand_code" formControlName="brand_code"
+                    [disabled]="true">
+                  <span class="input-group-addon" *ngIf="formBrand.value.brand_id != ''">
+                    <label class="switch switch-sm switch-text switch-info float-right mb-0">
+                      <input type="checkbox"
+                        (click)="isUseChange('brand', formBrand.value.is_use, formBrand.value.brand_id, 'brand_id')"
+                        class="switch-input" formControlName="is_use">
+                      <span class="switch-label" data-on="On" data-off="Off"></span>
+                      <span class="switch-handle"></span>
+                    </label>
+                  </span>
+                </div>
+              </form>
+            </div>
+            <div class="form-group col-sm-12" style="margin-bottom: 0rem;">
+              <button class="btn btn-primary btn-sm2" [disabled]="!formBrand.valid"
+                *ngIf="formBrand.value.brand_id == ''" (click)="formSubmit()"><i class="fa fa-plus"></i>
+                {{gen.btn_add}}</button>
+              <button class="btn btn-warning btn-sm2" [disabled]="!formBrand.valid"
+                *ngIf="formBrand.value.brand_id != ''" (click)="formSubmit()"><i class="fa fa-edit "></i>
+                {{gen.btn_edit}}</button>
+              <button class="btn btn-danger btn-sm2" *ngIf="formBrand.value.brand_id != ''" (click)="deleteBrand()"><i
+                  class="fa fa-trash"></i> {{gen.btn_delete}}</button>
+              <button class="btn btn-secondary btn-sm2" *ngIf="formBrand.value.brand_id != ''" (click)="clearAll()"><i
+                  class="fa fa-eraser"></i> {{gen.btn_clear}}</button>
+              <button type="submit" (click)="printConsoleForm()" *ngIf="printConsole">Print Console</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="animated fadeIn display-inherit">
+  <div class="row">
+
+
+    <div class="col-lg-4">
+      <div class="card">
+        <div class="card-block">
+          <form class="form-horizontal" [formGroup]="formBrand" (ngSubmit)="formSubmit()">
+
+            <div class="form-group row">
+              <label for="brand_code" class="col-sm-4 text-right form-form-control-label">{{gen.at_code}}</label>
+              <div class="col-sm-8">
+                <input type="text" class="form-control" id="brand_code" placeholder="{{gen.ph_code}}"
+                  [readonly]="disableInput.brand_code" formControlName="brand_code">
+              </div>
+            </div>
+            <div class="form-group row {{(formBrand.controls.brand.value.status == 'INVALID')?'has-warning':''}}">
+              <label for="brand" class="col-sm-4 text-right form-form-control-label">{{gen.at_brand}}</label>
+              <div class="col-sm-8">
+                <input type="text" class="form-control" id="brand" placeholder="{{gen.ph_brand}}"
+                  formControlName="brand">
+              </div>
+            </div>
+            <div class="form-group row {{(formBrand.controls.description.status == 'INVALID')?'has-warning':''}}">
+              <label for="description"
+                class="col-sm-4 text-right form-form-control-label">{{gen.at_description}}</label>
+              <div class="col-sm-8">
+                <textarea type="text" class="form-control" id="description" placeholder="{{gen.ph_description}}"
+                  formControlName="description"></textarea>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-8">
+      <div class="card">
+        <div class="card-block">
+          <div class="table-responsive">
+            <table class="table table-hover table-outline mb-0">
+              <thead class="thead-default">
+                <tr class="text-center">
+                  <th>{{gen.th_action}}</th>
+                  <th class="table-id">{{gen.th_no}}</th>
+                  <th>*(Brand Code</th>
+                  <th>{{gen.th_brand}}</th>
+                  <th>{{gen.th_description}}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of brands; let i = index;">
+                  <td>
+                    <button ngClass="status-button btn btn-sm btn-warning"
+                      (click)="selectBrand(item)">{{gen.td_select}}</button>
+                  </td>
+                  <td class="table-id">{{i+1}}</td>
+                  <td>{{item.brand_code}}</td>
+                  <td class="{{(item.is_use == 1)?'':'colordanger'}}">{{item.brand}}</td>
+                  <td>{{item.description}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="animated fadeIn display-inherit">
+  <div class="row">
+    <div class="col-lg-12">
+      <ts-bydatetime 
+        [report_id]="23" 
+        [data]="formBrand.value"
+      ></ts-bydatetime>
+    </div>
+  </div>
+</div>

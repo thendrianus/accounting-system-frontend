@@ -1,0 +1,132 @@
+<div class="card">
+  <div class="card-block" style="padding: 0.5rem 1.25rem;">
+    <div class="row">
+      <div class="form-group col-sm-3" style="margin-bottom: 0rem;">
+        <form class="form-horizontal" [formGroup]="ModalFormAtt">
+          <ng-select bindValue="value" [items]="AttData" formControlName="app_component_id" (change)="getGenerateGen()">
+          </ng-select>
+        </form>
+      </div>
+      <div class="form-group col-sm-9" style="margin-bottom: 0rem;">
+        <button class="btn btn-primary btn-sm2" (click)="getGenerateGen()">Get Attribute</button>
+        <button class="btn btn-danger btn-sm2" (click)="generate(ModalFormAtt.value.app_component_id, 'id')">Generate
+          Components(Indonesia)</button>
+        <button class="btn btn-danger btn-sm2" (click)="generate(ModalFormAtt.value.app_component_id, 'en')">Generate
+          Components(English)</button>
+        <button class="btn btn-danger btn-sm2" (click)="generate(0, 'id')">Generate Components All(Indonesia)</button>
+        <button class="btn btn-danger btn-sm2" (click)="generate(0, 'en')">Generate Components All(English)</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="animated fadeIn display-inherit">
+
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header font-larger">
+          <a href="javascript:void(0)" class="ts-a-title" (click)="refreshComponent()"><i class=" fa fa-refresh"> </i>
+            {{gen._title}}</a>
+        </div>
+        <div class="card-block">
+          <div class="vertical-scroll" style="max-height: 100%">
+            <ng2-smart-table (rowSelect)="httpService.modal_scroll_top($event)" [settings]="settings" [source]="source" (edit)="modalShow($event)"
+              (create)="modalShow('')"></ng2-smart-table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- MODAL COMPONENT DETAIL -->
+<div bsModal #childModal="bs-modal" class="modal  fade" [config]="{'backdrop':'static', 'keyboard': false}"
+  tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+
+        <h5 class="modal-title">{{gen._titleModal1}}</h5>
+        <button class="btn btn-outline-danger" (click)="childModal.hide()" aria-label="Close"
+          type="button">{{gen.btn_closeModal1}}</button>
+      </div>
+      <div class="modal-body">
+        <form class="form-horizontal" [formGroup]="ModalFormAtt" (ngSubmit)="ModalFormSubmit()">
+
+
+          <div class="row">
+            <div class="col-sm-6">
+
+              <div
+                class="form-group row {{(ModalFormAtt.controls.app_attribute_category_id.status == 'INVALID')?'has-warning':''}}">
+                <label for="app_attribute_category_id"
+                  class="col-sm-4 text-right form-form-control-label">{{gen.at_categoryModal1}}</label>
+                <div class="col-sm-6">
+                  <select class="form-control" id="app_attribute_category_id"
+                    formControlName="app_attribute_category_id">
+                    <option value="1">1 - Title</option>
+                    <option value="2">2 - Placholder</option>
+                    <option value="3">3 - Attribute</option>
+                    <option value="4">4 - Button</option>
+                    <option value="5">5 - Table Header</option>
+                    <option value="6">6 - Table Detail</option>
+                    <option value="7">7 - Ng2 Table Show</option>
+                    <option value="8">8 - Ng2 Table Name</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group row {{(ModalFormAtt.controls.ts_label.status == 'INVALID')?'has-warning':''}}">
+                <label for="ts_label"
+                  class="col-sm-4 text-right form-form-control-label">{{gen.at_ts_labelModal1}}</label>
+                <div class="col-sm-6">
+                  <input type="text" class="form-control" id="ts_label" placeholder="{{gen.ph_ts_label}}"
+                    formControlName="ts_label">
+                </div>
+              </div>
+
+              <div class="form-group row {{(ModalFormAtt.controls.ts_value.status == 'INVALID')?'has-warning':''}}">
+                <label for="ts_value"
+                  class="col-sm-4 text-right form-form-control-label">{{gen.at_ts_valueModal1}}</label>
+                <div class="col-sm-6">
+                  <input type="text" class="form-control" id="ts_value" placeholder="{{gen.ph_ts_value}}"
+                    formControlName="ts_value">
+                </div>
+              </div>
+
+              <div class="form-group row {{(ModalFormAtt.controls.ts_value1.status == 'INVALID')?'has-warning':''}}">
+                <label for="ts_value1"
+                  class="col-sm-4 text-right form-form-control-label">{{gen.at_ts_value1Modal1}}</label>
+                <div class="col-sm-6">
+                  <input type="text" class="form-control" id="ts_value1" placeholder="{{gen.ph_ts_value1}}"
+                    formControlName="ts_value1">
+                </div>
+              </div>
+
+              <div class="form-group row" style="text-align:left">
+                <div class="offset-sm-4 col-sm-8">
+                  <button type="submit" class="btn btn-primary" [disabled]="!ModalFormAtt.valid"
+                    *ngIf="ModalFormAtt.value.app_component_attribute_id == ''">{{gen.btn_addModal1}}</button>
+                  <button type="submit" class="btn btn-warning" [disabled]="!ModalFormAtt.valid"
+                    *ngIf="ModalFormAtt.value.app_component_attribute_id != ''">{{gen.btn_editModal1}}</button>
+                  <button class="btn btn-danger" (click)="ModalDeleteAtt(); $event.preventDefault()"
+                    *ngIf="ModalFormAtt.value.app_component_attribute_id != ''">{{gen.btn_deleteModal1}}</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </form>
+        <div class="col-lg-12">
+          <ts-bydatetime 
+            [report_id]="60" 
+            [data]="ModalFormAtt.value"
+          ></ts-bydatetime>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

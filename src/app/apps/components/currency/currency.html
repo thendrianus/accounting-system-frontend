@@ -1,0 +1,9 @@
+<select 
+  class="form-control {{classInput}}" 
+  id="exampleSelect1" 
+  [(ngModel)]="selectedCurrency"
+  (ngModelChange)="currencyChange()" 
+  [ngClass]="{disabledDiv: disableInput}"
+>
+  <option *ngFor="let item of currency" value="{{item.currency_id}}">{{item.currencies}}</option>
+</select>

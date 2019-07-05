@@ -1,0 +1,39 @@
+<div class="loading" *ngIf="!gen.app_component_id"></div>
+<ts-notification [notifSuccess]='notif.success' [notifAlert]='notif.alert' [notifError]='notif.error'
+  [notifInfo]='notif.info' [notifWarn]='notif.warn'> </ts-notification>
+
+<div class="animated fadeIn display-inherit">
+
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header font-larger">
+          <a href="javascript:void(0)" class="ts-a-title" (click)="refreshComponent()"><i class=" fa fa-refresh"> </i>
+            {{gen._title}}</a>
+        </div>
+        <div class="card-block">
+          <div class="vertical-scroll" style="max-height: 100%">
+            <ng2-smart-table (rowSelect)="httpService.modal_scroll_top($event)" [settings]="settings" [source]="source" (editConfirm)="editConfirm($event)"
+              (deleteConfirm)="deleteConfirm($event)"></ng2-smart-table>
+            Ballance = "{{ballance | number:'.2-2'}}" (Make sure the ballance value is zero)
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-block">
+          <button type="submit" class="btn btn-secondary" (click)="clearAll()">{{gen.btn_clear_data}}</button>
+          <div class="vertical-scroll" style="max-height: 100%">
+            <gllist [glTransactionbbAccountId]="glTransactionGlLinkId" [inputGllist]='inputGllist'
+              [inputHideAction]='inputHideAction' [outputClearall]="outputClearall"> </gllist>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

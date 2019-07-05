@@ -1,0 +1,100 @@
+// Here you can add other styles
+// body{
+//     overflow: scroll !important;
+// }
+//disini
+.inlineDetailColumn {
+    display: -webkit-inline-box;
+    width: 100%;
+}
+
+.ng-select-container {
+    border-radius: 0px !important;
+}
+
+.btn-sm2{
+    margin-right: 5px;
+}
+
+.font-larger {
+    font-size: larger;
+}
+
+.ts-clear-bg {
+    background-color: #ffffff !important
+}
+
+.ts-btm-margin0{
+    margin-bottom: 0rem;
+}
+
+.ts-text-center{
+    text-align: center;
+}
+
+.text-right{
+    text-align: right;
+}
+
+.w100{
+    width: 100%;
+}
+
+.widthauto{
+    width: auto !important;
+}
+
+.colordanger{
+    color: #f86c6b;
+}
+
+.ts-form-control{
+    background-color: #f6f6f6;
+}
+.ts-form-control:focus{
+    color: #263238;
+    background-color: #fff;
+    border-color: #8ad4ee;
+    outline: none;
+}
+
+@media (min-width: 576px) { 
+    .ts-show-mobile {
+        display: none;
+    }
+}
+
+@media (max-width: 576px) { 
+    .ts-hide-mobile {
+        display: none;
+    }
+}
+
+.ts-red {
+    color: red;
+}
+
+.sidebar .nav-item:hover {
+    background: #20a8d8 !important;
+}
+
+.simple-notification-wrapper {
+    z-index: 1050 !important;
+}
+
+.ts-a-title{
+    color: #29363d;
+}
+
+.ts-a-title:hover {
+    color: #20a8d8;
+    text-decoration: none;
+}
+
+select-dropdown > div{
+    z-index: 56 !important;
+}
+
+.disabledDiv {
+    pointer-events: none;
+    opacity: 0.4;   }

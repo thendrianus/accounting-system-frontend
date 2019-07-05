@@ -1,0 +1,168 @@
+<div class="loading" *ngIf="!gen.app_component_id"></div>
+<ts-notification [notifSuccess]='notif.success' [notifAlert]='notif.alert' [notifError]='notif.error'
+  [notifInfo]='notif.info' [notifWarn]='notif.warn'> </ts-notification>
+
+<div class="animated fadeIn display-inherit">
+
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header font-larger">
+          <a href="javascript:void(0)" class="ts-a-title" (click)="refreshComponent()"><i class=" fa fa-refresh"> </i>
+            {{gen._title}}</a>
+          <div class="card-trans-code ts-hide-mobile">
+            <form class="form-horizontal" [formGroup]="formReport_template">
+              <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-barcode"></i></span>
+                <input type="text" class="form-control ts-clear-bg ts-text-center" id="report_template_code"
+                  placeholder="{{gen._code}}" [readonly]="disableInput.report_template_code"
+                  formControlName="report_template_code" [disabled]="true">
+                <span class="input-group-addon" *ngIf="formReport_template.value.report_template_id != ''">
+                  <label class="switch switch-sm switch-text switch-info float-right mb-0">
+                    <input type="checkbox"
+                      (click)="isUseChange('report_template', formReport_template.value.is_use, formReport_template.value.report_template_id, 'report_template_id')"
+                      class="switch-input" formControlName="is_use">
+                    <span class="switch-label" data-on="On" data-off="Off"></span>
+                    <span class="switch-handle"></span>
+                  </label>
+                </span>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="card-block" style="padding: 0.5rem 1.25rem;">
+          <div class="row">
+            <div class="form-group col-sm-3 ts-show-mobile" style="margin-bottom: 0rem;">
+              <form class="form-horizontal" [formGroup]="formReport_template">
+                <div class="input-group">
+                  <span class="input-group-addon"><i class="fa fa-barcode"></i></span>
+                  <input type="text" class="form-control ts-clear-bg ts-text-center" id="report_template_code"
+                    placeholder="{{gen._code}}" [readonly]="disableInput.report_template_code"
+                    formControlName="report_template_code" [disabled]="true">
+                  <span class="input-group-addon" *ngIf="formReport_template.value.report_template_id != ''">
+                    <label class="switch switch-sm switch-text switch-info float-right mb-0">
+                      <input type="checkbox"
+                        (click)="isUseChange('report_template', formReport_template.value.is_use, formReport_template.value.report_template_id, 'report_template_id')"
+                        class="switch-input" formControlName="is_use">
+                      <span class="switch-label" data-on="On" data-off="Off"></span>
+                      <span class="switch-handle"></span>
+                    </label>
+                  </span>
+                </div>
+              </form>
+            </div>
+            <div class="form-group col-sm-3" style="margin-bottom: 0rem;">
+              <form class="form-horizontal" [formGroup]="formReport_template" (ngSubmit)="formSubmit()">
+                <ng-select bindValue="value" [items]="report" class="ts-form-control" formControlName="report_id">
+                </ng-select>
+              </form>
+            </div>
+            <div class="form-group col-sm-6" style="margin-bottom: 0rem;">
+              <button type="submit" class="btn btn-primary btn-sm2" [disabled]="!formReport_template.valid"
+                (click)="formSubmit()" *ngIf="formReport_template.value.report_template_id == ''"><i
+                  class="fa fa-plus"></i>
+                {{gen.btn_add}}</button>
+              <button type="submit" class="btn btn-warning btn-sm2" [disabled]="!formReport_template.valid"
+                (click)="formSubmit()" *ngIf="formReport_template.value.report_template_id != ''"><i
+                  class="fa fa-edit "></i>
+                {{gen.btn_edit}}</button>
+              <button type="submit" class="btn btn-danger btn-sm2" (click)="deleteReport_template()"
+                *ngIf="formReport_template.value.report_template_id != ''"><i class="fa fa-trash"></i>
+                {{gen.btn_delete}}</button>
+              <button type="submit" class="btn btn-secondary btn-sm2" (click)="clearAll()"><i class="fa fa-eraser"></i>
+                {{gen.btn_clear}}</button>
+              <button type="submit" (click)="printConsoleForm()" *ngIf="printConsole">Print
+                Console</button>
+              <button type="submit" class="btn btn-success btn-sm2" (click)="modalShow()"><i class="fa fa-search"></i>
+                {{gen.btn_search}}</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="animated fadeIn display-inherit">
+  <div class="card">
+    <div class="card-block">
+      <div class="vertical-scroll" style="max-height: 100%">
+        <div class="row">
+          <div class="col-lg-6">
+            <form class="form-horizontal" [formGroup]="formReport_template" (ngSubmit)="formSubmit()">
+
+              <div class="form-group row">
+                <label for="report_template_code"
+                  class="col-sm-4 text-right form-form-control-label">{{gen.at_code}}</label>
+                <div class="col-sm-6">
+                  <input type="text" class="form-control" id="report_template_code" placeholder="{{gen.ph_code}}"
+                    [readonly]="disableInput.report_template_code" formControlName="report_template_code">
+                </div>
+              </div>
+
+              <div class="form-group row {{(formReport_template.controls.name.status == 'INVALID')?'has-warning':''}}">
+                <label for="name" class="col-sm-4 text-right form-form-control-label">{{gen.at_name}}</label>
+                <div class="col-sm-6">
+                  <input type="text" class="form-control" id="name" placeholder="{{gen.ph_name}}"
+                    formControlName="name">
+                </div>
+              </div>
+
+              <div
+                class="form-group row {{(formReport_template.controls.report_template.status == 'INVALID')?'has-warning':''}}">
+                <label for="report_template"
+                  class="col-sm-4 text-right form-form-control-label">{{gen.at_report_template}}</label>
+                <div class="col-sm-6">
+                  <input type="text" class="form-control" id="report_template" placeholder="{{gen.ph_report_template}}"
+                    formControlName="report_template">
+                </div>
+              </div>
+
+              <div
+                class="form-group row {{(formReport_template.controls.description.status == 'INVALID')?'has-warning':''}}">
+                <label for="description"
+                  class="col-sm-4 text-right form-form-control-label">{{gen.at_description}}</label>
+                <div class="col-sm-6">
+                  <textarea type="text" class="form-control" id="description" placeholder="{{gen.ph_description}}"
+                    formControlName="description"></textarea>
+                </div>
+              </div>
+
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="animated fadeIn display-inherit">
+  <div class="row">
+    <div class="col-lg-12">
+      <ts-bydatetime  
+        [report_id]="66" 
+        [data]="formReport_template.value"
+      ></ts-bydatetime>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL SEARCH -->
+<div bsModal #childModal="bs-modal" class="modal  fade" [config]="{'backdrop':'static', 'keyboard': false}"
+  tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{{gen._titleModal1}}</h5>
+        <button class="btn btn-outline-danger" (click)="childModal.hide()" aria-label="Close"
+          type="button">{{gen.btn_closeModal1}}</button>
+      </div>
+      <div class="modal-body-full">
+        <div class="vertical-scroll" style="max-height: 100%">
+          <ng2-smart-table (rowSelect)="httpService.modal_scroll_top($event)" [settings]="settings" [source]="source" (delete)="ModalSelectReport_template($event)"
+            (add)="refresh_search()"></ng2-smart-table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,515 @@
+<div class="loading" *ngIf="!gen.app_component_id"></div>
+<ts-notification [notifSuccess]='notif.success' [notifAlert]='notif.alert' [notifError]='notif.error'
+  [notifInfo]='notif.info' [notifWarn]='notif.warn'> </ts-notification>
+
+<div class="animated fadeIn display-inherit">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header font-larger">
+          <a href="javascript:void(0)" class="ts-a-title" (click)="refreshComponent()"><i class=" fa fa-refresh"> </i>
+            {{gen._title}}</a>
+          <div class="card-trans-code ts-hide-mobile">
+            <form class="form-horizontal" [formGroup]="formSale_delivery">
+              <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-barcode"></i></span>
+                <input type="text" class="form-control ts-clear-bg ts-text-center" id="sale_delivery_code"
+                  placeholder="{{gen._code}}" [readonly]="disableInput.sale_delivery_code"
+                  formControlName="sale_delivery_code" [disabled]="true">
+                <span class="input-group-addon" *ngIf="formSale_delivery.value.sale_delivery_id != ''">
+                  <label class="switch switch-sm switch-text switch-info float-right mb-0">
+                    <input type="checkbox"
+                      (click)="isUseChange('sale_delivery', formSale_delivery.value.is_use, formSale_delivery.value.sale_delivery_id, 'sale_delivery_id')"
+                      class="switch-input" formControlName="is_use">
+                    <span class="switch-label" data-on="On" data-off="Off"></span>
+                    <span class="switch-handle"></span>
+                  </label>
+                </span>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="card-block" style="padding: 0.5rem 1.25rem;">
+          <div class="row">
+            <div class="form-group col-sm-3 ts-show-mobile" style="margin-bottom: 0rem;">
+              <form class="form-horizontal" [formGroup]="formSale_delivery">
+                <div class="input-group">
+                  <span class="input-group-addon"><i class="fa fa-barcode"></i></span>
+                  <input type="text" class="form-control ts-clear-bg ts-text-center" id="sale_delivery_code"
+                    placeholder="{{gen._code}}" [readonly]="disableInput.sale_delivery_code"
+                    formControlName="sale_delivery_code" [disabled]="true">
+                  <span class="input-group-addon" *ngIf="formSale_delivery.value.sale_delivery_id != ''">
+                    <label class="switch switch-sm switch-text switch-info float-right mb-0">
+                      <input type="checkbox"
+                        (click)="isUseChange('sale_delivery', formSale_delivery.value.is_use, formSale_delivery.value.sale_delivery_id, 'sale_delivery_id')"
+                        class="switch-input" formControlName="is_use">
+                      <span class="switch-label" data-on="On" data-off="Off"></span>
+                      <span class="switch-handle"></span>
+                    </label>
+                  </span>
+                </div>
+              </form>
+            </div>
+            <div class="form-group col-sm-3" style="margin-bottom: 0rem;">
+              <div *ngFor="let item of saleStatusData">
+                <input type="text" class="form-control ts-clear-bg ts-text-center" placeholder="{{gen._code}}"
+                  value="{{item.name}}" [disabled]="true"
+                  *ngIf="formSale_delivery.value.sale_status_id == item.sale_status_id" style="color: red;">
+              </div>
+            </div>
+            <div class="form-group col-sm-9" style="margin-bottom: 0rem;">
+
+              <button type="submit" class="btn btn-success btn-sm2"
+                *ngIf="formSale_delivery.value.sale_status_id == 1 && formSale_delivery.value.sale_delivery_id == ''"
+                [disabled]="!formSale_delivery.valid" (click)="sale_deliverySubmit(1)"><i class="fa fa-save"></i> Save
+                Draft</button>
+              <button type="submit" class="btn btn-info btn-sm2"
+                *ngIf="formSale_delivery.value.sale_status_id != 2 && formSale_delivery.value.sale_status_id != 5"
+                [disabled]="!formSale_delivery.valid" (click)="sale_deliverySubmit(2)"><i
+                  class="fa fa-cart-arrow-down"></i> Pending</button>
+              <button type="submit" class="btn btn-secondary btn-sm2"
+                *ngIf="formSale_delivery.value.sale_status_id != 3 && formSale_delivery.value.sale_status_id != 5 && currentUser.sale_role != 1"
+                [disabled]="!formSale_delivery.valid" (click)="sale_deliverySubmit(3)"><i
+                  class="fa fa-cloud-upload"></i> Ask Approval</button>
+              <button type="submit" class="btn btn-danger btn-sm2"
+                *ngIf="formSale_delivery.value.sale_status_id != 5 && formSale_delivery.value.sale_delivery_id != '' && formSale_delivery.value.sale_status_id != 1 && formSale_delivery.value.sale_status_id != 4"
+                [disabled]="!formSale_delivery.valid" (click)="sale_deliverySubmit(4)"><i class="fa fa-close"></i>
+                Cancel</button>
+              <button type="submit" class="btn btn-primary btn-sm2"
+                *ngIf="formSale_delivery.value.sale_status_id != 5 && formSale_delivery.value.sale_delivery_id != '' && currentUser.sale_role == 1"
+                [disabled]="!formSale_delivery.valid" (click)="sale_deliverySubmit(5)"><i class="fa fa-plus"></i>
+                Posting</button>
+
+              <button type="submit" class="btn btn-warning btn-sm2"
+                [disabled]="!(formSale_delivery.valid && formSale_delivery.value.sale_status_id != 5)"
+                *ngIf="formSale_delivery.value.sale_delivery_id != ''" (click)="sale_deliverySubmit(0)"><i
+                  class="fa fa-edit "></i> {{gen.btn_update}}</button>
+              <button type="submit" class="btn btn-danger btn-sm2"
+                *ngIf="formSale_delivery.value.sale_delivery_id != ''"
+                [disabled]="!(formSale_delivery.valid && formSale_delivery.value.sale_status_id != 5)"
+                (click)="sale_deliveryDelete()"><i class="fa fa-trash"></i> {{gen.btn_delete}}</button>
+              <button type="submit" class="btn btn-success btn-sm2" (click)="modal4Show()"><i class="fa fa-search"></i>
+                {{gen.btn_search}}</button>
+              <button type="submit" class="btn btn-secondary btn-sm2" (click)="clearAll()"><i class="fa fa-eraser"></i>
+                {{gen.btn_clear}}</button>
+              <button type="submit" (click)="printConsoleForm()" *ngIf="printConsole">Print Console</button>
+
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="animated fadeIn display-inherit small-input">
+  <div class="row">
+
+    <div class="col-lg-4">
+      <div class="card">
+        <div class="card-block">
+          <div class="row">
+
+            <div class="form-group col-sm-12">
+              <form class="form-horizontal" [formGroup]="formSale_delivery">
+
+                <div class="form-group row">
+                  <label for="sale_delivery_code" class="col-sm-4 form-form-control-label">{{gen.at_code}}</label>
+                  <div class="col-sm-8">
+                    <input type="text" class="form-control form-control-sm" id="sale_delivery_code"
+                      placeholder="{{gen.ph_code}}" [readonly]="disableInput.sale_delivery_code"
+                      formControlName="sale_delivery_code">
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="reference_code" class="col-sm-4 form-form-control-label">{{gen.at_reference}}</label>
+                  <div class="col-sm-8">
+                    <div class="input-group">
+                      <input type="text" class="form-control form-control-sm" id="reference_code"
+                        placeholder="{{gen.ph_reference}}" [readonly]="disableInput.reference_code"
+                        formControlName="reference_code">
+                      <span class="input-group-btn" *ngIf="formSale_delivery.value.sale_status_id != 5">
+
+                        <button type="button" class="btn btn-primary btn-sm" (click)="clearAll()"
+                          *ngIf="formSale_delivery.value.sale_link_id"><i class="fa fa-close"></i></button>
+
+                        <button type="button" class="btn btn-primary btn-sm" (click)="childModalImportbtn.show()"
+                          *ngIf="formSale_delivery.value.sale_delivery_id == '' && !formSale_delivery.value.sale_link_id ">{{gen.btn_import}}</button>
+
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="sale_category_id" class="col-sm-4 form-form-control-label">{{gen.at_category}}</label>
+                  <div class="col-sm-8">
+                    <select class="form-control form-control-sm" id="sale_category_id"
+                      [ngClass]="{disabledDiv: disableInput.sale_category_id}" formControlName="sale_category_id">
+                      <option *ngFor="let item of sale_categoryData" value="{{item.sale_category_id}}">{{item.name}}
+                      </option>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="businesspartner_id" class="col-sm-4 form-form-control-label">{{gen.at_customer}}</label>
+                  <div class="col-sm-8">
+                    <ng-select bindValue="businesspartner_id" [items]="businesspartnerData"
+                      [ngClass]="{disabledDiv: disableInput.businesspartner_id}" formControlName="businesspartner_id">
+                    </ng-select>
+                  </div>
+                </div>
+
+              </form>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-8">
+      <div class="card">
+        <div class="card-block">
+          <div class="row">
+
+            <div class="form-group col-sm-6">
+              <form class="form-horizontal" [formGroup]="formSale_delivery">
+
+                <div class="form-group row">
+                  <label for="datetime" class="col-sm-4 form-form-control-label">{{gen.at_date}}</label>
+                  <div class="col-sm-8">
+                    <input type="date" class="w100 form-control" [readonly]="disableInput.transaction_date"
+                      formControlName="transaction_date">
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <label for="branch_id" class="col-sm-4 form-form-control-label">{{gen.at_branch}}</label>
+                  <div class="col-sm-8">
+                    <select class="form-control form-control-sm" id="branch_id"
+                      [ngClass]="{disabledDiv: disableInput.branch_id}" formControlName="branch_id">
+                      <option *ngFor="let item of branchData" value="{{item.branch_id}}">{{item.name}}</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <label for="warehouse_id" class="col-sm-4 form-form-control-label">{{gen.at_warehouse}}</label>
+                  <div class="col-sm-8">
+                    <select class="form-control form-control-sm" id="warehouse_id"
+                      [ngClass]="{disabledDiv: disableInput.warehouse_id}" formControlName="warehouse_id"
+                      (change)="warehouseChange()">
+                      <option *ngFor="let item of warehouseData" value="{{item.warehouse_id}}">{{item.warehouse}}
+                      </option>
+                    </select>
+                  </div>
+                </div>
+
+              </form>
+            </div>
+
+            <div class="form-group col-sm-6">
+              <form class="form-horizontal" [formGroup]="formSale_delivery">
+
+                <div class="form-group row">
+                  <label for="delivered_by" class="col-sm-4 form-form-control-label">{{gen.at_deliveredBy}}</label>
+                  <div class="col-sm-8">
+                    <select class="form-control form-control-sm" id="delivered_by" formControlName="delivered_by">
+                      <option *ngFor="let item of employeeData" value="{{item.employee_id}}">{{item.title}}.
+                        {{item.firstname}} {{item.lastname}}</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div
+                  class="form-group row {{(formSale_delivery.controls.received_by.status == 'INVALID')?'has-warning':''}}">
+                  <label for="received_by" class="col-sm-4 form-form-control-label">{{gen.at_receiveBy}}</label>
+                  <div class="col-sm-8">
+                    <input type="text" class="form-control form-control-sm" id="received_by"
+                      placeholder="{{gen.ph_receiveBy}}" formControlName="received_by">
+                  </div>
+                </div>
+
+                <div
+                  class="form-group row {{(formSale_delivery.controls.description.status == 'INVALID')?'has-warning':''}}">
+                  <label for="description" class="col-sm-4 form-form-control-label">{{gen.at_description}}</label>
+                  <div class="col-sm-8">
+                    <textarea type="text" class="form-control form-control-sm" id="description"
+                      placeholder="{{gen.ph_description}}" [readonly]="disableInput.warehouse_id"
+                      formControlName="warehouse_id" rows="3"></textarea>
+                  </div>
+                </div>
+
+              </form>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="row">
+
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-block">
+          <div class="vertical-scroll" style="max-height: 100%">
+            <button ngClass="btn btn-primary btn-sm" (click)="modal2Show('-')" *ngIf="formButton[0].show"
+              [disabled]="formSale_delivery.value.sale_status_id == 5">{{gen.btn_new_item}}</button>
+            <table class="table table-responsive table-hover table-sm">
+              <thead>
+                <tr class="text-center">
+                  <th>{{gen.th_action}}</th>
+                  <th>{{gen.th_inventory_code}}</th>
+                  <th>{{gen.th_name}}</th>
+                  <th>*(Description</th>
+                  <th>{{gen.th_quantity}}</th>
+                  <th>{{gen.th_ordered}}</th>
+                  <th>{{gen.th_uom}}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of sale_deliverysDetail; let i = index; "
+                  [ngClass]="(formSale_delivery.value.sale_status_id == 5)?'table-success':''" [ngStyle]="{'display': (item.is_active === 1)?'content':'none' }">
+                  <td>
+                    <button ngClass="btn btn-warning btn-sm" (click)="modalShow(i)"
+                      [disabled]="formSale_delivery.value.sale_status_id == 5"><i
+                        class="fa fa-pencil-square-o"></i></button>
+                    <button ngClass="btn btn-danger btn-sm" (click)="sale_deliverysDetailDelete(item)"
+                      [disabled]="formSale_delivery.value.sale_status_id == 5"><i class="fa fa-trash-o"></i></button>
+                  </td>
+                  <td>
+
+                    <button (click)="modal2Show(i)"
+                      [ngClass]="(formSale_delivery.value.sale_status_id != 5 && item.stock < item.quantityeqv)?'btn btn-success btn-sm':'btn btn-warning btn-sm'"
+                      [disabled]="formSale_delivery.value.sale_status_id == 5">{{item.inventory_code}}</button>
+
+                  </td>
+                  <td>{{item.inventory_label}}</td>
+                  <td>{{item.description}}</td>
+                  <td>
+                    <inline-editor type="number" min="1" [(ngModel)]="item.quantity"
+                      (onSave)="sale_deliverysDetailChange($event)" name="editableText1" size="4"
+                      [disabled]="isSaleOrderQuantity()"></inline-editor>
+                  </td>
+                  <th>{{item.ordered}}</th>
+                  <td>
+                    {{item.uom_label}}
+                  </td>
+                </tr>
+              </tbody>
+              <thead>
+                <tr class="text-center">
+                  <th>{{gen.th_total}}</th>
+                  <th>{{sale_deliveryDetailLength}} {{gen.th_item}}</th>
+                  <th></th>
+                  <th></th>
+                  <th>{{sale_deliveryDetailQuantityCount}}</th>
+                  <th>{{sale_deliveryDetailOrderedCount}}</th>
+                  <th></th>
+                </tr>
+              </thead>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="animated fadeIn display-inherit">
+  <div class="row">
+    <div class="col-lg-12">
+      <ts-bydatetime 
+        [report_id]="39" 
+        [data]="formSale_delivery.value"
+      ></ts-bydatetime>
+    </div>
+  </div>
+</div>
+
+<div bsModal #childModal="bs-modal" class="modal  fade" [config]="{'backdrop':'static', 'keyboard': false}"
+  tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{{ModalHeader}}</h5>
+        <button class="btn btn-outline-danger" (click)="childModal.hide()" aria-label="Close"
+          type="button">{{gen.btn_closeM1}}</button>
+      </div>
+      <div class="modal-body">
+        <form class="form-horizontal" [formGroup]="formSale_deliveryDetail" (ngSubmit)="modalOut()">
+
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="form-group row">
+                <label for="inventory_code"
+                  class="col-sm-4 text-right form-form-control-label">{{gen.at_inventory_codeM1}}</label>
+                <div class="col-sm-6">
+                  <input type="text" class="form-control" id="inventory_code" placeholder="{{gen.ph_inventory_codeM1}}"
+                    [readonly]="disableInput.inventory_code" formControlName="inventory_code">
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <label for="name" class="col-sm-4 text-right form-form-control-label">{{gen.at_nameM1}}</label>
+                <div class="col-sm-6">
+                  <input type="text" class="form-control" id="name" placeholder="{{gen.ph_nameM1}}"
+                    [readonly]="disableInput.name" formControlName="name">
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <label for="warehouse_id"
+                  class="col-sm-4 text-right form-form-control-label">{{gen.at_warehouseM1}}</label>
+                <div class="col-sm-6">
+                  <select class="form-control" id="warehouse_id" formControlName="warehouse_id"
+                    (change)="warehouseChange()">
+                    <option *ngFor="let item of warehouseData" value="{{item.warehouse_id}}">{{item.warehouse}}</option>
+                  </select>
+                </div>
+              </div>
+
+            </div>
+            <div class="col-sm-6">
+
+              <div
+                class="form-group row {{(formSale_deliveryDetail.controls.quantity.status == 'INVALID')?'has-warning':''}}">
+                <label for="quantity" class="col-sm-4 text-right form-form-control-label">{{gen.at_quantityM1}}</label>
+                <div class="col-sm-6">
+                  <input type="number" class="form-control" id="quantity" placeholder="{{gen.ph_quantityM1}}"
+                    formControlName="quantity">
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <label for="uom_order" class="col-sm-4 text-right form-form-control-label">{{gen.at_uomM1}}</label>
+                <div class="col-sm-6">
+                  <select class="form-control form-control" id="uom_order" formControlName="uom_order"
+                    (change)="sale_deliveryDetailUomOrderChange()">
+                    <option value=1>{{formSale_deliveryDetail.value.uom1}}</option>
+                    <option value=2 *ngIf="formSale_deliveryDetail.value.uom2equal != 1">
+                      {{formSale_deliveryDetail.value.uom2}}</option>
+                    <option value=3 *ngIf="formSale_deliveryDetail.value.uom3equal != 1">
+                      {{formSale_deliveryDetail.value.uom3}}</option>
+                  </select>
+                </div>
+              </div>
+
+              <div
+                class="form-group row {{(formSale_deliveryDetail.controls.description.status == 'INVALID')?'has-warning':''}}">
+                <label for="description"
+                  class="col-sm-4 text-right form-form-control-label">{{gen.at_descriptionM1}}</label>
+                <div class="col-sm-6">
+                  <textarea type="text" class="form-control" id="description" placeholder="{{gen.ph_descriptionM1}}"
+                    formControlName="description"></textarea>
+                </div>
+              </div>
+
+              <div
+                class="form-group row {{(formSale_deliveryDetail.controls.inventory_label.status == 'INVALID')?'has-warning':''}}">
+                <label for="inventory_label"
+                  class="col-sm-4 text-right form-form-control-label">*(inventory_label</label>
+                <div class="col-sm-6">
+                  <textarea type="text" class="form-control" id="inventory_label" placeholder="*(inventory_label"
+                    formControlName="inventory_label"></textarea>
+                </div>
+              </div>
+
+              <div class="form-group row" style="text-align:left">
+                <div class="offset-sm-2 col-sm-6">
+                  <button type="submit" class="btn btn-primary" [disabled]="!formSale_deliveryDetail.valid"
+                    *ngIf="ifModal2show == -1">{{gen.btn_addM1}}</button>
+                  <button type="submit" class="btn btn-warning" [disabled]="!formSale_deliveryDetail.valid"
+                    *ngIf="ifModal2show != -1">{{gen.btn_editM1}}</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </form>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<div bsModal #childModal2="bs-modal" class="modal  fade" [config]="{'backdrop':'static', 'keyboard': false}"
+  tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{{gen._titleM2}}</h5>
+        <button class="btn btn-outline-danger" (click)="childModal2.hide()" aria-label="Close"
+          type="button">{{gen.btn_closeM2}}</button>
+      </div>
+      <div class="modal-body-full" style="max-width: 95% !important;">
+        <div class="vertical-scroll" style="max-height: 100%">
+          <ng2-smart-table (rowSelect)="httpService.modal_scroll_top($event)" [settings]="settings" [source]="source" (edit)="modal2Out($event.data)"
+            (edit)="childModal2Refresh()"></ng2-smart-table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div bsModal #childModal4="bs-modal" class="modal  fade" [config]="{'backdrop':'static', 'keyboard': false}"
+  tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{{gen._titleM3}}</h5>
+        <button class="btn btn-outline-danger" (click)="childModal4.hide()" aria-label="Close"
+          type="button">{{gen.btn_closeM3}}</button>
+      </div>
+      <div class="modal-body-full" style="max-width: 95% !important;">
+        <div class="vertical-scroll" style="max-height: 100%">
+          <ng2-smart-table (rowSelect)="httpService.modal_scroll_top($event)" [settings]="settings2" [source]="source2" (edit)="modal4Out($event)"
+            (add)="getSale_deliveryList()"></ng2-smart-table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div bsModal #childModalImport="bs-modal" class="modal  fade" [config]="{'backdrop':'static', 'keyboard': false}"
+  tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{{gen._titleM4}}</h5>
+        <button class="btn btn-outline-danger" (click)="childModalImport.hide()" aria-label="Close"
+          type="button">{{gen.btn_closeM4}}</button>
+      </div>
+      <div class="modal-body-full" style="max-width: 95% !important;">
+        <div class="vertical-scroll" style="max-height: 100%">
+          <ng2-smart-table (rowSelect)="httpService.modal_scroll_top($event)" [settings]="settingsImport" [source]="sourceImport" (edit)="modalImportOut($event.data)">
+          </ng2-smart-table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div bsModal #childModalImportbtn="bs-modal" class="modal  fade" [config]="{'backdrop':'static', 'keyboard': false}"
+  tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">*(Import</h5>
+        <button class="btn btn-outline-danger" (click)="childModalImportbtn.hide()" aria-label="Close"
+          type="button">*(Close</button>
+      </div>
+      <div class="modal-body" style="max-width: 95% !important;">
+        <button type="button" class="btn btn-primary" (click)="modalImportShow('sale_orders')">*(Sale Order</button>
+        <button type="button" class="btn btn-primary" (click)="modalImportShow('sale_do')">*(Sale Delivery
+          Order</button>
+        <button type="button" class="btn btn-primary" (click)="modalImportShow('sale')">*(Sale</button>
+      </div>
+    </div>
+  </div>
+</div>

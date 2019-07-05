@@ -1,0 +1,51 @@
+<div class="loading" *ngIf="!gen.app_component_id"></div>
+<ts-notification [notifSuccess]='notif.success' [notifAlert]='notif.alert' [notifError]='notif.error'
+  [notifInfo]='notif.info' [notifWarn]='notif.warn'> </ts-notification>
+
+<div class="animated fadeIn display-inherit">
+
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header font-larger">
+          <a href="javascript:void(0)" class="ts-a-title" (click)="refreshComponent()"><i class=" fa fa-refresh"> </i>
+            {{gen._title}}</a>
+        </div>
+        <div class="card-block">
+          <div class="vertical-scroll" style="max-height: 100%">
+
+            <table class="table table-responsive table-hover table-sm">
+              <thead>
+                <tr class="text-center">
+                  <th>{{gen.th_no}}</th>
+                  <th>{{gen.th_account_link}} Link</th>
+                  <th>{{gen.th_account}}</th>
+                  <th>{{gen.th_action}}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of accountLinkList | isactivefilter:'0'; let i = index;">
+                  <td>{{i+1}}</td>
+                  <td [ngClass]="(item.account_linked_id == null)?'colored':''">
+                    {{item.account_link}}
+                  </td>
+                  <td style="width: 40%">
+                    <ng-select bindValue="value" [items]="AccountlinkAccount" [(ngModel)]="item.account_id">
+                    </ng-select>
+                  </td>
+                  <td>
+                    <button type="submit"
+                      [ngClass]="(item.account_id == item.oriaccount_id)?'btn btn-warning':'btn btn-danger'"
+                      [disabled]="!item.account_id" (click)="submit(item)">{{gen.td_setaccountlink}}</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

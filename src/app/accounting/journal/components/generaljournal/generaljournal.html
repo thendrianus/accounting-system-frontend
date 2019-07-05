@@ -1,0 +1,192 @@
+<div class="loading" *ngIf="!gen.app_component_id"></div>
+<ts-notification [notifSuccess]='notif.success' [notifAlert]='notif.alert' [notifError]='notif.error'
+  [notifInfo]='notif.info' [notifWarn]='notif.warn'> </ts-notification>
+
+<div class="animated fadeIn display-inherit">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header font-larger">
+          <a href="javascript:void(0)" class="ts-a-title" (click)="refreshComponent()"><i class=" fa fa-refresh"> </i>
+            {{gen._title}}</a>
+          <div class="card-trans-code ts-hide-mobile">
+            <form class="form-horizontal" [formGroup]="formGeneraljournal">
+              <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-barcode"></i></span>
+                <input type="text" class="form-control ts-clear-bg ts-text-center" id="general_journal_code"
+                  placeholder="{{gen._code}}" [readonly]="disableInput.general_journal_code"
+                  formControlName="general_journal_code" [disabled]="true">
+                <span class="input-group-addon" *ngIf="formGeneraljournal.value.general_journal_id != ''">
+                  <label class="switch switch-sm switch-text switch-info float-right mb-0">
+                    <input type="checkbox"
+                      (click)="isUseChange('general_journal', formGeneraljournal.value.is_use, formGeneraljournal.value.general_journal_id, 'general_journal_id')"
+                      class="switch-input" formControlName="is_use">
+                    <span class="switch-label" data-on="On" data-off="Off"></span>
+                    <span class="switch-handle"></span>
+                  </label>
+                </span>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="card-block" style="padding: 0.5rem 1.25rem;">
+          <div class="row">
+            <div class="form-group col-sm-3 ts-show-mobile" style="margin-bottom: 0rem;">
+              <form class="form-horizontal" [formGroup]="formGeneraljournal">
+                <div class="input-group">
+                  <span class="input-group-addon"><i class="fa fa-barcode"></i></span>
+                  <input type="text" class="form-control ts-clear-bg ts-text-center" id="general_journal_code"
+                    placeholder="{{gen._code}}" [readonly]="disableInput.general_journal_code"
+                    formControlName="general_journal_code" [disabled]="true">
+                  <span class="input-group-addon" *ngIf="formGeneraljournal.value.general_journal_id != ''">
+                    <label class="switch switch-sm switch-text switch-info float-right mb-0">
+                      <input type="checkbox"
+                        (click)="isUseChange('general_journal', formGeneraljournal.value.is_use, formGeneraljournal.value.general_journal_id, 'general_journal_id')"
+                        class="switch-input" formControlName="is_use">
+                      <span class="switch-label" data-on="On" data-off="Off"></span>
+                      <span class="switch-handle"></span>
+                    </label>
+                  </span>
+                </div>
+              </form>
+            </div>
+            <div class="form-group col-sm-12" style="margin-bottom: 0rem;"> 
+              <button type="submit" class="btn btn-primary btn-sm2" [disabled]="!formGeneraljournal.valid"
+                (click)="submitFormGeneraljournal()" *ngIf="!formGeneraljournal.value.general_journal_id"><i class="fa fa-plus"></i> {{gen.btn_add}}</button>
+              <button type="submit" class="btn btn-warning btn-sm2" [disabled]="!formGeneraljournal.valid"
+                (click)="submitFormGeneraljournal()" *ngIf="formGeneraljournal.value.general_journal_id"><i class="fa fa-edit "></i> {{gen.btn_update}}</button>
+              <button type="submit" class="btn btn-danger btn-sm2"
+                [disabled]="!formGeneraljournal.value.general_journal_id" (click)="deleteGeneraljournal()"><i
+                  class="fa fa-trash"></i> {{gen.btn_delete}}</button>
+              <button type="submit" class="btn btn-success btn-sm2" (click)="modalShow()"><i class="fa fa-search"></i>
+                {{gen.btn_search}}</button>
+              <button type="submit" class="btn btn-secondary btn-sm2" (click)="clearAll()"><i class="fa fa-eraser"></i>
+                {{gen.btn_clear}}</button>
+              <button type="submit" (click)="printConsoleForm()" *ngIf="printConsole">Print Console</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="animated fadeIn display-inherit">
+
+  <div class="row">
+    <div class="col-lg-6">
+      <div class="card">
+        <div class="card-block">
+          <div class="vertical-scroll" style="max-height: 100%">
+            <form class="form-horizontal" [formGroup]="formGeneraljournal">
+
+              <div class="form-group row">
+                <label for="general_journal_code"
+                  class="col-sm-4 text-right form-form-control-label">{{gen.at_journal_Code}}</label>
+                <div class="col-sm-6">
+                  <input type="text" class="form-control" id="general_journal_code" placeholder="{{gen.ph_journal_no}}"
+                    [readonly]="disableInput.general_journal_code" formControlName="general_journal_code">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="datetime" class="col-sm-4 text-right form-form-control-label">{{gen.at_date}}</label>
+                <div class="col-sm-6 text-right">
+                  <div class="input-group">
+                    <input type="date" class="w100 form-control" formControlName="transaction_date">
+                  </div>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="generalledger_period_id"
+                  class="col-sm-4 text-right form-form-control-label">{{gen.at_journal_period}}</label>
+                <div class="col-sm-6">
+                  <select class="form-control" id="generalledger_period_id" formControlName="generalledger_period_id">
+                    <option *ngFor="let item of generalLedgerPeriod" value="{{item.generalledger_period_id}}">
+                      {{item.generalledger_period}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="general_journal_type_id"
+                  class="col-sm-4 text-right form-form-control-label">{{gen.at_category}}</label>
+                <div class="col-sm-6">
+                  <select class="form-control" id="general_journal_type_id" formControlName="general_journal_type_id">
+                    <option *ngFor="let item of generaljournalCategory" value="{{item.general_journal_type_id}}">
+                      {{item.type_name}}</option> 
+                  </select>
+                </div>
+              </div>
+              <div
+                class="form-group row {{(formGeneraljournal.controls.description.status == 'INVALID')?'has-warning':''}}">
+                <label for="description"
+                  class="col-sm-4 text-right form-form-control-label">{{gen.at_description}}</label>
+                <div class="col-sm-6">
+                  <textarea type="text" class="form-control" id="description" placeholder="{{gen.ph_description}}"
+                    formControlName="description"></textarea>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="col-lg-6">
+      <div class="card">
+        <div class="card-block">
+          <div class="vertical-scroll" style="max-height: 100%">
+            <glaction [inputEditGL]="inputEditGL" [glTransactionGlLinkId]="glTransactionGlLinkId"
+              [outputClearall]="outputClearall" (outGllist)="outGllist()" [debitCredit]=2> </glaction>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="row">
+    <div class="col-lg-12">
+      <ts-bydatetime 
+        [report_id]="21" 
+        [data]="formGeneraljournal.value"
+      ></ts-bydatetime>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-block">
+          <div class="vertical-scroll" style="max-height: 100%">
+            <gllist [glTransactionGlLinkId]="glTransactionGlLinkId" [inputGllist]='inputGllist'
+              [outputClearall]="outputClearall" (editGL)="outputEditGL($event)"> </gllist>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- MODAL SEARCH -->
+<div bsModal #childModal="bs-modal" class="modal  fade" [config]="{'backdrop':'static', 'keyboard': false}"
+  tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{{gen._titleModal1}}</h5>
+        <button class="btn btn-outline-danger" (click)="childModal.hide()" aria-label="Close"
+          type="button">{{gen.btn_closeModal1}}</button>
+      </div>
+      <div class="modal-body-full">
+        <div class="vertical-scroll" style="max-height: 100%">
+          <div class="vertical-scroll" style="max-height: 100%">
+            <ng2-smart-table (rowSelect)="httpService.modal_scroll_top($event)" [settings]="settings" [source]="source" (delete)="ModalSelectGeneraljournal($event)">
+            </ng2-smart-table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

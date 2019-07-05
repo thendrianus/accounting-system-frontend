@@ -1,0 +1,4 @@
+<select class="form-control" id="exampleSelect1" [(ngModel)]="selectedEmployeeselect"
+  (ngModelChange)="employeeselectChange()">
+  <option *ngFor="let item of employeeselect" value="{{item.employee_id}}">{{item.firstname}} {{item.lastname}}</option>
+</select>

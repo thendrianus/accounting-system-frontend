@@ -1,0 +1,422 @@
+<div class="loading" *ngIf="!gen.app_component_id"></div>
+<ts-notification [notifSuccess]='notif.success' [notifAlert]='notif.alert' [notifError]='notif.error'
+  [notifInfo]='notif.info' [notifWarn]='notif.warn'> </ts-notification>
+
+<div class="animated fadeIn display-inherit">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header font-larger">
+          <a href="javascript:void(0)" class="ts-a-title" (click)="refreshComponent()"><i class=" fa fa-refresh"> </i>
+            {{gen._title}}</a>
+          <div class="card-trans-code ts-hide-mobile">
+            <form class="form-horizontal" [formGroup]="formBom">
+              <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-barcode"></i></span>
+                <input type="text" class="form-control ts-clear-bg ts-text-center" id="bom_code"
+                  placeholder="{{gen._code}}" [readonly]="disableInput.bom_code" formControlName="bom_code"
+                  [disabled]="true">
+                <span class="input-group-addon" *ngIf="formBom.value.bom_id != ''">
+                  <label class="switch switch-sm switch-text switch-info float-right mb-0">
+                    <input type="checkbox"
+                      (click)="isUseChange('bom', formBom.value.is_use, formBom.value.bom_id, 'bom_id')"
+                      class="switch-input" formControlName="is_use">
+                    <span class="switch-label" data-on="On" data-off="Off"></span>
+                    <span class="switch-handle"></span>
+                  </label>
+                </span>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="card-block" style="padding: 0.5rem 1.25rem;">
+          <div class="row">
+            <div class="form-group col-sm-3 ts-show-mobile" style="margin-bottom: 0rem;">
+              <form class="form-horizontal" [formGroup]="formBom">
+                <div class="input-group">
+                  <span class="input-group-addon"><i class="fa fa-barcode"></i></span>
+                  <input type="text" class="form-control ts-clear-bg ts-text-center" id="bom_code"
+                    placeholder="{{gen._code}}" [readonly]="disableInput.bom_code" formControlName="bom_code"
+                    [disabled]="true">
+                  <span class="input-group-addon" *ngIf="formBom.value.bom_id != ''">
+                    <label class="switch switch-sm switch-text switch-info float-right mb-0">
+                      <input type="checkbox"
+                        (click)="isUseChange('bom', formBom.value.is_use, formBom.value.bom_id, 'bom_id')"
+                        class="switch-input" formControlName="is_use">
+                      <span class="switch-label" data-on="On" data-off="Off"></span>
+                      <span class="switch-handle"></span>
+                    </label>
+                  </span>
+                </div>
+              </form>
+            </div>
+            <div class="form-group col-sm-12" style="margin-bottom: 0rem;">
+              <button type="submit" class="btn btn-primary btn-sm2" [disabled]="!formBom.valid"
+                *ngIf="formBom.value.bom_id == ''" (click)="formBomSubmit()"><i class="fa fa-plus"></i>
+                {{gen.btn_add}}</button>
+              <button type="submit" class="btn btn-warning btn-sm2" [disabled]="!formBom.valid"
+                *ngIf="formBom.value.bom_id != ''" (click)="formBomSubmit()"><i class="fa fa-edit "></i>
+                {{gen.btn_edit}}</button>
+              <button type="submit" class="btn btn-danger btn-sm2" *ngIf="formBom.value.bom_id != ''"
+                (click)="BomDelete()"><i class="fa fa-trash"></i> {{gen.btn_delete}}</button>
+              <button type="submit" class="btn btn-success btn-sm2" (click)="modalShow2()"><i class="fa fa-search"></i>
+                {{gen.btn_search}}</button>
+              <button type="submit" class="btn btn-secondary btn-sm2" (click)="clearAll()"><i class="fa fa-eraser"></i>
+                {{gen.btn_clear}}</button>
+              <button type="submit" (click)="printConsoleForm()" *ngIf="printConsole">Print
+                Console</button>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="animated fadeIn display-inherit">
+
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-block">
+          <form class="form-horizontal" [formGroup]="formBom" (ngSubmit)="formBomSubmit()">
+
+            <div class="row">
+              <div class="col-sm-6">
+                <div class="form-group row">
+                  <label for="bom_code" class="col-sm-4 text-right form-form-control-label">{{gen.at_bom_code}}</label>
+                  <div class="col-sm-6">
+                    <input type="text" class="form-control" id="bom_code" placeholder="{{gen.ph_bom_code}}"
+                      [readonly]="disableInput.bom_code" formControlName="bom_code">
+                  </div>
+                </div>
+
+                <div class="form-group row {{(formBom.controls.bom.status == 'INVALID')?'has-warning':''}}">
+                  <label for="bom" class="col-sm-4 text-right form-form-control-label">{{gen.at_name}}</label>
+                  <div class="col-sm-6">
+                    <input type="text" class="form-control" id="bom" placeholder="{{gen.ph_bom}}" formControlName="bom">
+                  </div>
+                </div>
+
+                <div class="form-group row {{(formBom.controls.quantity.status == 'INVALID')?'has-warning':''}}">
+                  <label for="quantity" class="col-sm-4 text-right form-form-control-label">{{gen.at_quantity}}</label>
+                  <div class="col-sm-6">
+                    <input type="number" class="form-control" id="quantity" placeholder="{{gen.ph_quantity}}"
+                      formControlName="quantity">
+                  </div>
+                </div>
+
+                <div class="form-group row {{(formBom.controls.min_quantity.status == 'INVALID')?'has-warning':''}}">
+                  <label for="min_quantity" class="col-sm-4 text-right form-form-control-label">*(Min
+                    Quantity</label>
+                  <div class="col-sm-6">
+                    <input type="text" class="form-control" id="min_quantity" placeholder="{{gen.ph_min_quantity}}"
+                      formControlName="min_quantity">
+                  </div>
+                </div>
+
+              </div>
+
+              <div class="col-sm-6">
+
+                <div class="form-group row">
+                  <label for="inventory_id" class="col-sm-4 text-right form-form-control-label">
+                    {{gen.at_inventory}}</label>
+                  <div class="col-sm-6">
+                    <ng-select bindValue="value" [items]="inventoryData" formControlName="inventory_id"
+                      (change)="modalInventoryIdChange($event)">
+                    </ng-select>
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <label for="uom" class="col-sm-4 text-right form-form-control-label">{{gen.at_uom}}</label>
+                  <div class="col-sm-6">
+                    <input type="text" class="form-control" id="uom" placeholder="*(uom" [readonly]="disableInput.uom"
+                      formControlName="uom">
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <label for="total_cost"
+                    class="col-sm-4 text-right form-form-control-label">{{gen.at_totalCost}}</label>
+                  <div class="col-sm-6">
+                    <input currencyMask type="tel" [options]="moneyOption" class="form-control" id="total_cost"
+                      placeholder="{{gen.ph_total_cost}}" [readonly]="disableInput.total_cost"
+                      formControlName="total_cost">
+                  </div>
+                </div>
+
+                <div class="form-group row {{(formBom.controls.description.status == 'INVALID')?'has-warning':''}}">
+                  <label for="description"
+                    class="col-sm-4 text-right form-form-control-label">{{gen.at_description}}</label>
+                  <div class="col-sm-6">
+                    <textarea type="text" class="form-control" id="description" placeholder="{{gen.ph_description}}"
+                      formControlName="description"></textarea>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </form>
+
+          <tabset>
+            <tab heading="Inventory">
+              <button type="submit" class="btn btn-primary" (click)="modalShow('')">{{gen.btn_addInventory}}</button>
+              <div class="vertical-scroll" style="max-height: 100%">
+                <table class="table table-responsive table-striped table-sm">
+                  <thead>
+                    <tr class="text-center">
+                      <th>{{gen.th_action}}</th>
+                      <th>{{gen.th_no}}</th>
+                      <th>{{gen.th_inventory}}</th>
+                      <th>*(Quantity</th>
+                      <th>{{gen.th_new_inventory}}</th>
+                      <th>*(Total</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let item of modalStandardInventorys; let i = index;">
+                      <td>
+                        <button ngClass="btn btn-warning btn-sm"
+                          (click)="modalShow(item); $event.preventDefault()">{{gen.td_edit}}</button>
+                      </td>
+                      <td>{{i+1}}</td>
+                      <td>{{item.inventory}}</td>
+                      <td>{{item.quantity}}</td>
+                      <td>{{item.currency_id}} {{item.cost | number:'.2-2'}}</td>
+                      <td>{{item.currency_id}} {{item.cost * item.quantity | number:'.2-2'}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </tab>
+            <tab heading="Cost">
+              <button type="submit" class="btn btn-primary" (click)="modalShow3('')">{{gen.btn_addCost}}</button>
+              <div class="vertical-scroll" style="max-height: 100%">
+                <table class="table table-responsive table-striped table-sm">
+                  <thead>
+                    <tr class="text-center">
+                      <th>{{gen.th_actionTbl2}}</th>
+                      <th>{{gen.th_noTbl2}}</th>
+                      <th>{{gen.th_costTbl2}}</th>
+                      <th>*(Quantity</th>
+                      <th>{{gen.th_newCostTbl2}}</th>
+                      <th>*(Total</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let item of modalStandardCosts; let i = index;">
+                      <td>
+                        <button ngClass="btn btn-warning btn-sm"
+                          (click)="modalShow3(item); $event.preventDefault()">{{gen.td_editTbl2}}</button>
+                      </td>
+                      <td>{{i+1}}</td>
+                      <td>{{item.conversion_cost}}</td>
+                      <td>{{item.quantity}}</td>
+                      <td>{{item.currency_id}} {{item.cost | number:'.2-2'}}</td>
+                      <td>{{item.currency_id}} {{item.cost * item.quantity | number:'.2-2'}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </tab>
+          </tabset>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="animated fadeIn display-inherit">
+  <div class="row">
+    <div class="col-lg-12">
+      <ts-bydatetime 
+        [report_id]="26" 
+        [data]="formBom.value"
+      ></ts-bydatetime>
+    </div>
+  </div>
+</div>
+
+<div bsModal #childModal="bs-modal" class="modal  fade" [config]="{'backdrop':'static', 'keyboard': false}"
+  tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+
+        <h5 class="modal-title">{{ModalHeader}}</h5>
+        <button class="btn btn-outline-danger" (click)="childModal.hide()" aria-label="Close"
+          type="button">{{gen.btn_closeModal1}}</button>
+      </div>
+      <div class="modal-body">
+        <form class="form-horizontal" [formGroup]="ModalformBomInventory" (ngSubmit)="ModalFormSubmitInventory()">
+
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="form-group row">
+                <label for="standard_inventory_detail_id" class="col-sm-4 text-right form-form-control-label">
+                  {{gen.at_inventoryModal1}}</label>
+                <div class="col-sm-6">
+                  <ng-select bindValue="value" [items]="standardInventoryData"
+                    formControlName="standard_inventory_detail_id" (change)="modalStandardInventoryIdChange($event)">
+                  </ng-select>
+                </div>
+              </div>
+
+              <div
+                class="form-group row {{(ModalformBomInventory.controls.quantity.status == 'INVALID')?'has-warning':''}}">
+                <label for="quantity"
+                  class="col-sm-4 text-right form-form-control-label">{{gen.at_quantityModal1}}</label>
+                <div class="col-sm-6">
+                  <input type="number" class="form-control" id="quantity" placeholder="{{gen.ph_quantityModal1}}"
+                    formControlName="quantity">
+                </div>
+              </div>
+
+              <div
+                class="form-group row {{(ModalformBomInventory.controls.description.status == 'INVALID')?'has-warning':''}}">
+                <label for="description"
+                  class="col-sm-4 text-right form-form-control-label">{{gen.at_descriptionModal1}}</label>
+                <div class="col-sm-6">
+                  <textarea type="text" class="form-control" id="description" placeholder="{{gen.ph_descriptionModal1}}"
+                    formControlName="description"></textarea>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6">
+
+              <div class="form-group row">
+                <label for="uom" class="col-sm-4 text-right form-form-control-label">{{gen.at_uomModal1}}</label>
+                <div class="col-sm-6">
+                  <input type="tel" class="form-control" id="uom" placeholder="*(uom" [readonly]="disableInput.uom"
+                    formControlName="uom">
+                </div>
+              </div>
+
+              <div
+                class="form-group row {{(ModalformBomInventory.controls.cost.status == 'INVALID')?'has-warning':''}}">
+                <label for="cost" class="col-sm-4 text-right form-form-control-label">{{gen.at_costModal1}}</label>
+                <div class="col-sm-6">
+                  <input currencyMask type="tel" [options]="moneyOption" class="form-control" id="cost"
+                    placeholder="{{gen.ph_costModal1}}" [readonly]="disableInput.cost" formControlName="cost">
+                </div>
+              </div>
+
+              <div class="form-group row" style="text-align:left">
+                <div class="offset-sm-2 col-sm-6">
+                  <button type="submit" class="btn btn-primary" [disabled]="!ModalformBomInventory.valid"
+                    *ngIf="ModalformBomInventory.value.bom_inventory_id == ''">{{gen.btn_addModal1}}</button>
+                  <button type="submit" class="btn btn-warning" [disabled]="!ModalformBomInventory.valid"
+                    *ngIf="ModalformBomInventory.value.bom_inventory_id != ''">{{gen.btn_updateModal1}}</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div bsModal #childModal2="bs-modal" class="modal  fade" [config]="{'backdrop':'static', 'keyboard': false}"
+  tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{{gen._titleModal2}}</h5>
+        <button class="btn btn-outline-danger" (click)="childModal2.hide()" aria-label="Close"
+          type="button">{{gen.btn_closeModal2}}</button>
+      </div>
+      <div class="modal-body-full">
+        <div class="vertical-scroll" style="max-height: 100%">
+          <ng2-smart-table (rowSelect)="httpService.modal_scroll_top($event)" [settings]="settings" [source]="source" (delete)="modal2Select($event)">
+          </ng2-smart-table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div bsModal #childModal3="bs-modal" class="modal  fade" [config]="{'backdrop':'static', 'keyboard': false}"
+  tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+
+        <h5 class="modal-title">{{ModalHeader3}}</h5>
+        <button class="btn btn-outline-danger" (click)="childModal3.hide()" aria-label="Close"
+          type="button">{{gen.btn_closeModal3}}</button>
+      </div>
+      <div class="modal-body">
+        <form class="form-horizontal" [formGroup]="ModalformBomCost" (ngSubmit)="ModalFormSubmitCost()">
+
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="form-group row">
+                <label for="standard_cost_detail_id" class="col-sm-4 text-right form-form-control-label">
+                  {{gen.at_cost_idModal3}}</label>
+                <div class="col-sm-6">
+                  <ng-select bindValue="value" [items]="standardCostData" formControlName="standard_cost_detail_id"
+                    (change)="modalStandardCostIdChange($event)"> </ng-select>
+                </div>
+              </div>
+
+              <div class="form-group row {{(ModalformBomCost.controls.quantity.status == 'INVALID')?'has-warning':''}}">
+                <label for="quantity"
+                  class="col-sm-4 text-right form-form-control-label">{{gen.at_quantityModal3}}</label>
+                <div class="col-sm-6">
+                  <input type="number" class="form-control" id="quantity" placeholder="{{gen.ph_quantityModal3}}"
+                    formControlName="quantity">
+                </div>
+              </div>
+
+              <div
+                class="form-group row {{(ModalformBomCost.controls.description.status == 'INVALID')?'has-warning':''}}">
+                <label for="description"
+                  class="col-sm-4 text-right form-form-control-label">{{gen.at_descriptionModal3}}</label>
+                <div class="col-sm-6">
+                  <textarea type="text" class="form-control" id="description" placeholder="{{gen.ph_descriptionModal3}}"
+                    formControlName="description"></textarea>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="form-group row">
+                <label for="uom" class="col-sm-4 text-right form-form-control-label">{{gen.at_uomModal3}}</label>
+                <div class="col-sm-6">
+                  <input type="tel" class="form-control" id="uom" placeholder="*(uom" [readonly]="disableInput.uom"
+                    formControlName="uom">
+                </div>
+              </div>
+
+              <div class="form-group row {{(ModalformBomCost.controls.cost.status == 'INVALID')?'has-warning':''}}">
+                <label for="cost" class="col-sm-4 text-right form-form-control-label">{{gen.at_costModal3}}</label>
+                <div class="col-sm-6">
+                  <input currencyMask type="tel" [options]="moneyOption1" class="form-control" id="cost"
+                    placeholder="{{gen.ph_costModal3}}" [readonly]="disableInput.cost" formControlName="cost">
+                </div>
+              </div>
+
+              <div class="form-group row" style="text-align:left">
+                <div class="offset-sm-2 col-sm-6">
+                  <button type="submit" class="btn btn-primary" [disabled]="!ModalformBomCost.valid"
+                    *ngIf="ModalformBomCost.value.bom_cost_id == ''">{{gen.btn_addModal3}}</button>
+                  <button type="submit" class="btn btn-warning" [disabled]="!ModalformBomCost.valid"
+                    *ngIf="ModalformBomCost.value.bom_cost_id != ''">{{gen.btn_updateModal3}}</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,284 @@
+<div class="loading" *ngIf="!gen.app_component_id"></div>
+<ts-notification [notifSuccess]='notif.success' [notifAlert]='notif.alert' [notifError]='notif.error'
+  [notifInfo]='notif.info' [notifWarn]='notif.warn'> </ts-notification>
+
+<div class="animated fadeIn display-inherit">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header font-larger">
+          <a href="javascript:void(0)" class="ts-a-title" (click)="refreshComponent()"><i class=" fa fa-refresh"> </i>
+            {{gen._title}}</a>
+          <div class="card-trans-code ts-hide-mobile">
+            <form class="form-horizontal" [formGroup]="formWork_order">
+              <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-barcode"></i></span>
+                <input type="text" class="form-control ts-clear-bg ts-text-center" id="work_order_code"
+                  placeholder="{{gen._code}}" [readonly]="disableInput.work_order_code"
+                  formControlName="work_order_code" [disabled]="true">
+                <span class="input-group-addon" *ngIf="formWork_order.value.work_order_id != ''">
+                  <label class="switch switch-sm switch-text switch-info float-right mb-0">
+                    <input type="checkbox"
+                      (click)="isUseChange('work_order', formWork_order.value.is_use, formWork_order.value.work_order_id, 'work_order_id')"
+                      class="switch-input" formControlName="is_use">
+                    <span class="switch-label" data-on="On" data-off="Off"></span>
+                    <span class="switch-handle"></span>
+                  </label>
+                </span>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="card-block" style="padding: 0.5rem 1.25rem;">
+          <div class="row">
+            <div class="form-group col-sm-3 ts-show-mobile" style="margin-bottom: 0rem;">
+              <form class="form-horizontal" [formGroup]="formWork_order">
+                <div class="input-group">
+                  <span class="input-group-addon"><i class="fa fa-barcode"></i></span>
+                  <input type="text" class="form-control ts-clear-bg ts-text-center" id="work_order_code"
+                    placeholder="{{gen._code}}" [readonly]="disableInput.work_order_code"
+                    formControlName="work_order_code" [disabled]="true">
+                  <span class="input-group-addon" *ngIf="formWork_order.value.work_order_id != ''">
+                    <label class="switch switch-sm switch-text switch-info float-right mb-0">
+                      <input type="checkbox"
+                        (click)="isUseChange('work_order', formWork_order.value.is_use, formWork_order.value.work_order_id, 'work_order_id')"
+                        class="switch-input" formControlName="is_use">
+                      <span class="switch-label" data-on="On" data-off="Off"></span>
+                      <span class="switch-handle"></span>
+                    </label>
+                  </span>
+                </div>
+              </form>
+            </div>
+            <div class="form-group col-sm-12" style="margin-bottom: 0rem;">
+              <button type="submit" class="btn btn-primary btn-sm2" [disabled]="!formWork_order.valid"
+                *ngIf="formWork_order.value.work_order_id == ''" (click)="formWork_orderSubmit()"><i
+                  class="fa fa-plus"></i> {{gen.btn_add}}</button>
+              <button type="submit" class="btn btn-warning btn-sm2" [disabled]="!formWork_order.valid"
+                *ngIf="formWork_order.value.work_order_id != ''" (click)="formWork_orderSubmit()"><i
+                  class="fa fa-edit "></i> {{gen.btn_edit}}</button>
+              <button type="submit" class="btn btn-danger btn-sm2" *ngIf="formWork_order.value.work_order_id != ''"
+                (click)="Work_orderDelete()"><i class="fa fa-trash"></i> {{gen.btn_delete}}</button>
+              <button type="submit" class="btn btn-success btn-sm2" (click)="modalShow2()"><i class="fa fa-search"></i>
+                {{gen.btn_search}}</button>
+              <button type="submit" class="btn btn-secondary btn-sm2" (click)="clearAll()"><i class="fa fa-eraser"></i>
+                {{gen.btn_clear}}</button>
+              <button type="submit" (click)="printConsoleForm()" *ngIf="printConsole">Print Console</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="animated fadeIn display-inherit">
+
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-block">
+          <form class="form-horizontal" [formGroup]="formWork_order" (ngSubmit)="formWork_orderSubmit()">
+
+            <div class="row">
+              <div class="col-sm-6">
+                <div class="form-group row">
+                  <label for="work_order_code"
+                    class="col-sm-4 text-right form-form-control-label">{{gen.at_code}}</label>
+                  <div class="col-sm-6">
+                    <input type="text" class="form-control" id="work_order_code" placeholder="{{gen.ph_code}}"
+                      [readonly]="disableInput.work_order_code" formControlName="work_order_code">
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <label for="datetime"
+                    class="col-sm-4 text-right form-form-control-label">{{gen.at_start_date}}</label>
+                  <div class="col-sm-6">
+                    <div class="input-group">
+                      <input type="date" class="w100 form-control" formControlName="start_date">
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <label for="datetime"
+                    class="col-sm-4 text-right form-form-control-label">{{gen.at_expected_date}}</label>
+                  <div class="col-sm-6">
+                    <div class="input-group">
+                      <input type="date" class="w100 form-control" formControlName="expected_date">
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="form-group row">
+                  <label for="pic" class="col-sm-4 text-right form-form-control-label">{{gen.at_pic}}</label>
+                  <div class="col-sm-6">
+                    <select class="form-control" id="pic" formControlName="pic">
+                      <option *ngFor="let item of employeeData" value="{{item.employee_id}}">{{item.label}}</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <label for="department_id"
+                    class="col-sm-4 text-right form-form-control-label">{{gen.at_department}}</label>
+                  <div class="col-sm-6">
+                    <select class="form-control" id="department_id" formControlName="department_id">
+                      <option *ngFor="let item of departmentData" value="{{item.department_id}}">{{item.department}}
+                      </option>
+                    </select>
+                  </div>
+                </div>
+
+                <div
+                  class="form-group row {{(formWork_order.controls.description.status == 'INVALID')?'has-warning':''}}">
+                  <label for="description"
+                    class="col-sm-4 text-right form-form-control-label">{{gen.at_description}}</label>
+                  <div class="col-sm-6">
+                    <textarea type="text" class="form-control" id="description" placeholder="{{gen.ph_description}}"
+                      formControlName="description"></textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </form>
+
+          <button type="submit" class="btn btn-primary" (click)="modalShow('')">{{gen.btn_add_bom}}</button>
+          <div class="vertical-scroll" style="max-height: 100%">
+            <table class="table table-responsive table-striped table-sm">
+              <thead>
+                <tr class="text-center">
+                  <th>{{gen.th_action}}</th>
+                  <th>No</th>
+                  <th>*(Code</th>
+                  <th>{{gen.th_bom}}</th>
+                  <th>{{gen.tblheader}}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of work_order_details; let i = index;">
+                  <td>
+                    <button ngClass="btn btn-warning btn-sm"
+                      (click)="modalShow(item); $event.preventDefault()">{{gen.td_select}}</button>
+                  </td>
+                  <td>{{i+1}}</td>
+                  <td>{{item.bom_code}}</td>
+                  <td>{{item.bom}}</td>
+                  <td>{{item.quantity}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="animated fadeIn display-inherit">
+  <div class="row">
+    <div class="col-lg-12">
+      <ts-bydatetime 
+        [report_id]="32" 
+        [data]="formWork_order.value"
+      ></ts-bydatetime>
+    </div>
+  </div>
+</div>
+
+<div bsModal #childModal="bs-modal" class="modal  fade" [config]="{'backdrop':'static', 'keyboard': false}"
+  tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+
+        <h5 class="modal-title">{{ModalHeader}}</h5>
+        <button class="btn btn-outline-danger" (click)="childModal.hide()" aria-label="Close"
+          type="button">{{gen.btn_closeM1}}</button>
+      </div>
+      <div class="modal-body">
+        <form class="form-horizontal" [formGroup]="ModalformWork_order" (ngSubmit)="ModalFormSubmit()">
+
+          <div class="row">
+            <div class="col-sm-6">
+
+              <div class="form-group row">
+                <label for="bom_id" class="col-sm-4 text-right form-form-control-label">{{gen.at_bomM1}}</label>
+                <div class="col-sm-6">
+                  <ng-select bindValue="value" [items]="bomData" formControlName="bom_id"
+                    (change)="modalConversionCostIdChange($event)"> </ng-select>
+                </div>
+              </div>
+
+              <div
+                class="form-group row {{(ModalformWork_order.controls.quantity.status == 'INVALID')?'has-warning':''}}">
+                <label for="quantity" class="col-sm-4 text-right form-form-control-label">{{gen.at_quantityM1}}</label>
+                <div class="col-sm-6">
+                  <input type="number" class="form-control" id="quantity" placeholder="{{gen.ph_quantityM1}}"
+                    formControlName="quantity">
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="form-group row">
+                <label for="status" class="col-sm-4 text-right form-form-control-label">{{gen.at_statusM1}}</label>
+                <div class="col-sm-6">
+                  <select class="form-control" id="status" formControlName="status">
+                    <option value="1">Pending</option>
+                    <option value="2">Processed</option>
+                    <option value="3">Done</option>
+                  </select>
+                </div>
+              </div>
+
+              <div
+                class="form-group row {{(ModalformWork_order.controls.description.status == 'INVALID')?'has-warning':''}}">
+                <label for="description"
+                  class="col-sm-4 text-right form-form-control-label">{{gen.at_descriptionM1}}</label>
+                <div class="col-sm-6">
+                  <textarea type="text" class="form-control" id="description" placeholder="{{gen.ph_descriptionM1}}"
+                    formControlName="description"></textarea>
+                </div>
+              </div>
+
+              <div class="form-group row" style="text-align:left">
+                <div class="offset-sm-2 col-sm-6">
+                  <button type="submit" class="btn btn-primary" [disabled]="!ModalformWork_order.valid"
+                    *ngIf="ModalformWork_order.value.work_order_detail_id == ''">{{gen.btn_addM1}}</button>
+                  <button type="submit" class="btn btn-warning" [disabled]="!ModalformWork_order.valid"
+                    *ngIf="ModalformWork_order.value.work_order_detail_id != ''">{{gen.btn_updateM1}}</button>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </form>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div bsModal #childModal2="bs-modal" class="modal  fade" [config]="{'backdrop':'static', 'keyboard': false}"
+  tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+
+        <h5 class="modal-title">{{gen._titleM2}}</h5>
+        <button class="btn btn-outline-danger" (click)="childModal2.hide()" aria-label="Close"
+          type="button">{{gen.btn_closeM2}}</button>
+      </div>
+      <div class="modal-body-full">
+        <div class="vertical-scroll" style="max-height: 100%">
+          <ng2-smart-table (rowSelect)="httpService.modal_scroll_top($event)" [settings]="settings" [source]="source" (delete)="modal2Select($event)"></ng2-smart-table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

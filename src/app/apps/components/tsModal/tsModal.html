@@ -1,0 +1,19 @@
+<!-- MODAL SEARCH -->
+<div bsModal #childModal="bs-modal" class="modal  fade" [config]="{'backdrop':'static', 'keyboard': false}"
+  tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Judul Modal</h5>
+        <button class="btn btn-outline-danger" (click)="childModal.hide()" aria-label="Close" type="button">Tutup
+          Modal</button>
+      </div>
+      <div class="modal-body-full">
+        <div class="vertical-scroll" style="max-height: 100%">
+          isi modal 1
+          <ng-content></ng-content>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

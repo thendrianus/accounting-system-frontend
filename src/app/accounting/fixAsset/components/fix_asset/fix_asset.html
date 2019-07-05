@@ -1,0 +1,272 @@
+<div class="loading" *ngIf="!gen.app_component_id"></div>
+<ts-notification [notifSuccess]='notif.success' [notifAlert]='notif.alert' [notifError]='notif.error'
+  [notifInfo]='notif.info' [notifWarn]='notif.warn'> </ts-notification>
+
+<div class="animated fadeIn display-inherit">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header font-larger">
+          <a href="javascript:void(0)" class="ts-a-title" (click)="refreshComponent()"><i class=" fa fa-refresh"> </i>
+            {{gen._title}}</a>
+          <div class="card-trans-code ts-hide-mobile">
+            <form class="form-horizontal" [formGroup]="formFix_asset">
+              <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-barcode"></i></span>
+                <input type="text" class="form-control ts-clear-bg ts-text-center" id="fix_asset_code"
+                  placeholder="{{gen._code}}" [readonly]="disableInput.fix_asset_code" formControlName="fix_asset_code"
+                  [disabled]="true">
+                <span class="input-group-addon" *ngIf="formFix_asset.value.fix_asset_id != ''">
+                  <label class="switch switch-sm switch-text switch-info float-right mb-0">
+                    <input type="checkbox"
+                      (click)="isUseChange('fix_asset', formFix_asset.value.is_use, formFix_asset.value.fix_asset_id, 'fix_asset_id')"
+                      class="switch-input" formControlName="is_use">
+                    <span class="switch-label" data-on="On" data-off="Off"></span>
+                    <span class="switch-handle"></span>
+                  </label>
+                </span>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="card-block" style="padding: 0.5rem 1.25rem;">
+          <div class="row">
+            <div class="form-group col-sm-3 ts-show-mobile" style="margin-bottom: 0rem;">
+              <form class="form-horizontal" [formGroup]="formFix_asset">
+                <div class="input-group">
+                  <span class="input-group-addon"><i class="fa fa-barcode"></i></span>
+                  <input type="text" class="form-control ts-clear-bg ts-text-center" id="fix_asset_code"
+                    placeholder="{{gen._code}}" [readonly]="disableInput.fix_asset_code"
+                    formControlName="fix_asset_code" [disabled]="true">
+                  <span class="input-group-addon" *ngIf="formFix_asset.value.fix_asset_id != ''">
+                    <label class="switch switch-sm switch-text switch-info float-right mb-0">
+                      <input type="checkbox"
+                        (click)="isUseChange('fix_asset', formFix_asset.value.is_use, formFix_asset.value.fix_asset_id, 'fix_asset_id')"
+                        class="switch-input" formControlName="is_use">
+                      <span class="switch-label" data-on="On" data-off="Off"></span>
+                      <span class="switch-handle"></span>
+                    </label>
+                  </span>
+                </div>
+              </form>
+            </div>
+            <div class="form-group col-sm-12" style="margin-bottom: 0rem;">
+              <button type="submit" class="btn btn-warning btn-sm2" [disabled]="!formFix_asset.valid"
+                (click)="submitFormFix_asset()"><i class="fa fa-edit"></i> {{gen.btn_update}}</button>
+              <button type="submit" class="btn btn-warning btn-sm2" [disabled]="!formFix_asset.value.fix_asset_id"
+                (click)="deleteFix_asset()"><i class="fa fa-trash"></i> {{gen.btn_delete}}</button>
+              <button type="submit" class="btn btn-success btn-sm2" (click)="modalShow()"><i class="fa fa-search"></i>
+                {{gen.btn_search}}</button>
+              <button type="submit" class="btn btn-primary btn-sm2" (click)="modalShow2()"><i class="fa fa-plus"></i>
+                {{gen.btn_newfixasset}}</button>
+              <button type="submit" class="btn btn-secondary btn-sm2" (click)="clearAll()"><i class="fa fa-eraser"></i>
+                {{gen.btn_clear}}</button>
+              <button type="submit" (click)="printConsoleForm()" *ngIf="printConsole">Print
+                Console</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="animated fadeIn display-inherit">
+
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-block">
+          <div class="vertical-scroll" style="max-height: 100%">
+            <form class="form-horizontal" [formGroup]="formFix_asset">
+
+              <div class="row">
+                <div class="col-sm-6">
+                  <div class="form-group row">
+                    <label for="fix_asset_code"
+                      class="col-sm-4 text-right form-form-control-label">{{gen.at_fix_asset_Code}}</label>
+                    <div class="col-sm-6">
+                      <input type="text" class="form-control" id="fix_asset_code" placeholder="{{gen.ph_fix_asset_no}}"
+                        [readonly]="disableInput.fix_asset_code" formControlName="fix_asset_code">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="inventory_name"
+                      class="col-sm-4 text-right form-form-control-label">{{gen.at_inventory_name}}</label>
+                    <div class="col-sm-6">
+                      <input type="text" class="form-control" id="inventory_name"
+                        placeholder="{{gen.ph_inventory_name}}" [readonly]="disableInput.inventory_name"
+                        formControlName="inventory_name">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="label" class="col-sm-4 text-right form-form-control-label">{{gen.at_label}}</label>
+                    <div class="col-sm-6">
+                      <input type="text" class="form-control" id="label" placeholder="{{gen.ph_label}}"
+                        formControlName="label">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="buying_date"
+                      class="col-sm-4 text-right form-form-control-label">{{gen.at_buying_date}}</label>
+                    <div class="col-sm-6">
+                      <input type="text" class="form-control" id="buying_date" placeholder="{{gen.ph_buying_date}}"
+                        [readonly]="disableInput.buying_date" formControlName="buying_date">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="price" class="col-sm-4 text-right form-form-control-label">{{gen.at_price}}</label>
+                    <div class="col-sm-6">
+                      <input currencyMask type="tel" [options]="moneyOption" class="form-control" id="price"
+                        placeholder="{{gen.ph_price}}" [readonly]="disableInput.price" formControlName="price">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="currency_id"
+                      class="col-sm-4 text-right form-form-control-label">{{gen.at_currency_id}}</label>
+                    <div class="col-sm-6">
+                      <input type="text" class="form-control" id="currency_id" placeholder="{{gen.ph_currency_id}}"
+                        [readonly]="disableInput.currency_id" formControlName="currency_id">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="residue" class="col-sm-4 text-right form-form-control-label">{{gen.at_residue}}</label>
+                    <div class="col-sm-6">
+                      <input type="number" class="form-control" id="residue" placeholder="{{gen.ph_residue}}"
+                        formControlName="residue">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="form-group row">
+                    <label for="rate" class="col-sm-4 text-right form-form-control-label">{{gen.at_rate}}</label>
+                    <div class="col-sm-6">
+                      <input type="number" class="form-control" id="rate" placeholder="{{gen.ph_rate}}"
+                        [readonly]="disableInput.rate" formControlName="rate">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="life_time"
+                      class="col-sm-4 text-right form-form-control-label">{{gen.at_life_time}}</label>
+                    <div class="col-sm-6">
+                      <input type="number" class="form-control" id="life_time" placeholder="{{gen.ph_life_time}}"
+                        formControlName="life_time">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="warehouse_id"
+                      class="col-sm-4 text-right form-form-control-label">{{gen.at_warehouse_id}}</label>
+                    <div class="col-sm-6">
+                      <select class="form-control" id="warehouse_id" formControlName="warehouse_id">
+                        <option *ngFor="let item of warehouseList" value="{{item.warehouse_id}}">{{item.warehouse_code}}
+                          -
+                          {{item.warehouse}}</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="branch_id" class="col-sm-4 text-right form-form-control-label">{{gen.at_branch}}</label>
+                    <div class="col-sm-6">
+                      <select class="form-control" id="branch_id" formControlName="branch_id">
+                        <option *ngFor="let item of branchList" value="{{item.branch_id}}">
+                          {{item.name}}</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="fix_asset_group_id"
+                      class="col-sm-4 text-right form-form-control-label">{{gen.at_fix_asset_group}}</label>
+                    <div class="col-sm-6">
+                      <select class="form-control" id="fix_asset_group_id" formControlName="fix_asset_group_id"
+                        (change)="fixAssetGroupChange()">
+                        <option *ngFor="let item of fix_asset_groupList" value="{{item.fix_asset_group_id}}">
+                          {{item.name}}</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="depreciation_method_id"
+                      class="col-sm-4 text-right form-form-control-label">{{gen.at_depreciation_method}}</label>
+                    <div class="col-sm-6">
+                      <select class="form-control" id="depreciation_method_id"
+                        [ngClass]="{disabledDiv: disableInput.depreciation_method_id}"
+                        formControlName="depreciation_method_id">
+                        <option value='1'>{{gen.at_straight_line}}</option>
+                        <option value='2'>{{gen.at_downline_ballance}}</option>
+                      </select>
+                    </div>
+
+                  </div>
+                  <div class="form-group row">
+                    <label for="max_years"
+                      class="col-sm-4 text-right form-form-control-label">{{gen.at_max_years}}</label>
+                    <div class="col-sm-6">
+                      <input type="number" class="form-control" id="max_years" placeholder="{{gen.ph_max_years}}"
+                        [readonly]="disableInput.max_years" formControlName="max_years">
+                    </div>
+                  </div>
+                  <div
+                    class="form-group row {{(formFix_asset.controls.description.status == 'INVALID')?'has-warning':''}}">
+                    <label for="description"
+                      class="col-sm-4 text-right form-form-control-label">{{gen.at_description}}</label>
+                    <div class="col-sm-6">
+                      <textarea type="text" class="form-control" id="description" placeholder="{{gen.ph_description}}"
+                        formControlName="description"></textarea>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- MODAL SEARCH WHERE STATUS = 1 -->
+<div bsModal #childModal="bs-modal" class="modal  fade" [config]="{'backdrop':'static', 'keyboard': false}"
+  tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{{gen._titleModal1}}</h5>
+        <button class="btn btn-outline-danger" (click)="childModal.hide()" aria-label="Close"
+          type="button">{{gen.btn_closeModal1}}</button>
+      </div>
+      <div class="modal-body-full">
+        <div class="vertical-scroll" style="max-height: 100%">
+          <div class="vertical-scroll" style="max-height: 100%">
+            <ng2-smart-table (rowSelect)="httpService.modal_scroll_top($event)" [settings]="settings" [source]="source" (delete)="ModalSelectFix_asset($event)">
+            </ng2-smart-table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL SEARCH WHERE STATUS = 0 -->
+<div bsModal #childModal2="bs-modal" class="modal  fade" [config]="{'backdrop':'static', 'keyboard': false}"
+  tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{{gen._titleModal2}}</h5>
+        <button class="btn btn-outline-danger" (click)="childModal2.hide()" aria-label="Close"
+          type="button">{{gen.btn_closeModal1}}</button>
+      </div>
+      <div class="modal-body-full">
+        <div class="vertical-scroll" style="max-height: 100%">
+          <div class="vertical-scroll" style="max-height: 100%">
+            <ng2-smart-table (rowSelect)="httpService.modal_scroll_top($event)" [settings]="settings2" [source]="source2" (delete)="ModalSelectFix_asset2($event)">
+            </ng2-smart-table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,132 @@
+<simple-notifications></simple-notifications>
+
+<div class="app flex-row align-items-center">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-8" *ngIf="!loginHidden">
+        <div class="card-group mb-0">
+          <div class="card p-4">
+            <div class="card-block">
+              <h1>{{gen._title}}</h1>
+              <p class="text-muted">{{gen._word}}</p>
+              <form [formGroup]="form" (ngSubmit)="onSubmit()" class="form-horizontal">
+
+                <div class="input-group mb-3 {{(form.controls.email.status == 'INVALID')?'has-warning':''}}">
+                  <span class="input-group-addon"><i class="icon-user"></i></span>
+                  <input type="text" formControlName="email" class="form-control" placeholder="{{gen.ph_username}}">
+                </div>
+
+                <div class="input-group mb-4 {{(form.controls.account_password.status == 'INVALID')?'has-warning':''}}">
+                  <span class="input-group-addon"><i class="icon-lock"></i></span>
+                  <input type="password" formControlName="account_password" class="form-control"
+                    placeholder="{{gen.ph_password}}">
+                </div>
+
+                <div class="input-group mb-4">
+                  <button type="submit" [disabled]="!form.valid && server== ''"
+                    class="btn btn-primary px-4">{{gen.btn_login}}</button>
+                </div>
+
+                <div class="input-group mb-4 {{(form.controls.server.status == 'INVALID')?'has-warning':''}}">
+                  <span class="input-group-addon" style="border: 0px">
+                    <div class="btn-group float-right" dropdown>
+                      <button type="button" class="btn btn-transparent dropdown-toggle p-0" dropdownToggle>
+                        <i class="fa fa-server"></i>
+                      </button>
+                      <div class="dropdown-menu dropdown-menu-right" *dropdownMenu>
+                        <div class="dropdown-item" *ngFor="let item of serverList; let i = index;">
+                          <a href="#" (click)="removeFromServerList(i)"><i class="fa fa-close"></i></a>
+                          <a href="#" (click)="setFromServerList(item.server)">{{item.server}}</a>
+                        </div>
+
+                      </div>
+                    </div>
+                  </span>
+                  <input type="text" formControlName="server" class="form-control" placeholder="Server">
+                  <span class="input-group-btn">
+                    <button type="button" class="btn btn-primary" (click)="setServer()"><i
+                        class="fa fa-check"></i></button>
+                  </span>
+                </div>
+
+              </form>
+
+            </div>
+          </div>
+          <div class="card card-inverse card-primary py-5 d-md-down-none" style="width:44%">
+            <div class="card-block text-center" *ngIf="isThereAdmin">
+              <div>
+                <h2>{{gen._title2}}</h2>
+                <p>{{gen._subsignup}}</p>
+                <!-- <button type="button" class="btn btn-warning active mt-3">{{gen.btn_register}}</button> -->
+              </div>
+            </div>
+            <div class="card-block" *ngIf="!isThereAdmin">
+              <div>
+                <h2>Register As Admin</h2>
+                <p>There are no admin, so you have to create one before start</p>
+                <form class="form-horizontal" [formGroup]="formRegister" (ngSubmit)="formRegisterSubmit()">
+
+                  <div class="form-group row">
+                    <label for="title" class="col-sm-4 text-right form-form-control-label">Title</label>
+                    <div class="col-sm-6">
+                      <select class="form-control" id="title" formControlName="title">
+                        <option value="Mr">Mr</option>
+                        <option value="Mrs">Mrs</option>
+                        <option value="Ms">Ms</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div
+                    class="form-group row {{(formRegister.controls.firstname.status == 'INVALID')?'has-warning':''}}">
+                    <label for="firstname" class="col-sm-4 text-right form-form-control-label ">Firstname</label>
+                    <div class="col-sm-6">
+                      <input type="text" class="form-control" id="firstname" placeholder="Firstname"
+                        formControlName="firstname">
+                    </div>
+                  </div>
+                  <div class="form-group row {{(formRegister.controls.lastname.status == 'INVALID')?'has-warning':''}}">
+                    <label for="lastname" class="col-sm-4 text-right form-form-control-label">Lastname</label>
+                    <div class="col-sm-6">
+                      <input type="text" class="form-control" id="lastname" placeholder="Lastname"
+                        formControlName="lastname">
+                    </div>
+                  </div>
+                  <div class="form-group row {{(formRegister.controls.username.status == 'INVALID')?'has-warning':''}}">
+                    <label for="username" class="col-sm-4 text-right form-form-control-label">Username</label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control" id="username" placeholder="Username"
+                        formControlName="username">
+                    </div>
+                  </div>
+                  <div
+                    class="form-group row {{(formRegister.controls.account_password.status == 'INVALID')?'has-warning':''}}">
+                    <label for="account_password" class="col-sm-4 text-right form-form-control-label">Password</label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control" id="account_password" placeholder="Password"
+                        formControlName="account_password">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="account_password" class="col-sm-4 text-right form-form-control-label"></label>
+                    <div class="col-sm-8">
+                      <button type="submit" [disabled]="!formRegister.valid"
+                        class="btn btn-warning px-4">Register</button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6" *ngIf="loginHidden">
+        <div class="clearfix">
+          <h1 class="float-left display-3 mr-4">{{gen._comname}}</h1>
+          <h4 class="pt-3">{{gen._comnamebold}}</h4>
+          <h5 class="text-muted">@{{gen._comyear}}</h5>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

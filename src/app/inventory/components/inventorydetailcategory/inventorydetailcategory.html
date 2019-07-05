@@ -1,0 +1,5 @@
+<select class="form-control" id="exampleSelect1" [(ngModel)]="selectedInventorydetailcategory"
+  (ngModelChange)="inventorydetailcategoryChange()">
+  <option *ngFor="let item of inventorydetailcategory" value="{{item.inventory_detail_category_id}}">
+    {{item.category_detail}}</option>
+</select>

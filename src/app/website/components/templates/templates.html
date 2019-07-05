@@ -1,0 +1,262 @@
+<div class="loading" *ngIf="!gen.app_component_id"></div>
+<ts-notification [notifSuccess]='notif.success' [notifAlert]='notif.alert' [notifError]='notif.error'
+  [notifInfo]='notif.info' [notifWarn]='notif.warn'> </ts-notification>
+
+<div class="animated fadeIn display-inherit">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header font-larger">
+          <a href="javascript:void(0)" class="ts-a-title" (click)="refreshComponent()"><i class=" fa fa-refresh"> </i>
+            {{gen._title}}</a>
+          <div class="card-trans-code ts-hide-mobile">
+            <form class="form-horizontal" [formGroup]="formTemplate">
+              <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-barcode"></i></span>
+                <input type="text" class="form-control ts-clear-bg ts-text-center" id="template_code"
+                  placeholder="{{gen._code}}" formControlName="template_code" [disabled]="true">
+                <span class="input-group-addon" *ngIf="formTemplate.value.template_id != ''">
+                  <label class="switch switch-sm switch-text switch-info float-right mb-0">
+                    <input type="checkbox"
+                      (click)="isUseChange('template', formTemplate.value.is_use, formTemplate.value.template_id, 'template_id')"
+                      class="switch-input" formControlName="is_use">
+                    <span class="switch-label" data-on="On" data-off="Off"></span>
+                    <span class="switch-handle"></span>
+                  </label>
+                </span>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="card-block" style="padding: 0.5rem 1.25rem;">
+          <div class="row">
+            <div class="form-group col-sm-3 ts-show-mobile" style="margin-bottom: 0rem;">
+              <form class="form-horizontal" [formGroup]="formTemplate">
+                <div class="input-group">
+                  <span class="input-group-addon"><i class="fa fa-barcode"></i></span>
+                  <input type="text" class="form-control ts-clear-bg ts-text-center" id="template_code"
+                    placeholder="{{gen._code}}" formControlName="template_code" [disabled]="true">
+                  <span class="input-group-addon" *ngIf="formTemplate.value.template_id != ''">
+                    <label class="switch switch-sm switch-text switch-info float-right mb-0">
+                      <input type="checkbox"
+                        (click)="isUseChange('template', formTemplate.value.is_use, formTemplate.value.template_id, 'template_id')"
+                        class="switch-input" formControlName="is_use">
+                      <span class="switch-label" data-on="On" data-off="Off"></span>
+                      <span class="switch-handle"></span>
+                    </label>
+                  </span>
+                </div>
+              </form>
+            </div>
+            <div class="form-group col-sm-12" style="margin-bottom: 0rem;">
+              <button type="submit" class="btn btn-primary btn-sm2" [disabled]="!formTemplate.valid" *ngIf="!formTemplate.value.template_id"
+                (click)="submitFormTemplate()"><i class="fa fa-plus"></i> {{gen.btn_add}}</button>  
+              <button type="submit" class="btn btn-warning btn-sm2" [disabled]="!formTemplate.valid" *ngIf="formTemplate.value.template_id"
+                (click)="submitFormTemplate()"><i class="fa fa-edit "></i> {{gen.btn_edit}}</button>
+              <button type="submit" class="btn btn-danger btn-sm2" [disabled]="!formTemplate.value.template_id"
+                (click)="deleteTemplate()"><i class="fa fa-trash"></i> {{gen.btn_delete}}</button>
+              <button type="submit" class="btn btn-success btn-sm2" (click)="modalShow()"><i class="fa fa-search"></i>
+                {{gen.btn_search}}</button>
+              <button type="submit" class="btn btn-secondary btn-sm2" (click)="clearAll()"><i class="fa fa-eraser"></i>
+                {{gen.btn_clear}}</button>
+              <button type="submit" (click)="printConsoleForm()" *ngIf="printConsole">Print Console</button>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="animated fadeIn display-inherit">
+  <div class="row">
+
+    <div class="col-lg-6">
+      <div class="card">
+        <div class="card-block">
+          <div class="vertical-scroll" style="max-height: 100%">
+            <form class="form-horizontal" [formGroup]="formTemplate">
+              <div class="form-group row {{(formTemplate.controls.name.status == 'INVALID')?'has-warning':''}}">
+                <label for="name" class="col-sm-4 text-right form-form-control-label">{{gen.at_name}}</label>
+                <div class="col-sm-6">
+                  <input type="text" class="form-control" id="name" placeholder="{{gen.ph_name}}"
+                    formControlName="name">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="template_category_id"
+                  class="col-sm-4 text-right form-form-control-label">{{gen.at_category}}</label>
+                <div class="col-sm-6">
+                  <select class="form-control" id="template_category_id" formControlName="template_category_id">
+                    <option *ngFor="let item of templateCategory" value="{{item.template_category_id}}">
+                      {{item.template_category_id}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group row {{(formTemplate.controls.description.status == 'INVALID')?'has-warning':''}}">
+                <label for="description"
+                  class="col-sm-4 text-right form-form-control-label">{{gen.at_description}}</label>
+                <div class="col-sm-6">
+                  <textarea type="text" class="form-control" id="description" placeholder="{{gen.ph_description}}"
+                    formControlName="description"></textarea>
+                </div>
+              </div>
+              <div class="form-group row {{(formTemplate.controls.filename.status == 'INVALID')?'has-warning':''}}">
+                <label for="filename" class="col-sm-4 text-right form-form-control-label">{{gen.at_filename}}</label>
+                <div class="col-sm-6">
+                  <input type="text" class="form-control" id="filename" placeholder="{{gen.ph_filename}}"
+                    formControlName="filename">
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-6">
+      <div class="card">
+        <div class="card-block">
+          <div class="vertical-scroll" style="max-height: 100%">
+            <form class="form-horizontal" [formGroup]="formTemplateDetail" (ngSubmit)="submitFormTemplateDetail()">
+
+              <div class="form-group row">
+                <label for="name" class="col-sm-4 text-right form-form-control-label">{{gen.at_name2}}</label>
+                <div class="col-sm-6">
+                  <input class="form-control" id="name" placeholder="{{gen.ph_name2}}" formControlName="name">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="widget_id" class="col-sm-4 text-right form-form-control-label">{{gen.at_widget}}</label>
+                <div class="col-sm-6">
+                  <select class="form-control" id="widget_id" formControlName="widget_id">
+                    <option *ngFor="let item of widgetList" value="{{item.widget_id}}">{{item.name}}</option>
+                  </select>
+                </div>
+              </div>
+              <div
+                class="form-group row {{(formTemplateDetail.controls.description.status == 'INVALID')?'has-warning':''}}">
+                <label for="description"
+                  class="col-sm-4 text-right form-form-control-label">{{gen.at_description2}}</label>
+                <div class="col-sm-6">
+                  <textarea class="form-control" id="description" placeholder="{{gen.ph_description2}}"
+                    formControlName="description">  </textarea>
+                </div>
+              </div>
+              <div
+                class="form-group row {{(formTemplateDetail.controls.positions.status == 'INVALID')?'has-warning':''}}">
+                <label for="positions" class="col-sm-4 text-right form-form-control-label">{{gen.at_position}}</label>
+                <div class="col-sm-6">
+                  <input class="form-control" type="number" id="positions" placeholder="{{gen.ph_position}}"
+                    formControlName="positions">
+                </div>
+              </div>
+              <div class="form-group row">
+                <div class="offset-sm-4 col-sm-6">
+                  <button type="submit" class="btn btn-primary" [disabled]="!formTemplateDetail.valid"
+                    *ngIf="formTemplateDetail.value.template_detail_id == ''">{{gen.btn_add}}</button>
+                  <button type="submit" class="btn btn-warning" [disabled]="!formTemplateDetail.valid"
+                    *ngIf="formTemplateDetail.value.template_detail_id != ''">{{gen.btn_edit}}</button>
+                  <button class="btn btn-danger" *ngIf="formTemplateDetail.value.template_detail_id != ''"
+                    (click)="cancelTemplateDetail()">{{gen.btn_cancel2}}</button>
+                  <button class="btn btn-danger" *ngIf="formTemplateDetail.value.template_detail_id != ''"
+                    (click)="deleteTemplateDetail()">{{gen.btn_delete}}</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="row">
+
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-block">
+          <div class="vertical-scroll" style="max-height: 100%">
+            <table class="table table-responsive table-striped table-sm">
+              <thead>
+                <tr class="text-center">
+                  <th>{{gen.th_action}}</th>
+                  <th>{{gen.th_position}}</th>
+                  <th>{{gen.th_name}}</th>
+                  <th>{{gen.th_widget}}</th>
+                  <th>{{gen.th_description}}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of templateDetails; let i = index;">
+                  <td>
+                    <button ngClass="btn btn-warning btn-sm"
+                      (click)="editTemplateDetail(item)">{{gen.td_select}}</button>
+                  </td>
+                  <td>{{item.positions}}</td>
+                  <td>{{item.name}}</td>
+                  <td>{{item.widget_id}}</td>
+                  <td>{{item.description}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="animated fadeIn display-inherit">
+  <div class="row">
+    <div class="col-lg-12">
+      <ts-bydatetime 
+        [report_id]="45" 
+        [data]="formTemplate.value"
+      ></ts-bydatetime>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL  SEARCH -->
+<div bsModal #childModal="bs-modal" class="modal  fade" [config]="{'backdrop':'static', 'keyboard': false}"
+  tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{{gen._titleM1}}</h5>
+        <button class="btn btn-outline-danger" (click)="childModal.hide()" aria-label="Close"
+          type="button">{{gen.btn_closeM1}}</button>
+      </div>
+      <div class="modal-body">
+        <div class="vertical-scroll" style="max-height: 100%">
+          <div class="vertical-scroll" style="max-height: 100%">
+            <table class="table table-responsive table-striped table-sm">
+              <thead>
+                <tr class="text-center">
+                  <th>{{gen.th_action2}}</th>
+                  <th class="table-id">{{gen.th_no2}}</th>
+                  <th>{{gen.th_description2}}</th>
+                  <th>{{gen.th_filename2}}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of ModalTemplate; let i= index;">
+                  <td>
+                    <button ngClass="btn btn-warning btn-sm"
+                      (click)="ModalSelectTemplate(item)">{{gen.td_select2}}</button>
+                  </td>
+                  <td class="table-id">{{i+1}}</td>
+                  <td>{{item.description}}</td>
+                  <td>{{item.filename}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

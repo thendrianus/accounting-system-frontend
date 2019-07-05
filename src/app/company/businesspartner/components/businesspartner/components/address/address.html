@@ -1,0 +1,138 @@
+<div class="loading" *ngIf="!gen.app_component_id"></div>
+<ts-notification [notifSuccess]='notif.success' [notifAlert]='notif.alert' [notifError]='notif.error'
+  [notifInfo]='notif.info' [notifWarn]='notif.warn'> </ts-notification>
+
+<div class="form-group">
+  <button type="submit" class="btn btn-primary" (click)="modalShow('')"
+    *ngIf="businesspartnerOrder != ''">{{gen.btn_newbtn}}</button>
+</div>
+<table class="table table-responsive table-striped table-sm">
+  <thead>
+    <tr class="text-center">
+      <th>{{gen.th_action}}</th>
+      <th class="table-id">{{gen.th_no}}</th>
+      <th>{{gen.th_name}}</th>
+      <th>{{gen.th_address}}</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let item of address; let i = index;">
+      <td>
+        <button ngClass="status-button btn btn-sm btn-warning" (click)="modalShow(item)">{{gen.td_edit}}</button>
+      </td>
+      <td class="table-id">{{i+1}}</td>
+      <td>{{item.name}}</td>
+      <td>{{item.address}}</td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- MODAL TRANSACTION DETAIL -->
+<div bsModal #childModal="bs-modal" class="modal  fade" [config]="{'backdrop':'static', 'keyboard': false}"
+  tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{{ModalHeader}}</h5>
+        <button class="btn btn-outline-danger" (click)="childModal.hide()" aria-label="Close"
+          type="button">{{gen._close}}</button>
+      </div>
+      <div class="modal-body">
+        <form class="form-horizontal" [formGroup]="ModalFormAddress" (ngSubmit)="ModalFormSubmit()">
+
+          <div class="row">
+            <div class="col-sm-6">
+
+              <div class="form-group row {{(ModalFormAddress.controls.name.status == 'INVALID')?'has-warning':''}}">
+                <label for="name" class="col-sm-4 text-right form-form-control-label">{{gen.at_name}}</label>
+                <div class="col-sm-6">
+                  <input type="text" class="form-control" id="name" placeholder="{{gen.ph_name}}"
+                    formControlName="name">
+                </div>
+              </div>
+              <div class="form-group row {{(ModalFormAddress.controls.address.status == 'INVALID')?'has-warning':''}}">
+                <label for="address" class="col-sm-4 text-right form-form-control-label">{{gen.at_address}}</label>
+                <div class="col-sm-6">
+                  <input type="text" class="form-control" id="address" placeholder="{{gen.at_address}}"
+                    formControlName="address">
+                </div>
+              </div>
+              <div class="form-group row {{(ModalFormAddress.controls.telp1.status == 'INVALID')?'has-warning':''}}">
+                <label for="telp1" class="col-sm-4 text-right form-form-control-label">{{gen.at_telp1}}</label>
+                <div class="col-sm-6">
+                  <input type="text" class="form-control" id="telp1" placeholder="{{gen.ph_telp1}}"
+                    formControlName="telp1">
+                </div>
+              </div>
+              <div class="form-group row {{(ModalFormAddress.controls.telp2.status == 'INVALID')?'has-warning':''}}">
+                <label for="telp2" class="col-sm-4 text-right form-form-control-label">{{gen.at_telp2}}</label>
+                <div class="col-sm-6">
+                  <input type="text" class="form-control" id="telp2" placeholder="{{gen.ph_telp2}}"
+                    formControlName="telp2">
+                </div>
+              </div>
+              <div class="form-group row {{(ModalFormAddress.controls.telp3.status == 'INVALID')?'has-warning':''}}">
+                <label for="telp3" class="col-sm-4 text-right form-form-control-label">{{gen.at_telp3}}</label>
+                <div class="col-sm-6">
+                  <input type="text" class="form-control" id="telp2" placeholder="{{gen.ph_telp3}}"
+                    formControlName="telp3">
+                </div>
+              </div>
+
+            </div>
+            <div class="col-sm-6">
+
+              <div class="form-group row {{(ModalFormAddress.controls.city.status == 'INVALID')?'has-warning':''}}">
+                <label for="city" class="col-sm-4 text-right form-form-control-label">{{gen.at_city}}</label>
+                <div class="col-sm-6">
+                  <input type="text" class="form-control" id="city" placeholder="{{gen.ph_city}}"
+                    formControlName="city">
+                </div>
+              </div>
+              <div class="form-group row {{(ModalFormAddress.controls.fax.status == 'INVALID')?'has-warning':''}}">
+                <label for="fax" class="col-sm-4 text-right form-form-control-label">{{gen.at_fax}}</label>
+                <div class="col-sm-6">
+                  <input type="text" class="form-control" id="fax" placeholder="{{gen.ph_fax}}" formControlName="fax">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="poscode" class="col-sm-4 text-right form-form-control-label">{{gen.at_Poscode}}</label>
+                <div class="col-sm-6">
+                  <input type="text" class="form-control" id="poscode" placeholder="{{gen.ph_Poscode}}"
+                    formControlName="poscode">
+                </div>
+              </div>
+              <div
+                class="form-group row {{(ModalFormAddress.controls.description.status == 'INVALID')?'has-warning':''}}">
+                <label for="description"
+                  class="col-sm-4 text-right form-form-control-label">{{gen.at_description}}</label>
+                <div class="col-sm-6">
+                  <textarea type="text" class="form-control" id="description" placeholder="{{gen.ph_description}}"
+                    formControlName="description"></textarea>
+                </div>
+              </div>
+
+            </div>
+          </div>
+          <div class="form-group row" style="text-align:left">
+            <div class="offset-sm-2 col-sm-10">
+              <button type="submit" class="btn btn-primary" [disabled]="!ModalFormAddress.valid"
+                *ngIf="ModalFormAddress.value.businesspartner_address_id == ''">{{gen.btn_add}}</button>
+              <button type="submit" class="btn btn-warning" [disabled]="!ModalFormAddress.valid"
+                *ngIf="ModalFormAddress.value.businesspartner_address_id != ''">{{gen.btn_edit}}</button>
+              <button class="btn btn-danger" (click)="deleteAddress()"
+                *ngIf="ModalFormAddress.value.businesspartner_address_id != ''">{{gen.btn_delete}}</button>
+            </div>
+          </div>
+
+        </form>
+        <div class="col-lg-12">
+          <ts-bydatetime 
+            [report_id]="61" 
+            [data]="ModalFormAddress.value"
+          ></ts-bydatetime>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

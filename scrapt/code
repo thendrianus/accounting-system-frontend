@@ -1,0 +1,7 @@
+//ts report tanpa create update data
+<ts-bydatetime  
+    style="width: 100%;"
+    [report_id]="2" 
+    [data]="formPos_session.value"
+    [showCreateUpdate]="showCreateUpdate"
+></ts-bydatetime>

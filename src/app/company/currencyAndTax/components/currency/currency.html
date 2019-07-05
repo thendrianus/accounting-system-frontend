@@ -1,0 +1,178 @@
+<div class="loading" *ngIf="!gen.app_component_id"></div>
+<ts-notification [notifSuccess]='notif.success' [notifAlert]='notif.alert' [notifError]='notif.error'
+  [notifInfo]='notif.info' [notifWarn]='notif.warn'> </ts-notification>
+
+<div class="animated fadeIn display-inherit">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header font-larger">
+          <a href="javascript:void(0)" class="ts-a-title" (click)="refreshComponent()"><i class=" fa fa-refresh"> </i>
+            {{gen._title}}</a>
+          <div class="card-trans-code ts-hide-mobile">
+            <form class="form-horizontal" [formGroup]="formCurrency">
+              <div class="input-group widthauto">
+                <span class="input-group-addon"><i class="fa fa-barcode"></i></span>
+                <input type="text" class="form-control ts-clear-bg ts-text-center" id="currency_id"
+                  [readonly]="disableInput.currency_id" formControlName="currency_id" [disabled]="true">
+                <span class="input-group-addon" *ngIf="formCurrency.value.currency_id != ''">
+                  <label class="switch switch-sm switch-text switch-info float-right mb-0">
+                    <input type="checkbox"
+                      (click)="isUseChange('currencies', formCurrency.value.is_use, formCurrency.value.currency_id, 'currency_id')"
+                      class="switch-input" formControlName="is_use">
+                    <span class="switch-label" data-on="On" data-off="Off"></span>
+                    <span class="switch-handle"></span>
+                  </label>
+                </span>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="card-block" style="padding: 0.5rem 1.25rem;">
+          <div class="row">
+            <div class="form-group col-sm-3 ts-show-mobile" style="margin-bottom: 0rem;">
+              <form class="form-horizontal" [formGroup]="formCurrency">
+                <div class="input-group widthauto">
+                  <span class="input-group-addon"><i class="fa fa-barcode"></i></span>
+                  <input type="text" class="form-control ts-clear-bg ts-text-center" id="currency_id"
+                    [readonly]="disableInput.currency_id" formControlName="currency_id" [disabled]="true">
+                  <span class="input-group-addon" *ngIf="formCurrency.value.currency_id != ''">
+                    <label class="switch switch-sm switch-text switch-info float-right mb-0">
+                      <input type="checkbox"
+                        (click)="isUseChange('currencies', formCurrency.value.is_use, formCurrency.value.currency_id, 'currency_id')"
+                        class="switch-input" formControlName="is_use">
+                      <span class="switch-label" data-on="On" data-off="Off"></span>
+                      <span class="switch-handle"></span>
+                    </label>
+                  </span>
+                </div>
+              </form>
+            </div>
+            <div class="form-group col-sm-12" style="margin-bottom: 0rem;">
+              <button type="submit" class="btn btn-primary btn-sm2" [disabled]="!formCurrency.valid"
+                *ngIf="formCurrency.value.currency_order == ''" (click)="currencySubmit()"><i class="fa fa-plus"></i>
+                {{gen.btn_add}}</button>
+              <button type="submit" class="btn btn-warning btn-sm2" [disabled]="!formCurrency.valid"
+                *ngIf="formCurrency.value.currency_order != ''" (click)="currencySubmit()"><i class="fa fa-edit "></i>
+                {{gen.btn_edit}}</button>
+              <!-- <button type="submit" class="btn btn-danger btn-sm2" *ngIf="formCurrency.value.currency_order != ''" [disabled]="!formCurrency.valid" (click)="currencyDelete()"><i class="fa fa-trash"></i> {{gen.btn_delete}}</button> -->
+              <button type="submit" class="btn btn-secondary btn-sm2" (click)="clearAll()"><i class="fa fa-eraser"></i>
+                {{gen.btn_clear}}</button>
+              <button type="submit" (click)="printConsoleForm()" *ngIf="printConsole">Print Console</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="animated fadeIn display-inherit small-input">
+  <div class="row">
+
+    <div class="col-lg-4">
+      <div class="card">
+        <div class="card-block">
+          <div class="row">
+
+            <div class="form-group col-sm-12">
+              <form class="form-horizontal" [formGroup]="formCurrency">
+
+                <div
+                  class="form-group row {{(formCurrency.controls.currency_id.valid || formCurrency.controls.currency_id.status == 'DISABLED')?'':'has-warning'}}">
+                  <label for="currency_id"
+                    class="col-sm-4 text-right form-form-control-label">{{gen.at_currency_id}}</label>
+                  <div class="col-sm-8">
+                    <input type="text" class="form-control" id="currency_id" placeholder="{{gen.ph_currency_id}}"
+                      [readonly]="disableInput.currency_id" formControlName="currency_id">
+                  </div>
+                </div>
+                <div class="form-group row {{(formCurrency.controls.currencies.status == 'INVALID')?'has-warning':''}}">
+                  <label for="currencies"
+                    class="col-sm-4 text-right form-form-control-label">{{gen.at_currency}}</label>
+                  <div class="col-sm-8">
+                    <input type="text" class="form-control" id="currencies" placeholder="{{gen.ph_currency}}"
+                      formControlName="currencies">
+                  </div>
+                </div>
+                <div class="form-group row {{(formCurrency.controls.rate.status == 'INVALID')?'has-warning':''}}">
+                  <label for="rate" class="col-sm-4 text-right form-form-control-label">{{gen.at_rate}}</label>
+                  <div class="col-sm-8">
+                    <input type="number" class="form-control" id="rate" placeholder="{{gen.ph_rate}}"
+                      formControlName="rate">
+                  </div>
+                </div>
+                <div class="form-group row {{(formCurrency.controls.symbol.status == 'INVALID')?'has-warning':''}}">
+                  <label for="symbol" class="col-sm-4 text-right form-form-control-label">{{gen.at_symbol}}</label>
+                  <div class="col-sm-8">
+                    <input type="text" class="form-control" id="symbol" placeholder="{{gen.ph_symbol}}"
+                      formControlName="symbol">
+                  </div>
+                </div>
+                <div
+                  class="form-group row {{(formCurrency.controls.description.status == 'INVALID')?'has-warning':''}}">
+                  <label for="description"
+                    class="col-sm-4 text-right form-form-control-label">{{gen.at_description}}</label>
+                  <div class="col-sm-8">
+                    <textarea type="text" class="form-control" id="description" placeholder="{{gen.ph_description}}"
+                      formControlName="description"></textarea>
+                  </div>
+                </div>
+              </form>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-8">
+      <div class="card">
+        <div class="card-block">
+          <div class="row">
+
+            <div class="table-responsive"></div>
+            <table class="table table-responsive table-hover table-outline mb-0">
+              <thead class="thead-default">
+                <tr class="text-center">
+                  <th><i class="fa fa-sort-numeric-asc"></i></th>
+                  <th>{{gen.th_action}}</th>
+                  <th>{{gen.th_currency_id}}</th>
+                  <th>{{gen.th_currency}}</th>
+                  <th>{{gen.th_rate}}</th>
+                  <th>{{gen.th_symbol}}</th>
+                  <!-- <th>{{gen.th_description}}</th> -->
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of currencyData; let i = index">
+                  <td class="text-center">{{i+1}}</td>
+                  <td><button class="btn btn-warning btn-sm" (click)="editCurrency(item)">{{gen.td_edit}}</button></td>
+                  <td class="{{(item.is_use == 1)?'':'colordanger'}}">{{item.currency_id}}</td>
+                  <td>{{item.currency}}</td>
+                  <td>{{item.rate}}</td>
+                  <td>{{item.symbol}}</td>
+                </tr>
+              </tbody>
+            </table>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+
+</div>
+
+<div class="animated fadeIn display-inherit">
+  <div class="row">
+    <div class="col-lg-12">
+      <ts-bydatetime 
+        [report_id]="9" 
+        [data]="formCurrency.value"
+      ></ts-bydatetime>
+    </div>
+  </div>
+</div>

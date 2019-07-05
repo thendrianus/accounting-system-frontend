@@ -1,0 +1,261 @@
+<div class="loading" *ngIf="!gen.app_component_id"></div>
+<ts-notification [notifSuccess]='notif.success' [notifAlert]='notif.alert' [notifError]='notif.error'
+  [notifInfo]='notif.info' [notifWarn]='notif.warn'> </ts-notification>
+
+<div class="animated fadeIn display-inherit">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header font-larger">
+          <a href="javascript:void(0)" class="ts-a-title" (click)="refreshComponent()"><i class=" fa fa-refresh"> </i>
+            {{gen._title}}</a>
+          <div class="card-trans-code ts-hide-mobile">
+            <form class="form-horizontal" [formGroup]="formBusinesspartner">
+              <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-barcode"></i></span>
+                <input type="text" class="form-control ts-clear-bg ts-text-center" id="businesspartner_code"
+                  placeholder="{{gen.ph_code}}" [readonly]="disableInput.businesspartner_code"
+                  formControlName="businesspartner_code" [disabled]="true">
+                <span class="input-group-addon" *ngIf="formBusinesspartner.value.businesspartner_id != ''">
+                  <label class="switch switch-sm switch-text switch-info float-right mb-0">
+                    <input type="checkbox"
+                      (click)="isUseChange('businesspartner', formBusinesspartner.value.is_use, formBusinesspartner.value.businesspartner_id, 'businesspartner_id')"
+                      class="switch-input" formControlName="is_use">
+                    <span class="switch-label" data-on="On" data-off="Off"></span>
+                    <span class="switch-handle"></span>
+                  </label>
+                </span>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="card-block" style="padding: 0.5rem 1.25rem;">
+          <div class="row">
+            <div class="form-group col-sm-3 ts-show-mobile" style="margin-bottom: 0rem;">
+              <form class="form-horizontal" [formGroup]="formBusinesspartner">
+                <div class="input-group">
+                  <span class="input-group-addon"><i class="fa fa-barcode"></i></span>
+                  <input type="text" class="form-control ts-clear-bg ts-text-center" id="businesspartner_code"
+                    placeholder="{{gen.ph_code}}" [readonly]="disableInput.businesspartner_code"
+                    formControlName="businesspartner_code" [disabled]="true">
+                  <span class="input-group-addon" *ngIf="formBusinesspartner.value.businesspartner_id != ''">
+                    <label class="switch switch-sm switch-text switch-info float-right mb-0">
+                      <input type="checkbox"
+                        (click)="isUseChange('businesspartner', formBusinesspartner.value.is_use, formBusinesspartner.value.businesspartner_id, 'businesspartner_id')"
+                        class="switch-input" formControlName="is_use">
+                      <span class="switch-label" data-on="On" data-off="Off"></span>
+                      <span class="switch-handle"></span>
+                    </label>
+                  </span>
+                </div>
+              </form>
+            </div>
+            <div class="form-group col-sm-12" style="margin-bottom: 0rem;">
+              <button type="submit" class="btn btn-primary btn-sm2" [disabled]="!formBusinesspartner.valid"
+                (click)="formSubmit()" *ngIf="formBusinesspartner.value.businesspartner_id == ''"><i
+                  class="fa fa-plus"></i> {{gen.btn_add}}</button>
+              <button type="submit" class="btn btn-warning btn-sm2" [disabled]="!formBusinesspartner.valid"
+                (click)="updateBusinesspartner()" *ngIf="formBusinesspartner.value.businesspartner_id != ''"><i
+                  class="fa fa-edit "></i> {{gen.btn_edit}}</button>
+              <button type="submit" class="btn btn-danger btn-sm2" (click)="deleteBusinesspartner()"
+                *ngIf="formBusinesspartner.value.businesspartner_id != ''"><i class="fa fa-trash"></i>
+                {{gen.btn_delete}}</button>
+              <button type="submit" class="btn btn-secondary btn-sm2" (click)="clearAll()"><i class="fa fa-eraser"></i>
+                {{gen.btn_clear}}</button>
+              <button type="submit" (click)="printConsoleForm()" *ngIf="printConsole">Print Console</button>
+              <button type="submit" class="btn btn-success btn-sm2" (click)="modalShow()"><i class="fa fa-search"></i>
+                {{gen.btn_search}}</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="animated fadeIn display-inherit">
+
+  <div class="card">
+    <div class="card-block">
+      <div class="vertical-scroll" style="max-height: 100%">
+        <div class="row">
+          <div class="col-lg-6">
+            <form class="form-horizontal" [formGroup]="formBusinesspartner" (ngSubmit)="formSubmit()">
+
+              <div class="form-group row">
+                <label for="businesspartner_code"
+                  class="col-sm-4 text-right form-form-control-label">{{gen.at_code}}</label>
+                <div class="col-sm-6">
+                  <input type="text" class="form-control" id="businesspartner_code" placeholder="{{gen.ph_code}}"
+                    [readonly]="disableInput.businesspartner_code" formControlName="businesspartner_code">
+                </div>
+              </div>
+              <div class="form-group row {{(formBusinesspartner.controls.name.status == 'INVALID')?'has-warning':''}}">
+                <label for="name" class="col-sm-4 text-right form-form-control-label">{{gen.at_name}}</label>
+                <div class="col-sm-6">
+                  <input type="text" class="form-control" id="name" placeholder="{{gen.ph_name}}"
+                    formControlName="name">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="businesspartner_category_id"
+                  class="col-sm-4 text-right form-form-control-label">{{gen.at_category}}</label>
+                <div class="col-sm-6">
+                  <select class="form-control" id="businesspartner_category_id"
+                    formControlName="businesspartner_category_id">
+                    <option value="1">Supplier & Customer</option>
+                    <option value="2">Customer</option>
+                    <option value="3">Supplier</option>
+                  </select>
+                </div>
+              </div>
+              <div
+                class="form-group row {{(formBusinesspartner.controls.description.status == 'INVALID')?'has-warning':''}}">
+                <label for="description"
+                  class="col-sm-4 text-right form-form-control-label">{{gen.at_description}}</label>
+                <div class="col-sm-6">
+                  <textarea type="text" class="form-control" id="description" placeholder="{{gen.ph_description}}"
+                    formControlName="description"></textarea>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="salesman_employee_id"
+                  class="col-sm-4 text-right form-form-control-label">{{gen.at_salesman}}</label>
+                <div class="col-sm-6">
+                  <select class="form-control" id="salesman_employee_id" formControlName="salesman_employee_id">
+                    <option *ngFor="let item of employeeJobSalesman" value="{{item.employee_id}}">
+                      {{item.employee_code}}-{{item.firstname}} {{item.lastname}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="collector_employee_id"
+                  class="col-sm-4 text-right form-form-control-label">{{gen.at_deptcollector}}</label>
+                <div class="col-sm-6">
+                  <select class="form-control" id="collector_employee_id" formControlName="collector_employee_id">
+                    <option *ngFor="let item of employeeJobCollector" value="{{item.employee_id}}">
+                      {{item.employee_code}}-{{item.firstname}} {{item.lastname}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group row ">
+                <label for="businesspartner_group_id"
+                  class="col-sm-4 text-right form-form-control-label">{{gen.at_group}}</label>
+                <div class="col-sm-6">
+                  <select class="form-control" id="exampleSelect1" formControlName="businesspartner_group_id">
+                    <option *ngFor="let item of businesspartnergroup" value="{{item.businesspartner_group_id}}">
+                      {{item.businesspartner_group}}</option>
+                  </select>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="col-lg-6">
+            <tabset>
+              <tab heading="1. {{gen._address}}">
+                <address [businesspartnerOrder]="formBusinesspartner.value.businesspartner_id"></address>
+              </tab>
+              <tab heading="2. {{gen._contact}}">
+                <contact [businesspartnerOrder]="formBusinesspartner.value.businesspartner_id"></contact>
+              </tab>
+              <tab heading="3. *(Terms">
+                <form class="form-horizontal" [formGroup]="formBusinesspartner">
+
+                  <div class="row">
+                    <div class="col-sm-12">
+                      <div
+                        class="form-group row {{(formBusinesspartner.controls.discount_date.status == 'INVALID')?'has-warning':''}}">
+                        <label for="discount_date" class="col-sm-4 text-right form-form-control-label">*(Discount
+                          Date</label>
+                        <div class="col-sm-6">
+                          <div class="input-group">
+                            <input type="number" class="form-control" id="discount_date" placeholder="*(Discount Date"
+                              formControlName="discount_date">
+                            <span class="input-group-addon">*(Days</span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div
+                        class="form-group row {{(formBusinesspartner.controls.due_date.status == 'INVALID')?'has-warning':''}}">
+                        <label for="due_date" class="col-sm-4 text-right form-form-control-label">*(Due Date</label>
+                        <div class="col-sm-6">
+                          <div class="input-group">
+                            <input type="number" class="form-control" id="due_date" placeholder="*(Due Date"
+                              formControlName="due_date">
+                            <span class="input-group-addon">*(Days</span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div
+                        class="form-group row {{(formBusinesspartner.controls.early_discount.status == 'INVALID')?'has-warning':''}}">
+                        <label for="early_discount" class="col-sm-4 text-right form-form-control-label">*(Early
+                          Discount</label>
+                        <div class="col-sm-6">
+                          <div class="input-group">
+                            <input type="number" class="form-control" id="early_discount" placeholder="*(Early Discount"
+                              formControlName="early_discount">
+                            <span class="input-group-addon"><i class="fa fa-percent"></i></span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div
+                        class="form-group row {{(formBusinesspartner.controls.late_charge.status == 'INVALID')?'has-warning':''}}">
+                        <label for="late_charge" class="col-sm-4 text-right form-form-control-label">*(Late
+                          Charge</label>
+                        <div class="col-sm-6">
+                          <div class="input-group">
+                            <input type="number" class="form-control" id="late_charge" placeholder="*(Late Charge"
+                              formControlName="late_charge">
+                            <span class="input-group-addon"><i class="fa fa-percent"></i></span>
+                          </div>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+
+                </form>
+              </tab>
+            </tabset>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+</div>
+
+<div class="animated fadeIn display-inherit">
+  <div class="row">
+    <div class="col-lg-12">
+      <ts-bydatetime 
+        [report_id]="6" 
+        [data]="formBusinesspartner.value"
+      ></ts-bydatetime>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL SEARCH -->
+<div bsModal #childModal="bs-modal" class="modal  fade" [config]="{'backdrop':'static', 'keyboard': false}"
+  tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{{gen._M1}}</h5>
+        <button class="btn btn-outline-danger" (click)="childModal.hide()" aria-label="Close"
+          type="button">{{gen._M1close}}</button>
+      </div>
+      <div class="modal-body-full">
+        <div class="vertical-scroll" style="max-height: 100%">
+          <ng2-smart-table (rowSelect)="httpService.modal_scroll_top($event)" [settings]="settings" [source]="source" (delete)="ModalSelectBusinesspartner($event)">
+          </ng2-smart-table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

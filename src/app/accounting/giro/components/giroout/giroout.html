@@ -1,0 +1,254 @@
+<div class="loading" *ngIf="!gen.app_component_id"></div>
+<ts-notification [notifSuccess]='notif.success' [notifAlert]='notif.alert' [notifError]='notif.error'
+  [notifInfo]='notif.info' [notifWarn]='notif.warn'> </ts-notification>
+
+<div class="animated fadeIn display-inherit">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header font-larger">
+          <a href="javascript:void(0)" class="ts-a-title" (click)="refreshComponent()"><i class=" fa fa-refresh"> </i>
+            {{gen._title}}</a>
+          <div class="card-trans-code ts-hide-mobile">
+            <form class="form-horizontal" [formGroup]="formGiroout">
+              <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-barcode"></i></span>
+                <input type="text" class="form-control ts-clear-bg ts-text-center" id="giroout_code"
+                  placeholder="{{gen._code}}" [readonly]="disableInput.giroout_code" formControlName="giroout_code"
+                  [disabled]="true">
+                <span class="input-group-addon" *ngIf="formGiroout.value.giroout_id != ''">
+                  <label class="switch switch-sm switch-text switch-info float-right mb-0">
+                    <input type="checkbox"
+                      (click)="isUseChange('giroout', formGiroout.value.is_use, formGiroout.value.giroout_id, 'giroout_id')"
+                      class="switch-input" formControlName="is_use">
+                    <span class="switch-label" data-on="On" data-off="Off"></span>
+                    <span class="switch-handle"></span>
+                  </label>
+                </span>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="card-block" style="padding: 0.5rem 1.25rem;">
+          <div class="row">
+            <div class="form-group col-sm-3 ts-show-mobile" style="margin-bottom: 0rem;">
+              <form class="form-horizontal" [formGroup]="formGiroout">
+                <div class="input-group">
+                  <span class="input-group-addon"><i class="fa fa-barcode"></i></span>
+                  <input type="text" class="form-control ts-clear-bg ts-text-center" id="giroout_code"
+                    placeholder="{{gen._code}}" [readonly]="disableInput.giroout_code" formControlName="giroout_code"
+                    [disabled]="true">
+                  <span class="input-group-addon" *ngIf="formGiroout.value.giroout_id != ''">
+                    <label class="switch switch-sm switch-text switch-info float-right mb-0">
+                      <input type="checkbox"
+                        (click)="isUseChange('giroout', formGiroout.value.is_use, formGiroout.value.giroout_id, 'giroout_id')"
+                        class="switch-input" formControlName="is_use">
+                      <span class="switch-label" data-on="On" data-off="Off"></span>
+                      <span class="switch-handle"></span>
+                    </label>
+                  </span>
+                </div>
+              </form>
+            </div>
+            <div class="form-group col-sm-12" style="margin-bottom: 0rem;">
+              <button type="submit" class="btn btn-primary btn-sm2" [disabled]="!formGiroout.valid"
+                (click)="submitFormGiroout()"><i class="fa fa-plus"></i> {{gen.btn_add}}</button>
+              <button type="submit" class="btn btn-warning btn-sm2" [disabled]="!formGiroout.valid"
+                (click)="submitFormGiroout()"><i class="fa fa-edit "></i> {{gen.btn_update}}</button>
+              <button type="submit" class="btn btn-danger btn-sm2" [disabled]="!formGiroout.value.giroout_id"
+                (click)="deleteGiroout()"><i class="fa fa-trash"></i> {{gen.btn_delete}}</button>
+              <button type="submit" class="btn btn-success btn-sm2" (click)="modalShow()"><i class="fa fa-search"></i>
+                {{gen.btn_search}}</button>
+              <button type="submit" class="btn btn-secondary btn-sm2" (click)="clearAll()"><i class="fa fa-eraser"></i>
+                {{gen.btn_clear}}</button>
+              <button type="submit" (click)="printConsoleForm()" *ngIf="printConsole">Print Console</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="animated fadeIn display-inherit">
+
+  <div class="row">
+    <div class="col-lg-6">
+      <div class="card">
+        <div class="card-block">
+          <div class="vertical-scroll" style="max-height: 100%">
+            <form class="form-horizontal" [formGroup]="formGiroout">
+
+              <div class="form-group row">
+                <label for="giroout_code"
+                  class="col-sm-4 text-right form-form-control-label">{{gen.at_giroout_Code}}</label>
+                <div class="col-sm-6">
+                  <input type="text" class="form-control" id="giroout_code" placeholder="{{gen.ph_giroout_no}}"
+                    [readonly]="disableInput.giroout_code" formControlName="giroout_code">
+                </div>
+              </div>
+              <div class="form-group row" *ngIf="formGiroout.value.giroout_id == ''">
+                <label for="giro_from" class="col-sm-4 text-right form-form-control-label">{{gen.at_giro_from}}</label>
+                <div class="col-sm-6">
+                  <input type="text" class="form-control" id="giro_from" placeholder="{{gen.ph_giro_from}}"
+                    formControlName="giro_from">
+                </div>
+              </div>
+              <div class="form-group row" *ngIf="formGiroout.value.giroout_id == ''">
+                <label for="giro_bank" class="col-sm-4 text-right form-form-control-label">{{gen.at_giro_bank}}</label>
+                <div class="col-sm-6">
+                  <input type="text" class="form-control" id="giro_bank" placeholder="{{gen.ph_giro_bank}}"
+                    formControlName="giro_bank">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="datetime" class="col-sm-4 text-right form-form-control-label">{{gen.at_date}}</label>
+                <div class="col-sm-6">
+                  <div class="input-group">
+                    <input type="date" class="w100 form-control" formControlName="transaction_date">
+                  </div>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="datetime1"
+                  class="col-sm-4 text-right form-form-control-label">{{gen.at_efective_begin}}</label>
+                <div class="col-sm-6">
+                  <div class="input-group">
+                    <input type="date" class="w100 form-control" formControlName="efective_begin">
+                  </div>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="datetime2"
+                  class="col-sm-4 text-right form-form-control-label">{{gen.at_efective_end}}</label>
+                <div class="col-sm-6">
+                  <div class="input-group">
+                    <input type="date" class="w100 form-control" formControlName="efective_end">
+                  </div>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="project_id" class="col-sm-4 text-right form-form-control-label">{{gen.at_project}}</label>
+                <div class="col-sm-6">
+                  <select class="form-control" id="project_id" formControlName="project_id">
+                    <option *ngFor="let item of girooutProject" value="{{item.project_id}}">{{item.project}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group row {{(formGiroout.controls.description.status == 'INVALID')?'has-warning':''}}">
+                <label for="description"
+                  class="col-sm-4 text-right form-form-control-label">{{gen.at_description}}</label>
+                <div class="col-sm-6">
+                  <textarea type="text" class="form-control" id="description" placeholder="{{gen.ph_description}}"
+                    formControlName="description"></textarea>
+                </div>
+              </div>
+
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="col-lg-6">
+
+      <div class="card">
+        <div class="card-block">
+          <div class="vertical-scroll" style="max-height: 100%">
+            <form class="form-horizontal" [formGroup]="formGiroout">
+
+              <div class="form-group row" *ngIf="formGiroout.value.giroout_id == ''">
+                <label for="bank_account"
+                  class="col-sm-4 text-right form-form-control-label">{{gen.at_bank_account}}</label>
+                <div class="col-sm-6">
+                  <ng-select bindValue="value" [items]="bankAccount" formControlName="account_id"> </ng-select>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="giro_no" class="col-sm-4 text-right form-form-control-label">{{gen.at_giro_no}}</label>
+                <div class="col-sm-6">
+                  <input type="text" class="form-control" id="giro_no" placeholder="{{gen.ph_giro_no}}"
+                    formControlName="giro_no">
+                </div>
+              </div>
+              <div class="form-group row" *ngIf="formGiroout.value.giroout_id == ''">
+                <label for="nominal" class="col-sm-4 text-right form-form-control-label">{{gen.at_nominal}}</label>
+                <div class="col-sm-6">
+                  <input currencyMask type="tel" [options]="moneyOption" class="form-control" id="nominal"
+                    placeholder="{{gen.ph_nominal}}" formControlName="nominal">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="status_id" class="col-sm-4 text-right form-form-control-label">{{gen.at_status}}</label>
+                <div class="col-sm-6">
+                  <select class="form-control" id="status_id" formControlName="status_id">
+                    <option value=1 *ngIf="formGiroout.value.old_status_id != 2">{{gen.at_pending}}</option>
+                    <option value=2>{{gen.at_cleared}}</option>
+                    <option value=3 *ngIf="formGiroout.value.old_status_id != 2">{{gen.at_cancel}}</option>
+                  </select>
+                </div>
+              </div>
+
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-block">
+          <div class="vertical-scroll" style="max-height: 100%">
+            <glaction [inputEditGL]="inputEditGL" [glTransactionGlLinkId]="glTransactionGlLinkId"
+              [outputClearall]="outputClearall" (outGllist)="outGllist()" [debitCredit]=0> </glaction>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="row">
+    <div class="col-lg-12">
+      <ts-bydatetime 
+        [report_id]="55" 
+        [data]="formGiroout.value"
+      ></ts-bydatetime>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-block">
+          <div class="vertical-scroll" style="max-height: 100%">
+            <gllist [glTransactionGlLinkId]="glTransactionGlLinkId" [inputGllist]='inputGllist'
+              [outputClearall]="outputClearall" (editGL)="outputEditGL($event)"> </gllist>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- MODAL SEARCH -->
+<div bsModal #childModal="bs-modal" class="modal  fade" [config]="{'backdrop':'static', 'keyboard': false}"
+  tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{{gen._titleModal1}}</h5>
+        <button class="btn btn-outline-danger" (click)="childModal.hide()" aria-label="Close"
+          type="button">{{gen.btn_closeModal1}}</button>
+      </div>
+      <div class="modal-body-full">
+        <div class="vertical-scroll" style="max-height: 100%">
+          <div class="vertical-scroll" style="max-height: 100%">
+            <ng2-smart-table (rowSelect)="httpService.modal_scroll_top($event)" [settings]="settings" [source]="source" (delete)="ModalSelectGiroout($event)">
+            </ng2-smart-table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
